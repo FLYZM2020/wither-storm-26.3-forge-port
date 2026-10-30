@@ -125,12 +125,13 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
                 player.connection.send(new ClientboundSetEntityMotionPacket(player));
             }
             if (--pulseTicks == 0) {
-                playSound(SoundEvents.GENERIC_EXPLODE.value(), 2.0F, 1.4F);
-                for (LivingEntity victim : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(12.0),
-                        e -> e != this && e.isAlive() && e.isAttackable() && !(e instanceof WitherBoss)
-                                && !(e instanceof WitheredSymbiontEntity) && !e.isSpectator()
-                                && !(e instanceof Player p && p.isCreative()))) {
-                    Vec3 away = victim.position().subtract(position()).add(0.0, 1.0, 0.0).normalize().scale(2.0);
+                playSound(WitherStormModSounds.COMMAND_BLOCK_ACTIVATES.get(), 4.0F, 2.0F);
+                double range = getAttributeValue(Attributes.FOLLOW_RANGE);
+                TargetingConditions targets = TargetingConditions.forCombat().range(range);
+                for (LivingEntity victim : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(range),
+                        e -> e != this && targets.test(level, this, e)
+                                && !(e instanceof WitherStormEntity || e instanceof WitherStormSegmentEntity || e instanceof WitheredSymbiontEntity))) {
+                    Vec3 away = victim.position().subtract(position()).add(0.0, 1.0, 0.0).normalize().scale(3.0);
                     victim.setDeltaMovement(away);
                     if (victim instanceof ServerPlayer player) player.connection.send(new ClientboundSetEntityMotionPacket(player));
                 }
