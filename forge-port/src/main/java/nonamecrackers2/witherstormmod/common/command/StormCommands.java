@@ -10,9 +10,11 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import nonamecrackers2.witherstormmod.common.entity.WitherStormEntity;
 import nonamecrackers2.witherstormmod.common.evolution.StormEvolutionRules;
+import nonamecrackers2.witherstormmod.common.sickness.WitherSicknessTracker;
 
 /** Phase, subphase and consumed-count subset of the original commands. */
 public final class StormCommands {
@@ -44,6 +46,11 @@ public final class StormCommands {
                 .then(Commands.argument("witherstorm", EntityArgument.entity()).executes(StormCommands::collapse)))
             .then(Commands.literal("revive")
                 .then(Commands.argument("witherstorm", EntityArgument.entity()).executes(StormCommands::revive)))
+            .then(Commands.literal("sickness")
+                .then(Commands.literal("infect")
+                    .then(Commands.argument("entity", EntityArgument.entity()).executes(ctx -> sickness(ctx, false))))
+                .then(Commands.literal("cure")
+                    .then(Commands.argument("entity", EntityArgument.entity()).executes(ctx -> sickness(ctx, true)))))
             .then(Commands.literal("consumedEntities")
                 .then(Commands.literal("get")
                     .then(Commands.argument("witherstorm", EntityArgument.entity()).executes(StormCommands::getConsumed)))
@@ -86,6 +93,21 @@ public final class StormCommands {
     }
 
     private static int plusOne(int value) { return value == Integer.MAX_VALUE ? value : value + 1; }
+
+    private static int sickness(CommandContext<CommandSourceStack> context, boolean cure) throws CommandSyntaxException {
+        Entity entity = EntityArgument.getEntity(context, "entity");
+        if (!(entity instanceof LivingEntity living)) {
+            context.getSource().sendFailure(Component.translatable("commands.witherstormmod.sickness.not_living"));
+            return 0;
+        }
+        boolean started = cure ? WitherSicknessTracker.beginCure(living) : WitherSicknessTracker.beginInfection(living);
+        if (!started) {
+            context.getSource().sendFailure(Component.translatable(cure ? "commands.witherstormmod.sickness.cure_failed" : "commands.witherstormmod.sickness.infect_failed", living.getDisplayName()));
+            return 0;
+        }
+        context.getSource().sendSuccess(() -> Component.translatable(cure ? "commands.witherstormmod.sickness.cure_started" : "commands.witherstormmod.sickness.infect_started", living.getDisplayName()), true);
+        return 1;
+    }
 
     private static int collapse(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         WitherStormEntity storm = getStorm(context);

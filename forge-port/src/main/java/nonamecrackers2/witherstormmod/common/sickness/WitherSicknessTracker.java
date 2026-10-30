@@ -99,6 +99,18 @@ public final class WitherSicknessTracker {
         return true;
     }
 
+    /** Start the normal delayed infection, also usable when proximity is disabled. */
+    public static boolean beginInfection(LivingEntity entity) {
+        if (entity.level().isClientSide() || immune(entity)) return false;
+        CompoundTag data = getOrCreate(entity);
+        if (data.getBooleanOr("IsInfected", false)) return false;
+        data.putBoolean("IsInfected", true);
+        data.putBoolean("IsBeingCured", false);
+        data.putInt("ApplicationTicks", 0);
+        data.putInt("CureTicks", 0);
+        return true;
+    }
+
     /** Preserve infection across player respawn, matching the original default. */
     public static void onPlayerClone(PlayerEvent.Clone event) {
         if (!event.isWasDeath() || event.getEntity().level().isClientSide()) return;

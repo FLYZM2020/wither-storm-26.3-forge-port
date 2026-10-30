@@ -29,5 +29,10 @@
   "witherstormmod.subtitle.super_tnt_fuse": "超级 TNT：引信燃烧",
   "entity.witherstormmod.super_tnt": "已点燃的超级 TNT",
   "death.attack.super_tnt_explosion": "%1$s 被超级 TNT 炸毁",
-  "entity.witherstormmod.wither_storm_segment": "凋灵风暴分裂体"
+  "entity.witherstormmod.wither_storm_segment": "凋灵风暴分裂体",
+  "commands.witherstormmod.sickness.not_living": "目标必须是生物实体。",
+  "commands.witherstormmod.sickness.infect_failed": "无法感染 %s：目标已感染或免疫。",
+  "commands.witherstormmod.sickness.cure_failed": "无法治疗 %s：目标未感染、正在治疗或免疫。",
+  "commands.witherstormmod.sickness.infect_started": "开始感染 %s。",
+  "commands.witherstormmod.sickness.cure_started": "开始治疗 %s。"
 }

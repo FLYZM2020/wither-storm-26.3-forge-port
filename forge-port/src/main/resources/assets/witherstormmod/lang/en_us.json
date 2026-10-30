@@ -30,5 +30,10 @@
   "witherstormmod.subtitle.super_tnt_fuse": "Super TNT fuse burns",
   "entity.witherstormmod.super_tnt": "Primed Super TNT",
   "death.attack.super_tnt_explosion": "%1$s was blown up by Super TNT",
-  "entity.witherstormmod.wither_storm_segment": "Wither Storm Segment"
+  "entity.witherstormmod.wither_storm_segment": "Wither Storm Segment",
+  "commands.witherstormmod.sickness.not_living": "The target must be a living entity.",
+  "commands.witherstormmod.sickness.infect_failed": "Cannot start infection for %s: already infected or immune.",
+  "commands.witherstormmod.sickness.cure_failed": "Cannot start a cure for %s: not infected, already being cured, or immune.",
+  "commands.witherstormmod.sickness.infect_started": "Beginning infection for %s.",
+  "commands.witherstormmod.sickness.cure_started": "Beginning treatment for %s."
 }
