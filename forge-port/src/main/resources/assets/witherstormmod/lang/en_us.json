@@ -36,5 +36,7 @@
   "commands.witherstormmod.sickness.cure_failed": "Cannot start a cure for %s: not infected, already being cured, or immune.",
   "commands.witherstormmod.sickness.infect_started": "Beginning infection for %s.",
   "commands.witherstormmod.sickness.cure_started": "Beginning treatment for %s.",
-  "witherstormmod.subtitle.withered_symbiont_pull": "Withered Symbiont pulls"
+  "witherstormmod.subtitle.withered_symbiont_pull": "Withered Symbiont pulls",
+  "witherstormmod.subtitle.withered_symbiont_prepare_spell": "Withered Symbiont prepares a spell",
+  "witherstormmod.subtitle.withered_symbiont_cast_spell": "Withered Symbiont casts a spell"
 }

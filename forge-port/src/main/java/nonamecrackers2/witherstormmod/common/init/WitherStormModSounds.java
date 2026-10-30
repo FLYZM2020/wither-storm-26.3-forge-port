@@ -16,5 +16,9 @@ public final class WitherStormModSounds {
             SoundEvent.createVariableRangeEvent(WitherStormMod.id("super_tnt_fuse")));
     public static final RegistryObject<SoundEvent> SYMBIONT_PULL = SOUNDS.register("withered_symbiont_pull", () ->
             SoundEvent.createVariableRangeEvent(WitherStormMod.id("withered_symbiont_pull")));
+    public static final RegistryObject<SoundEvent> SYMBIONT_PREPARE = SOUNDS.register("withered_symbiont_prepare_spell", () ->
+            SoundEvent.createVariableRangeEvent(WitherStormMod.id("withered_symbiont_prepare_spell")));
+    public static final RegistryObject<SoundEvent> SYMBIONT_CAST = SOUNDS.register("withered_symbiont_cast_spell", () ->
+            SoundEvent.createVariableRangeEvent(WitherStormMod.id("withered_symbiont_cast_spell")));
     private WitherStormModSounds() {}
 }

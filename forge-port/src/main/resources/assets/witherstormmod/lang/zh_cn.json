@@ -35,5 +35,7 @@
   "commands.witherstormmod.sickness.cure_failed": "无法治疗 %s：目标未感染、正在治疗或免疫。",
   "commands.witherstormmod.sickness.infect_started": "开始感染 %s。",
   "commands.witherstormmod.sickness.cure_started": "开始治疗 %s。",
-  "witherstormmod.subtitle.withered_symbiont_pull": "凋零共生体：吸引"
+  "witherstormmod.subtitle.withered_symbiont_pull": "凋零共生体：吸引",
+  "witherstormmod.subtitle.withered_symbiont_prepare_spell": "凋零共生体：准备施法",
+  "witherstormmod.subtitle.withered_symbiont_cast_spell": "凋零共生体：施法"
 }

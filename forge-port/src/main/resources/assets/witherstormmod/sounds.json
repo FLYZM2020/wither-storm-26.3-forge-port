@@ -33,5 +33,25 @@
         "volume": 0.2
       }
     ]
+  },
+  "withered_symbiont_prepare_spell": {
+    "category": "hostile",
+    "subtitle": "witherstormmod.subtitle.withered_symbiont_prepare_spell",
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:entity.evoker.prepare_attack"
+      }
+    ]
+  },
+  "withered_symbiont_cast_spell": {
+    "category": "hostile",
+    "subtitle": "witherstormmod.subtitle.withered_symbiont_cast_spell",
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:entity.illusioner.cast_spell"
+      }
+    ]
   }
 }

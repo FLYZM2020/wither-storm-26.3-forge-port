@@ -23,6 +23,7 @@ import net.minecraft.world.entity.animal.golem.AbstractGolem;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.villager.AbstractVillager;
 import nonamecrackers2.witherstormmod.common.tags.WitherStormModEntityTags;
+import nonamecrackers2.witherstormmod.common.init.WitherStormModSounds;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.monster.skeleton.WitherSkeleton;
 import net.minecraft.world.entity.player.Player;
@@ -109,6 +110,7 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
             if (--pulseCharge % 5 == 0)
                 level.sendParticles(ParticleTypes.PORTAL, getX(), getY() + 1.2, getZ(), 12, 0.6, 0.8, 0.6, 0.1);
             if (pulseCharge == 0) {
+                playSound(WitherStormModSounds.SYMBIONT_CAST.get(), 4.0F, 1.0F);
                 if (pendingSpell == 2) {
                     previousSpell = 2;
                     pullTicks = 240;
@@ -137,7 +139,7 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
             if (previousSpell >= 0 && pendingSpell >= previousSpell) pendingSpell++;
             preparingSkulls = pendingSpell == 1;
             pulseCharge = 40 + random.nextInt(20);
-            playSound(SoundEvents.EVOKER_CAST_SPELL, 2.0F, 1.0F);
+            playSound(WitherStormModSounds.SYMBIONT_PREPARE.get(), 4.0F, 1.0F);
         }
     }
 
@@ -155,7 +157,8 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
         skull.setDangerous(random.nextInt(11) == 1);
         if (level.addFreshEntity(skull)) {
             skull.playSound(SoundEvents.WITHER_SHOOT, 4.0F, 1.0F);
-            level.sendParticles(ParticleTypes.LARGE_SMOKE, x, y, z, 8, 0.3, 0.3, 0.3, 0.01);
+            level.sendParticles(ParticleTypes.LARGE_SMOKE, x, y, z, 20, random.nextGaussian(), random.nextGaussian(), random.nextGaussian(), 0.01);
+            level.sendParticles(WitherStormMod.COMMAND_PARTICLE.get(), x, y, z, 20, random.nextGaussian(), random.nextGaussian(), random.nextGaussian(), 0.2);
         }
     }
 
