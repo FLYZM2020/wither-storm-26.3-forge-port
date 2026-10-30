@@ -35,5 +35,6 @@
   "commands.witherstormmod.sickness.infect_failed": "Cannot start infection for %s: already infected or immune.",
   "commands.witherstormmod.sickness.cure_failed": "Cannot start a cure for %s: not infected, already being cured, or immune.",
   "commands.witherstormmod.sickness.infect_started": "Beginning infection for %s.",
-  "commands.witherstormmod.sickness.cure_started": "Beginning treatment for %s."
+  "commands.witherstormmod.sickness.cure_started": "Beginning treatment for %s.",
+  "witherstormmod.subtitle.withered_symbiont_pull": "Withered Symbiont pulls"
 }

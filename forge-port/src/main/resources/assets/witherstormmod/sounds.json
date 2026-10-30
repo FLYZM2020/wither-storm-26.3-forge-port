@@ -23,5 +23,15 @@
         "name": "witherstormmod:super_tnt/super_tnt_fuse"
       }
     ]
+  },
+  "withered_symbiont_pull": {
+    "category": "hostile",
+    "subtitle": "witherstormmod.subtitle.withered_symbiont_pull",
+    "sounds": [
+      {
+        "name": "witherstormmod:withered_symbiont/withered_symbiont_pull",
+        "volume": 0.2
+      }
+    ]
   }
 }

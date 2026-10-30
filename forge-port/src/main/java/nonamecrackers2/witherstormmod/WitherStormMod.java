@@ -3,6 +3,8 @@ package nonamecrackers2.witherstormmod;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -42,6 +44,8 @@ import nonamecrackers2.witherstormmod.common.sickness.WitherSicknessTracker;
 public final class WitherStormMod {
     public static final String MOD_ID = "witherstormmod";
     private static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, MOD_ID);
+    private static final DeferredRegister<ParticleType<?>> PARTICLES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, MOD_ID);
+    public static final RegistryObject<SimpleParticleType> COMMAND_PARTICLE = PARTICLES.register("command_block", () -> new SimpleParticleType(true) {});
     public static final RegistryObject<EntityType<WitherStormEntity>> WITHER_STORM = ENTITIES.register("wither_storm", () ->
         EntityType.Builder.of(WitherStormEntity::new, MobCategory.MONSTER)
             .sized(0.9F, 3.5F).fireImmune().clientTrackingRange(32).build(ENTITIES.key("wither_storm")));
@@ -60,6 +64,7 @@ public final class WitherStormMod {
 
     public WitherStormMod(FMLJavaModLoadingContext context) {
         ENTITIES.register(context.getModBusGroup());
+        PARTICLES.register(context.getModBusGroup());
         WitherStormModBlocks.BLOCKS.register(context.getModBusGroup());
         WitherStormModBlockEntities.TYPES.register(context.getModBusGroup());
         WitherStormModAttributes.ATTRIBUTES.register(context.getModBusGroup());

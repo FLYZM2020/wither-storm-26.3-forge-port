@@ -14,5 +14,7 @@ public final class WitherStormModSounds {
             SoundEvent.createVariableRangeEvent(WitherStormMod.id("wither_storm_evolves")));
     public static final RegistryObject<SoundEvent> SUPER_TNT_FUSE = SOUNDS.register("super_tnt_fuse", () ->
             SoundEvent.createVariableRangeEvent(WitherStormMod.id("super_tnt_fuse")));
+    public static final RegistryObject<SoundEvent> SYMBIONT_PULL = SOUNDS.register("withered_symbiont_pull", () ->
+            SoundEvent.createVariableRangeEvent(WitherStormMod.id("withered_symbiont_pull")));
     private WitherStormModSounds() {}
 }

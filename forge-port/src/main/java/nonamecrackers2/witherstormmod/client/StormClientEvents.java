@@ -2,6 +2,8 @@ package nonamecrackers2.witherstormmod.client;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import nonamecrackers2.witherstormmod.client.particle.CommandParticle;
 import net.minecraftforge.eventbus.api.listener.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraft.client.renderer.entity.TntRenderer;
@@ -17,6 +19,11 @@ import nonamecrackers2.witherstormmod.client.model.SymbiontModel;
 @Mod.EventBusSubscriber(modid = WitherStormMod.MOD_ID, value = Dist.CLIENT)
 public final class StormClientEvents {
     private StormClientEvents() {}
+
+    @SubscribeEvent
+    public static void registerParticles(RegisterParticleProvidersEvent event) {
+        event.registerSpriteSet(WitherStormMod.COMMAND_PARTICLE.get(), CommandParticle.Provider::new);
+    }
 
     @SubscribeEvent
     public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {

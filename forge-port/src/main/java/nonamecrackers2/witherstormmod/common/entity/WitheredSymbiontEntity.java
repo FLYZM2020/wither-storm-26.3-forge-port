@@ -2,7 +2,11 @@ package nonamecrackers2.witherstormmod.common.entity;
 
 import java.util.UUID;
 import net.minecraft.core.particles.ParticleTypes;
+import nonamecrackers2.witherstormmod.WitherStormMod;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -31,6 +35,7 @@ import net.minecraft.world.phys.Vec3;
 
 /** Early symbiont with melee and simplified versions of three spells. */
 public final class WitheredSymbiontEntity extends WitherSkeleton {
+    private static final EntityDataAccessor<Boolean> PULLING = SynchedEntityData.defineId(WitheredSymbiontEntity.class, EntityDataSerializers.BOOLEAN);
     private final ServerBossEvent bossBar = new ServerBossEvent(UUID.randomUUID(), getDisplayName(), BossBarColor.PURPLE, BossBarOverlay.PROGRESS);
     private int pulseCooldown = 200;
     private int pulseCharge;
@@ -44,12 +49,19 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
         super(type, level);
     }
 
+    @Override protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(PULLING, false);
+    }
+    public boolean isPulling() { return entityData.get(PULLING); }
+
     @Override public void aiStep() {
         super.aiStep();
         if (!level().isClientSide()) {
             bossBar.setProgress(Math.clamp(getHealth() / getMaxHealth(), 0.0F, 1.0F));
             bossBar.setName(getDisplayName());
             if (isAlive() && level() instanceof ServerLevel server) tickPulse(server);
+            entityData.set(PULLING, isAlive() && pullTicks > 0);
         }
     }
 
@@ -71,7 +83,11 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
                 Vec3 pull = position().subtract(victim.position()).normalize().scale(0.1);
                 victim.setDeltaMovement(pull.x, victim.getDeltaMovement().y, pull.z);
                 if (victim instanceof ServerPlayer player) player.connection.send(new ClientboundSetEntityMotionPacket(player));
-                if (tickCount % 5 == 0) level.sendParticles(ParticleTypes.PORTAL, victim.getX(), victim.getY(0.5), victim.getZ(), 3, 0.3, 0.3, 0.3, 0.05);
+                double x = victim.getX() + random.nextGaussian() * victim.getBoundingBox().getXsize() * 0.4;
+                double y = victim.getBoundingBox().getCenter().y + random.nextGaussian() * victim.getBoundingBox().getYsize() * 0.4;
+                double z = victim.getZ() + random.nextGaussian() * victim.getBoundingBox().getZsize() * 0.4;
+                Vec3 direction = getEyePosition().subtract(x, y, z).normalize().scale(0.1);
+                level.sendParticles(WitherStormMod.COMMAND_PARTICLE.get(), x, y, z, 0, direction.x, direction.y, direction.z, 1.0);
             }
             if (pullTicks > 0) pullTicks--;
             if (pullTicks == 0) pulseCooldown = 340 + random.nextInt(80);
