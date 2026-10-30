@@ -2,6 +2,7 @@ package nonamecrackers2.witherstormmod.common.entity;
 
 import java.util.UUID;
 import java.util.EnumSet;
+import java.util.List;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -174,6 +175,13 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
 
     /** Original expanding fang rings; conversion-mob summons are not yet available. */
     private void castFangs(ServerLevel level, LivingEntity target) {
+        double range = getAttributeValue(Attributes.FOLLOW_RANGE);
+        TargetingConditions targeting = TargetingConditions.forCombat().range(range);
+        LivingEntity fallback = target;
+        List<Player> alternatives = level.getEntitiesOfClass(Player.class, getBoundingBox().inflate(range),
+                player -> player != fallback && targeting.test(level, this, player));
+        if (!alternatives.isEmpty() && random.nextInt(alternatives.size() + 1) != 0)
+            target = alternatives.get(random.nextInt(alternatives.size()));
         double minHeight = Math.min(target.getY(), getY()) - 2.0;
         double maxHeight = Math.max(target.getY(), getY()) + 2.0;
         double expansion = 3.0 + random.nextDouble();
