@@ -199,7 +199,10 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
                 Arrow arrow = new Arrow(level, this, new ItemStack(Items.ARROW), null);
                 arrow.pickup = AbstractArrow.Pickup.DISALLOWED;
                 arrow.setNoGravity(true);
-                arrow.setDeltaMovement(random.nextGaussian() * 0.55, random.nextDouble() * 0.75, random.nextGaussian() * 0.55);
+                Vec3 velocity = new Vec3(random.nextGaussian() * 0.55, random.nextDouble() * 0.75, random.nextGaussian() * 0.55);
+                arrow.setDeltaMovement(velocity);
+                arrow.setXRot((float) Math.toDegrees(Math.atan2(velocity.y, Math.sqrt(velocity.horizontalDistanceSqr()))));
+                arrow.setYRot((float) Math.toDegrees(Math.atan2(velocity.x, velocity.z)));
                 if (level.addFreshEntity(arrow)) spellArrows.add(arrow);
             }
             playSound(SoundEvents.DISPENSER_DISPENSE, 4.0F, 0.5F + (random.nextFloat() - 0.5F) * 0.1F);
@@ -214,15 +217,23 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
                 arrow.shoot(x, y + Math.sqrt(x * x + z * z) * 0.2, z, 2.5F, 14 - level.getDifficulty().getId() * 4);
                 arrow.setNoGravity(false);
                 arrow.playSound(SoundEvents.ARROW_SHOOT, 2.0F, 1.0F);
-            } else if (arrow.tickCount < delay && arrowTicks % 4 == 0) {
-                level.sendParticles(WitherStormMod.COMMAND_PARTICLE.get(), arrow.getX(), arrow.getY(), arrow.getZ(), 2, 0.2, 0.2, 0.2, 0.02);
+            } else if (arrow.tickCount < delay) {
+                double x = arrow.getX() + random.nextGaussian() * 0.5;
+                double y = arrow.getEyeY() + random.nextGaussian() * 0.5;
+                double z = arrow.getZ() + random.nextGaussian() * 0.5;
+                Vec3 direction = arrow.getEyePosition().subtract(x, y, z).normalize().scale(0.1);
+                level.sendParticles(WitherStormMod.COMMAND_PARTICLE.get(), x, y, z, 0, direction.x, direction.y, direction.z, 1.0);
             }
         }
         spellArrows.removeIf(Entity::isRemoved);
     }
 
     private void clearSpellArrows() {
-        for (Arrow arrow : spellArrows) if (!arrow.isRemoved()) arrow.discard();
+        for (Arrow arrow : spellArrows) {
+            if (arrow.isRemoved()) continue;
+            if (level() instanceof ServerLevel server) server.sendParticles(ParticleTypes.LARGE_SMOKE, arrow.getX(), arrow.getY(), arrow.getZ(), 1, 0, 0, 0, 0);
+            arrow.discard();
+        }
         spellArrows.clear();
     }
 
