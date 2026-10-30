@@ -15,7 +15,7 @@ import nonamecrackers2.witherstormmod.common.tags.WitherStormModEntityTags;
 
 /**
  * Server-side, persistent early tracker. This ports proximity, application and
- * cure timers. Random offsets, contact infections, multiplier decay, syncing
+ * cure timers and target contact infections. Random offsets, multiplier decay, syncing
  * and sickened-mob conversion have not yet been migrated.
  */
 public final class WitherSicknessTracker {
@@ -44,6 +44,19 @@ public final class WitherSicknessTracker {
     /** Called periodically by each eligible nearby storm on the server. */
     public static void markNear(LivingEntity entity, long gameTime) {
         if (!immune(entity)) getOrCreate(entity).putLong("NearUntil", gameTime + 40);
+    }
+
+    /** Count a new target acquisition once, rather than once per beam tick. */
+    public static void countContact(LivingEntity entity) {
+        if (entity.level().isClientSide() || !StormConfig.SICKNESS_ENABLED.get() || immune(entity)) return;
+        CompoundTag data = getOrCreate(entity);
+        int contacts = Math.min(StormConfig.REQUIRED_CONTACTS.get() + 1, data.getIntOr("Contacts", 0) + 1);
+        data.putInt("Contacts", contacts);
+        if (contacts > StormConfig.REQUIRED_CONTACTS.get()) {
+            data.putBoolean("IsInfected", true);
+            data.putBoolean("IsBeingCured", false);
+            data.putInt("CureTicks", 0);
+        }
     }
 
     public static boolean isBeingCured(LivingEntity entity) {
@@ -95,6 +108,14 @@ public final class WitherSicknessTracker {
         boolean nearby = StormConfig.SICKNESS_ENABLED.get() && level.getLevelData().getGameTime() <= data.getLongOr("NearUntil", -1L);
         proximity = nearby ? Math.min(required, proximity + STEP) : Math.max(0, proximity - STEP);
         data.putInt("ProximityTicks", proximity);
+        if (!nearby && data.getIntOr("Contacts", 0) > 0) {
+            int elapsed = data.getIntOr("ContactDecayTicks", 0) + STEP;
+            if (elapsed >= 9600) {
+                data.putInt("Contacts", data.getIntOr("Contacts", 0) - 1);
+                elapsed = 0;
+            }
+            data.putInt("ContactDecayTicks", elapsed);
+        }
         boolean infected = data.getBooleanOr("IsInfected", false);
         if (!infected && proximity >= required) {
             infected = true;

@@ -31,6 +31,7 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.phys.AABB;
 import nonamecrackers2.witherstormmod.common.config.StormConfig;
+import nonamecrackers2.witherstormmod.common.sickness.WitherSicknessTracker;
 import nonamecrackers2.witherstormmod.common.init.WitherStormModTickets;
 import nonamecrackers2.witherstormmod.common.init.WitherStormModDamageTypes;
 import nonamecrackers2.witherstormmod.common.evolution.StormEvolutionRules;
@@ -116,6 +117,8 @@ public final class WitherStormSegmentEntity extends WitherBoss {
             int id = head > 0 && !otherHeads ? 0 : targets.stream()
                     .filter(target -> !selected.contains(target.getId()) && hasLineOfSight(target))
                     .findFirst().map(Entity::getId).orElse(0);
+            if (id != 0 && this.entityData.get(beamData(head)) != id && level.getEntity(id) instanceof LivingEntity target)
+                WitherSicknessTracker.countContact(target);
             this.entityData.set(beamData(head), id);
             if (head > 0) setAlternativeTarget(head, id);
             if (id != 0) selected.add(id);

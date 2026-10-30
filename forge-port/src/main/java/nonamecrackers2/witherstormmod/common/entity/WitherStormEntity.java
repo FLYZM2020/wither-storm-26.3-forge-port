@@ -439,6 +439,7 @@ public final class WitherStormEntity extends WitherBoss {
                 this.entityData.set(beamTargetData(head), 0);
                 continue;
             }
+            if (this.entityData.get(beamTargetData(head)) != target.getId()) WitherSicknessTracker.countContact(target);
             this.entityData.set(beamTargetData(head), target.getId());
             Vec3 headPosition = headPosition(head);
             Vec3 direction = target.getBoundingBox().getCenter().subtract(headPosition).normalize();
