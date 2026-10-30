@@ -8,7 +8,9 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.MobSpawnEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.common.util.Result;
 import nonamecrackers2.witherstormmod.common.config.StormConfig;
 import nonamecrackers2.witherstormmod.common.init.WitherStormModEffects;
 import nonamecrackers2.witherstormmod.common.tags.WitherStormModEntityTags;
@@ -77,6 +79,15 @@ public final class WitherSicknessTracker {
     public static boolean isBeingCured(LivingEntity entity) {
         CompoundTag data = existing(entity);
         return data != null && data.getBooleanOr("IsBeingCured", false);
+    }
+
+    /** Infected mobs should remain present while their infection or treatment runs. */
+    public static void onAllowDespawn(MobSpawnEvent.AllowDespawn event) {
+        LivingEntity entity = event.getEntity();
+        CompoundTag data = existing(entity);
+        if (!immune(entity) && data != null
+                && (data.getBooleanOr("IsInfected", false) || data.getBooleanOr("IsBeingCured", false)))
+            event.setResult(Result.DENY);
     }
 
     public static boolean beginCure(LivingEntity entity) {

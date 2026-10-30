@@ -8,6 +8,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.MobSpawnEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -69,6 +70,7 @@ public final class WitherStormMod {
         EntityAttributeCreationEvent.BUS.addListener(WitherStormMod::registerAttributes);
         RegisterCommandsEvent.BUS.addListener(StormCommands::register);
         LivingEvent.LivingTickEvent.BUS.addListener(WitherSicknessTracker::onLivingTick);
+        MobSpawnEvent.AllowDespawn.BUS.addListener(WitherSicknessTracker::onAllowDespawn);
         PlayerEvent.Clone.BUS.addListener(WitherSicknessTracker::onPlayerClone);
         BuildCreativeModeTabContentsEvent.BUS.addListener(WitherStormMod::addCreativeItems);
         BlockEvent.EntityPlaceEvent.BUS.addListener(WitherStormPatternChecker::onSkullPlaced);
