@@ -3,6 +3,8 @@ package nonamecrackers2.witherstormmod.common.entity;
 import java.util.UUID;
 import java.util.EnumSet;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import nonamecrackers2.witherstormmod.WitherStormMod;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -32,6 +34,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.projectile.hurtingprojectile.WitherSkull;
+import net.minecraft.world.entity.projectile.EvokerFangs;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -49,6 +52,7 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
     private int previousSpell = -1;
     private int pendingSpell;
     private int pullTicks;
+    private int fangsTicks;
 
     public WitheredSymbiontEntity(EntityType<? extends WitherSkeleton> type, Level level) {
         super(type, level);
@@ -58,7 +62,7 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
         super.registerGoals();
         goalSelector.addGoal(0, new Goal() {
             { setFlags(EnumSet.of(Flag.MOVE)); }
-            @Override public boolean canUse() { return skullTicks > 0 || pullTicks > 0; }
+            @Override public boolean canUse() { return skullTicks > 0 || pullTicks > 0 || fangsTicks > 0; }
             @Override public boolean canContinueToUse() { return canUse(); }
             @Override public void start() { getNavigation().stop(); }
             @Override public void tick() { getNavigation().stop(); }
@@ -80,14 +84,21 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
             bossBar.setName(getDisplayName());
             if (isAlive() && level() instanceof ServerLevel server) tickPulse(server);
             entityData.set(PULLING, isAlive() && pullTicks > 0);
-            entityData.set(CASTING, isAlive() && (pullTicks > 0 || skullTicks > 0));
+            entityData.set(CASTING, isAlive() && (pullTicks > 0 || skullTicks > 0 || fangsTicks > 0));
         }
     }
 
     /** A small first step toward the original pulse spell; terrain effects are unported. */
     private void tickPulse(ServerLevel level) {
         if (getTarget() == null || !getTarget().isAlive()) {
-            if (pulseCharge > 0 || skullTicks > 0 || pullTicks > 0) { pulseCharge = 0; skullTicks = 0; pullTicks = 0; pulseCooldown = 100; }
+            if (pulseCharge > 0 || skullTicks > 0 || pullTicks > 0 || fangsTicks > 0) { pulseCharge = 0; skullTicks = 0; pullTicks = 0; fangsTicks = 0; pulseCooldown = 100; }
+            return;
+        }
+        if (fangsTicks > 0) {
+            if (--fangsTicks == 0) {
+                castFangs(level, getTarget());
+                pulseCooldown = 60 + random.nextInt(40);
+            }
             return;
         }
         if (pullTicks > 0) {
@@ -124,6 +135,11 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
                 level.sendParticles(ParticleTypes.PORTAL, getX(), getY() + 1.2, getZ(), 12, 0.6, 0.8, 0.6, 0.1);
             if (pulseCharge == 0) {
                 playSound(WitherStormModSounds.SYMBIONT_CAST.get(), 4.0F, 1.0F);
+                if (pendingSpell == 3) {
+                    previousSpell = 3;
+                    fangsTicks = 20;
+                    return;
+                }
                 if (pendingSpell == 2) {
                     previousSpell = 2;
                     pullTicks = 240;
@@ -148,11 +164,39 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
                 pulseCooldown = 300 + random.nextInt(200);
             }
         } else if (--pulseCooldown <= 0) {
-            pendingSpell = random.nextInt(previousSpell < 0 ? 3 : 2);
+            pendingSpell = random.nextInt(previousSpell < 0 ? 4 : 3);
             if (previousSpell >= 0 && pendingSpell >= previousSpell) pendingSpell++;
             preparingSkulls = pendingSpell == 1;
             pulseCharge = 40 + random.nextInt(20);
             playSound(WitherStormModSounds.SYMBIONT_PREPARE.get(), 4.0F, 1.0F);
+        }
+    }
+
+    /** Original expanding fang rings; conversion-mob summons are not yet available. */
+    private void castFangs(ServerLevel level, LivingEntity target) {
+        double minHeight = Math.min(target.getY(), getY()) - 2.0;
+        double maxHeight = Math.max(target.getY(), getY()) + 2.0;
+        double expansion = 3.0 + random.nextDouble();
+        for (int ring = 0; ring < 16; ring++) {
+            int count = 12 + ring * 4;
+            double radius = 1.5 + ring * expansion;
+            for (int i = 0; i < count; i++) {
+                double angle = i * Math.PI * 2.0 / count;
+                double x = getX() + Math.cos(angle) * radius;
+                double z = getZ() + Math.sin(angle) * radius;
+                BlockPos pos = BlockPos.containing(x, maxHeight, z);
+                if (!level.hasChunkAt(pos)) continue;
+                while (pos.getY() >= Math.floor(minHeight) - 1) {
+                    BlockPos below = pos.below();
+                    if (level.getBlockState(below).isFaceSturdy(level, below, Direction.UP)) {
+                        var shape = level.getBlockState(pos).getCollisionShape(level, pos);
+                        double height = shape.isEmpty() ? 0.0 : shape.max(Direction.Axis.Y);
+                        level.addFreshEntity(new EvokerFangs(level, x, pos.getY() + height, z, (float) angle, i + 2, this));
+                        break;
+                    }
+                    pos = below;
+                }
+            }
         }
     }
 
@@ -184,6 +228,7 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
         output.putInt("PreviousSpell", previousSpell);
         output.putInt("PendingSpell", pendingSpell);
         output.putInt("PullTicks", pullTicks);
+        output.putInt("FangsTicks", fangsTicks);
     }
 
     @Override protected void readAdditionalSaveData(ValueInput input) {
@@ -192,9 +237,10 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
         pulseCharge = Math.clamp(input.getIntOr("PulseCharge", 0), 0, 59);
         skullTicks = Math.clamp(input.getIntOr("SkullTicks", 0), 0, 220);
         preparingSkulls = input.getBooleanOr("PreparingSkulls", false);
-        previousSpell = Math.clamp(input.getIntOr("PreviousSpell", -1), -1, 2);
-        pendingSpell = Math.clamp(input.getIntOr("PendingSpell", preparingSkulls ? 1 : 0), 0, 2);
+        previousSpell = Math.clamp(input.getIntOr("PreviousSpell", -1), -1, 3);
+        pendingSpell = Math.clamp(input.getIntOr("PendingSpell", preparingSkulls ? 1 : 0), 0, 3);
         pullTicks = Math.clamp(input.getIntOr("PullTicks", 0), 0, 240);
+        fangsTicks = Math.clamp(input.getIntOr("FangsTicks", 0), 0, 20);
     }
 
     @Override public void startSeenByPlayer(ServerPlayer player) {
