@@ -5,12 +5,13 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.listener.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraft.client.renderer.entity.TntRenderer;
-import net.minecraft.client.renderer.entity.WitherSkeletonRenderer;
 import nonamecrackers2.witherstormmod.WitherStormMod;
 import nonamecrackers2.witherstormmod.client.model.StormEarlyModel;
 import nonamecrackers2.witherstormmod.client.model.StormDestroyerModel;
 import nonamecrackers2.witherstormmod.client.renderer.StormEarlyRenderer;
 import nonamecrackers2.witherstormmod.client.renderer.StormSegmentRenderer;
+import nonamecrackers2.witherstormmod.client.renderer.SymbiontRenderer;
+import nonamecrackers2.witherstormmod.client.model.SymbiontModel;
 
 /** Early-stage client model registration; later storm stages are not ported. */
 @Mod.EventBusSubscriber(modid = WitherStormMod.MOD_ID, value = Dist.CLIENT)
@@ -37,6 +38,7 @@ public final class StormClientEvents {
         event.registerLayerDefinition(StormEarlyRenderer.INTERMEDIATE_EVOLVED_DEVOURER_LAYER, StormDestroyerModel::createIntermediateEvolvedDevourerLayer);
         event.registerLayerDefinition(StormEarlyRenderer.EVOLVED_DEVOURER_LAYER, StormDestroyerModel::createEvolvedDevourerLayer);
         event.registerLayerDefinition(StormSegmentRenderer.LAYER, StormDestroyerModel::createSegmentLayer);
+        event.registerLayerDefinition(SymbiontRenderer.LAYER, SymbiontModel::createLayer);
     }
 
     @SubscribeEvent
@@ -45,6 +47,6 @@ public final class StormClientEvents {
         event.registerEntityRenderer(WitherStormMod.WITHER_STORM_SEGMENT.get(), StormSegmentRenderer::new);
         event.registerEntityRenderer(WitherStormMod.FORMIDIBOMB.get(), TntRenderer::new);
         event.registerEntityRenderer(WitherStormMod.SUPER_TNT.get(), TntRenderer::new);
-        event.registerEntityRenderer(WitherStormMod.WITHERED_SYMBIONT.get(), WitherSkeletonRenderer::new);
+        event.registerEntityRenderer(WitherStormMod.WITHERED_SYMBIONT.get(), SymbiontRenderer::new);
     }
 }
