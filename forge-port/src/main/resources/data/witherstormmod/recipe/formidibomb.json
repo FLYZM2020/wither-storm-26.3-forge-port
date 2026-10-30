@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": "minecraft:blaze_powder",
+    "A": "witherstormmod:super_tnt",
+    "X": "minecraft:gunpowder"
+  },
+  "pattern": [
+    "X#X",
+    "#A#",
+    "X#X"
+  ],
+  "result": {
+    "id": "witherstormmod:formidibomb"
+  }
+}

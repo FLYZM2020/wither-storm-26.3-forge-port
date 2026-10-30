@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": "minecraft:tnt",
+    "A": "witherstormmod:command_block_book",
+    "X": "minecraft:gunpowder"
+  },
+  "pattern": [
+    "X#X",
+    "#A#",
+    "X#X"
+  ],
+  "result": {
+    "id": "witherstormmod:super_tnt"
+  }
+}

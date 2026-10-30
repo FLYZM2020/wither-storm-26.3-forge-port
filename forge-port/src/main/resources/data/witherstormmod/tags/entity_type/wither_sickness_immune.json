@@ -1,0 +1,36 @@
+{
+  "replace": false,
+  "values": [
+    "witherstormmod:wither_storm",
+    {
+      "id": "witherstormmod:wither_storm_segment",
+      "required": false
+    },
+    {
+      "id": "#witherstormmod:sickened_mobs",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:command_block",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:withered_symbiont",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:wither_storm_head",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:tentacle",
+      "required": false
+    },
+    "minecraft:wither",
+    "minecraft:ender_dragon",
+    "minecraft:slime",
+    "minecraft:wither_skeleton",
+    "minecraft:enderman",
+    "minecraft:armor_stand"
+  ]
+}

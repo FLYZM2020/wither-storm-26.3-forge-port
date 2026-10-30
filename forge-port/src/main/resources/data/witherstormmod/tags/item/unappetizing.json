@@ -1,0 +1,31 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:wither_rose",
+    "minecraft:wither_skeleton_skull",
+    "minecraft:ender_pearl",
+    "minecraft:ender_eye",
+    {
+      "id": "witherstormmod:withered_flesh",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:withered_bone",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:super_tnt",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:formidibomb",
+      "required": false
+    },
+    "witherstormmod:golden_apple_stew",
+    {
+      "id": "witherstormmod:withered_nether_star",
+      "required": false
+    },
+    "#witherstormmod:command_block_tools"
+  ]
+}

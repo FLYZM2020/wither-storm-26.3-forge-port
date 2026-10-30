@@ -1,0 +1,14 @@
+common/blockentity/SuperBeaconBlockEntity.java: exit=0
+common/command/BowelsCommands.java: exit=0
+common/command/UltimateTargetCommands.java: exit=0
+common/entity/TentacleEntity.java: exit=0
+common/entity/WitherStormEntity: exit=0
+common/entity/ai/witherstorm/WitherStormSyncHelper.java: exit=0
+common/entity/ai/witherstorm/controller/WitherStormBodyController.java: exit=0
+common/entity/ai/witherstorm/head/HeadManager: exit=0
+common/entity/ai/witherstorm/ultimatetarget/UltimateTargetManager.java: exit=0
+common/item/crafting/builder/AnvilRecipeBuilder: exit=0
+common/predicate/PredicateBuilder.java: exit=0
+common/util/DebrisCluster: exit=0
+common/util/StormHeadOffsets.java: exit=0
+common/world/gen/feature/TemplateFeature: exit=0

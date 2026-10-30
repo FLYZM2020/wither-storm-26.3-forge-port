@@ -1,0 +1,27 @@
+{
+  "command_block_activates": {
+    "category": "hostile",
+    "subtitle": "witherstormmod.subtitle.command_block_activates",
+    "sounds": [
+      {
+        "name": "witherstormmod:command_block/command_block_activates"
+      }
+    ]
+  },
+  "wither_storm_evolves": {
+    "category": "hostile",
+    "subtitle": "witherstormmod.subtitle.wither_storm_evolves",
+    "sounds": [
+      "witherstormmod:wither_storm/misc/wither_storm_evolves"
+    ]
+  },
+  "super_tnt_fuse": {
+    "category": "blocks",
+    "subtitle": "witherstormmod.subtitle.super_tnt_fuse",
+    "sounds": [
+      {
+        "name": "witherstormmod:super_tnt/super_tnt_fuse"
+      }
+    ]
+  }
+}

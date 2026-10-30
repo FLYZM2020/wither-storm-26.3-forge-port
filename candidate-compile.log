@@ -1,0 +1,1900 @@
+Picked up JAVA_TOOL_OPTIONS: -XX:ActiveProcessorCount=2 -Xmx3g -Dhttps.proxyHost=proxy -Dhttps.proxyPort=8080 -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.7.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+Parallel Configuration Cache is an incubating feature.
+Configuration on demand is an incubating feature.
+Calculating task graph as configuration cache cannot be reused because Gradle property 'compileCandidates' has changed.
+
+> Configure project :
+Picked up JAVA_TOOL_OPTIONS: -XX:ActiveProcessorCount=2 -Xmx3g -Dhttps.proxyHost=proxy -Dhttps.proxyPort=8080 -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts
+Minecraft Maven is up-to-date, took 0:00.746
+
+> Task :compileJava
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModClientCapabilities.java:72: error: type AttachCapabilitiesEvent does not take parameters
+/*     */   public static void attachWorldCapabilities(AttachCapabilitiesEvent<Level> event) {
+                                                                              ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModClientCapabilities.java:137: error: type AttachCapabilitiesEvent does not take parameters
+/*     */   private static <H> void registerSoundManager(AttachCapabilitiesEvent<Level> event, SoundManagersHolder holder, String id, ISoundManager manager, final Capability<H> capability) {
+                                                                                ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModClientCapabilities.java:152: error: type AttachCapabilitiesEvent does not take parameters
+/*     */   public static void attachEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
+                                                                               ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/capability/WitherStormBowelsManager.java:627: error: type TicketType does not take parameters
+      private static final TicketType<ChunkPos> BOWELS = TicketType.create("witherstormmod:bowels", Comparator.comparingLong(ChunkPos::toLong));
+                                     ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/AbstractWitherStormRenderer.java:66: error: wrong number of type arguments; required 2
+/*     */   extends EntityRenderer<T> {
+                                  ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/WitherStormHeadRenderer.java:22: error: wrong number of type arguments; required 3
+/*    */ public class WitherStormHeadRenderer extends MobRenderer<WitherStormHeadEntity, WitherStormHeadModel> {
+                                                                 ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/TaintedSlimeRenderer.java:12: error: wrong number of type arguments; required 3
+/*    */ public class TaintedSlimeRenderer extends MobRenderer<TaintedSlime, TaintedSlimeModel<TaintedSlime>> {
+                                                              ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/SickenedCowRenderer.java:14: error: wrong number of type arguments; required 3
+/*    */ public class SickenedCowRenderer extends MobRenderer<SickenedCow, CowModel<SickenedCow>> {
+                                                             ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/SickenedPillagerRenderer.java:15: error: wrong number of type arguments; required 2
+/*    */ public class SickenedPillagerRenderer extends IllagerRenderer<SickenedPillager> {
+                                                                      ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/SickenedMushroomCowRenderer.java:15: error: wrong number of type arguments; required 3
+/*    */ public class SickenedMushroomCowRenderer extends MobRenderer<SickenedMushroomCow, CowModel<SickenedMushroomCow>> {
+                                                                     ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/SickenedVillagerRenderer.java:16: error: wrong number of type arguments; required 3
+/*    */ public class SickenedVillagerRenderer extends HumanoidMobRenderer<SickenedVillager, ZombieVillagerModel<SickenedVillager>> {
+                                                                          ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/FlamingWitherSkullRenderer.java:19: error: wrong number of type arguments; required 2
+/*    */   extends EntityRenderer<T>
+                                 ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/CommandBlockRenderer.java:35: error: wrong number of type arguments; required 2
+/*     */   extends EntityRenderer<CommandBlockEntity>
+                                  ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/SuperTNTRenderer.java:22: error: wrong number of type arguments; required 2
+/*    */   extends EntityRenderer<SuperTNTEntity> {
+                                 ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/SickenedBeeRenderer.java:14: error: wrong number of type arguments; required 3
+/*    */ public class SickenedBeeRenderer extends MobRenderer<SickenedBee, BeeModel<SickenedBee>> {
+                                                             ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/SickenedPhantomRenderer.java:17: error: wrong number of type arguments; required 3
+/*    */ public class SickenedPhantomRenderer extends MobRenderer<SickenedPhantom, PhantomModel<SickenedPhantom>> {
+                                                                 ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/SickenedCreeperRenderer.java:21: error: wrong number of type arguments; required 3
+/*    */ public class SickenedCreeperRenderer extends MobRenderer<SickenedCreeper, CreeperModel<SickenedCreeper>> {
+                                                                 ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/SickenedPigRenderer.java:14: error: wrong number of type arguments; required 3
+/*    */ public class SickenedPigRenderer extends MobRenderer<SickenedPig, PigModel<SickenedPig>> {
+                                                             ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/FormidibombRenderer.java:26: error: wrong number of type arguments; required 2
+/*     */   extends EntityRenderer<FormidibombEntity>
+                                  ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/SickenedChickenRenderer.java:15: error: wrong number of type arguments; required 3
+/*    */ public class SickenedChickenRenderer extends MobRenderer<SickenedChicken, ChickenModel<SickenedChicken>> {
+                                                                 ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/SickenedGoatRenderer.java:14: error: wrong number of type arguments; required 3
+/*    */ public class SickenedGoatRenderer extends MobRenderer<SickenedGoat, GoatModel<SickenedGoat>> {
+                                                              ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/TentacleSpikeRenderer.java:18: error: wrong number of type arguments; required 2
+/*    */   extends EntityRenderer<TentacleSpike>
+                                 ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/BlockClusterRenderer.java:35: error: wrong number of type arguments; required 2
+public class BlockClusterRenderer extends EntityRenderer<BlockClusterEntity> {
+                                                        ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/WitheredSymbiontRenderer.java:20: error: wrong number of type arguments; required 3
+/*    */ public class WitheredSymbiontRenderer extends MobRenderer<WitheredSymbiontEntity, WitheredSymbiontModel<WitheredSymbiontEntity>> {
+                                                                  ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/SickenedVindicatorRenderer.java:20: error: wrong number of type arguments; required 2
+/*    */ public class SickenedVindicatorRenderer extends IllagerRenderer<SickenedVindicator> {
+                                                                        ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/TentacleRenderer.java:17: error: wrong number of type arguments; required 2
+/*    */   extends EntityRenderer<TentacleEntity> {
+                                 ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/SickenedIronGolemRenderer.java:18: error: wrong number of type arguments; required 3
+/*    */ public class SickenedIronGolemRenderer extends MobRenderer<SickenedIronGolem, SickenedIronGolemModel<SickenedIronGolem>> {
+                                                                   ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/SickenedZombieRenderer.java:15: error: wrong number of type arguments; required 3
+/*    */ public class SickenedZombieRenderer extends AbstractZombieRenderer<SickenedZombie, ZombieModel<SickenedZombie>> {
+                                                                           ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/SickenedSnowGolemRenderer.java:15: error: wrong number of type arguments; required 3
+/*    */ public class SickenedSnowGolemRenderer extends MobRenderer<SickenedSnowGolem, SnowGolemModel<SickenedSnowGolem>> {
+                                                                   ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/blockentity/AbstractSuperBeaconRenderer.java:22: error: wrong number of type arguments; required 2
+/*     */   implements BlockEntityRenderer<T>
+                                          ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/blockentity/WitheredPhlegmRenderer.java:16: error: wrong number of type arguments; required 2
+/*    */   implements BlockEntityRenderer<WitheredPhlegmBlockEntity>
+                                         ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/mixin/MixinDistanceManager.java:13: error: type Ticket does not take parameters
+  Long2ObjectOpenHashMap<SortedArraySet<Ticket<?>>> getTickets();
+                                              ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/init/WitherStormModFeatures.java:20: error: type Feature does not take parameters
+/* 20 */   public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, "witherstormmod");
+                                                       ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/world/gen/feature/TemplateFeature.java:15: error: no interface expected here
+public abstract class TemplateFeature<C extends FeatureConfiguration> extends Feature<C> {
+                                                                              ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/world/gen/feature/TemplateFeature.java:15: error: type Feature does not take parameters
+public abstract class TemplateFeature<C extends FeatureConfiguration> extends Feature<C> {
+                                                                                     ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/item/crafting/ResummonSuperBeaconRecipe.java:78: error: interface expected here
+/*     */     implements RecipeSerializer<ResummonSuperBeaconRecipe>
+                         ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/item/crafting/ItemCraftSuperBeaconRecipe.java:59: error: interface expected here
+/*     */     implements RecipeSerializer<ItemCraftSuperBeaconRecipe>
+                         ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/item/crafting/AnvilRecipe.java:107: error: interface expected here
+/*     */     implements RecipeSerializer<AnvilRecipe>
+                         ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/init/WitherStormModCapabilities.java:50: error: type AttachCapabilitiesEvent does not take parameters
+/*     */   public static void attachWorldCapabilities(AttachCapabilitiesEvent<Level> event) {
+                                                                              ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/init/WitherStormModCapabilities.java:154: error: type AttachCapabilitiesEvent does not take parameters
+/*     */   public static void attachEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
+                                                                               ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/capability/WitherStormAutoSpawner.java:26: error: type TicketType does not take parameters
+/* 26 */   private static final TicketType<BlockPos> INITIAL_SPAWN = TicketType.create("initial_spawn", Vec3i::compareTo, 100);
+                                          ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/capability/WitherStormModChunkLoader.java:32: error: type TicketType does not take parameters
+/*  32 */   public static final TicketType<ChunkPos> WITHER_STORM = TicketType.create("witherstormmod:wither_storm", Comparator.comparingLong(ChunkPos::toLong));
+                                          ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/capability/WitherStormModChunkLoader.java:33: error: type TicketType does not take parameters
+/*  33 */   public static final TicketType<ChunkPos> LOAD = TicketType.create("witherstormmod:load", Comparator.comparingLong(ChunkPos::toLong), 100);
+                                          ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/world/gen/feature/template/BlockReplaceProcessor.java:17: error: no interface expected here
+/*    */ public class BlockReplaceProcessor extends StructureProcessor {
+                                                    ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/world/gen/feature/template/BlockReplaceProcessor.java:39: error: type StructureProcessorType does not take parameters
+/*    */   protected StructureProcessorType<?> getType() {
+                                           ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/command/ChunkLoaderCommands.java:117: error: type Ticket does not take parameters
+/*     */   private static Long2ObjectOpenHashMap<SortedArraySet<Ticket<?>>> getTickets(ServerLevel level) {
+                                                                       ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModRenderers.java:5: error: cannot find symbol
+/*     */ import net.minecraft.client.model.BeeModel;
+                                           ^
+  symbol:   class BeeModel
+  location: package net.minecraft.client.model
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModRenderers.java:6: error: cannot find symbol
+/*     */ import net.minecraft.client.model.ChickenModel;
+                                           ^
+  symbol:   class ChickenModel
+  location: package net.minecraft.client.model
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModRenderers.java:7: error: cannot find symbol
+/*     */ import net.minecraft.client.model.CowModel;
+                                           ^
+  symbol:   class CowModel
+  location: package net.minecraft.client.model
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModRenderers.java:8: error: cannot find symbol
+/*     */ import net.minecraft.client.model.CreeperModel;
+                                           ^
+  symbol:   class CreeperModel
+  location: package net.minecraft.client.model
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModRenderers.java:11: error: cannot find symbol
+/*     */ import net.minecraft.client.model.IllagerModel;
+                                           ^
+  symbol:   class IllagerModel
+  location: package net.minecraft.client.model
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModRenderers.java:12: error: cannot find symbol
+/*     */ import net.minecraft.client.model.ParrotModel;
+                                           ^
+  symbol:   class ParrotModel
+  location: package net.minecraft.client.model
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModRenderers.java:13: error: cannot find symbol
+/*     */ import net.minecraft.client.model.PhantomModel;
+                                           ^
+  symbol:   class PhantomModel
+  location: package net.minecraft.client.model
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModRenderers.java:14: error: cannot find symbol
+/*     */ import net.minecraft.client.model.PigModel;
+                                           ^
+  symbol:   class PigModel
+  location: package net.minecraft.client.model
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModRenderers.java:15: error: cannot find symbol
+/*     */ import net.minecraft.client.model.SkeletonModel;
+                                           ^
+  symbol:   class SkeletonModel
+  location: package net.minecraft.client.model
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModRenderers.java:16: error: cannot find symbol
+/*     */ import net.minecraft.client.model.SnowGolemModel;
+                                           ^
+  symbol:   class SnowGolemModel
+  location: package net.minecraft.client.model
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModRenderers.java:17: error: cannot find symbol
+/*     */ import net.minecraft.client.model.SpiderModel;
+                                           ^
+  symbol:   class SpiderModel
+  location: package net.minecraft.client.model
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModRenderers.java:18: error: cannot find symbol
+/*     */ import net.minecraft.client.model.ZombieVillagerModel;
+                                           ^
+  symbol:   class ZombieVillagerModel
+  location: package net.minecraft.client.model
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModShaders.java:6: error: cannot find symbol
+/*    */ import net.minecraft.client.renderer.ShaderInstance;
+                                             ^
+  symbol:   class ShaderInstance
+  location: package net.minecraft.client.renderer
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModShaders.java:7: error: cannot find symbol
+/*    */ import net.minecraftforge.client.event.RegisterShadersEvent;
+                                               ^
+  symbol:   class RegisterShadersEvent
+  location: package net.minecraftforge.client.event
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModShaders.java:16: error: cannot find symbol
+/*    */   private static ShaderInstance witherStormShader;
+                          ^
+  symbol:   class ShaderInstance
+  location: class WitherStormModShaders
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModShaders.java:17: error: cannot find symbol
+/*    */   private static ShaderInstance witherStormDissolveShader;
+                          ^
+  symbol:   class ShaderInstance
+  location: class WitherStormModShaders
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModShaders.java:20: error: cannot find symbol
+/*    */   public static void registerShaders(RegisterShadersEvent event) throws IOException {
+                                              ^
+  symbol:   class RegisterShadersEvent
+  location: class WitherStormModShaders
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModShaders.java:30: error: cannot find symbol
+/*    */   public static ShaderInstance getWitherStormShader() {
+                         ^
+  symbol:   class ShaderInstance
+  location: class WitherStormModShaders
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModShaders.java:35: error: cannot find symbol
+/*    */   public static ShaderInstance getWitherStormDissolveShader() {
+                         ^
+  symbol:   class ShaderInstance
+  location: class WitherStormModShaders
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/event/RenderWitherSicknessOverlay.java:14: error: cannot find symbol
+/*     */ import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+                                                ^
+  symbol:   class RenderGuiOverlayEvent
+  location: package net.minecraftforge.client.event
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/event/RenderWitherSicknessOverlay.java:15: error: cannot find symbol
+/*     */ import net.minecraftforge.client.gui.overlay.ForgeGui;
+                                                      ^
+  symbol:   class ForgeGui
+  location: package net.minecraftforge.client.gui.overlay
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/event/RenderWitherSicknessOverlay.java:16: error: cannot find symbol
+/*     */ import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
+                                                      ^
+  symbol:   class VanillaGuiOverlay
+  location: package net.minecraftforge.client.gui.overlay
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/event/RenderWitherSicknessOverlay.java:33: error: package RenderGuiOverlayEvent does not exist
+/*     */   public void renderOverlay(RenderGuiOverlayEvent.Pre event) {
+                                                           ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModClientCapabilities.java:13: error: cannot find symbol
+/*     */ import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+                                                       ^
+  symbol:   class RegisterCapabilitiesEvent
+  location: package net.minecraftforge.common.capabilities
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/capability/WitherStormDistantRenderer.java:23: error: cannot find symbol
+import net.minecraft.client.renderer.FogRenderer;
+                                    ^
+  symbol:   class FogRenderer
+  location: package net.minecraft.client.renderer
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/capability/WitherStormDistantRenderer.java:25: error: cannot find symbol
+import net.minecraft.client.renderer.MultiBufferSource;
+                                    ^
+  symbol:   class MultiBufferSource
+  location: package net.minecraft.client.renderer
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/capability/WitherStormDistantRenderer.java:26: error: package net.minecraft.client.renderer.FogRenderer does not exist
+import net.minecraft.client.renderer.FogRenderer.FogMode;
+                                                ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/capability/WitherStormDistantRenderer.java:27: error: package net.minecraft.client.renderer.MultiBufferSource does not exist
+import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
+                                                      ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/capability/WitherStormDistantRenderer.java:34: error: cannot find symbol
+import net.minecraftforge.client.event.RenderLevelStageEvent;
+                                      ^
+  symbol:   class RenderLevelStageEvent
+  location: package net.minecraftforge.client.event
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/capability/WitherStormDistantRenderer.java:35: error: package net.minecraftforge.client.event.RenderLevelStageEvent does not exist
+import net.minecraftforge.client.event.RenderLevelStageEvent.Stage;
+                                                            ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/capability/WitherStormDistantRenderer.java:37: error: cannot find symbol
+import net.minecraftforge.event.TickEvent.Phase;
+                                         ^
+  symbol:   class Phase
+  location: interface TickEvent
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/CommandBlockEntity.java:34: error: cannot find symbol
+import net.minecraft.util.random.SimpleWeightedRandomList;
+                                ^
+  symbol:   class SimpleWeightedRandomList
+  location: package net.minecraft.util.random
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/CommandBlockEntity.java:46: error: cannot find symbol
+import net.minecraft.world.entity.MobSpawnType;
+                                 ^
+  symbol:   class MobSpawnType
+  location: package net.minecraft.world.entity
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/CommandBlockEntity.java:49: error: cannot find symbol
+import net.minecraft.world.entity.SpawnPlacements.Type;
+                                                 ^
+  symbol:   class Type
+  location: class SpawnPlacements
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/CommandBlockEntity.java:71: error: cannot find symbol
+import net.minecraftforge.fml.DistExecutor;
+                             ^
+  symbol:   class DistExecutor
+  location: package net.minecraftforge.fml
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/CommandBlockEntity.java:73: error: package net.minecraftforge.network.NetworkEvent does not exist
+import net.minecraftforge.network.NetworkEvent.Context;
+                                              ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/capability/WitheredSymbiontSpellLoopManager.java:10: error: cannot find symbol
+/*    */ public class WitheredSymbiontSpellLoopManager extends EntitySoundManager<WitheredSymbiontEntity, WitheredSymbiontSpellLoop> {
+                                                               ^
+  symbol: class EntitySoundManager
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitheredSymbiontEntity.java:35: error: cannot find symbol
+import net.minecraft.util.random.SimpleWeightedRandomList;
+                                ^
+  symbol:   class SimpleWeightedRandomList
+  location: package net.minecraft.util.random
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitheredSymbiontEntity.java:46: error: cannot find symbol
+import net.minecraft.world.entity.MobSpawnType;
+                                 ^
+  symbol:   class MobSpawnType
+  location: package net.minecraft.world.entity
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitheredSymbiontEntity.java:47: error: cannot find symbol
+import net.minecraft.world.entity.MobType;
+                                 ^
+  symbol:   class MobType
+  location: package net.minecraft.world.entity
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitheredSymbiontEntity.java:70: error: cannot find symbol
+import net.minecraft.world.entity.monster.EnderMan;
+                                         ^
+  symbol:   class EnderMan
+  location: package net.minecraft.world.entity.monster
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitheredSymbiontEntity.java:73: error: cannot find symbol
+import net.minecraft.world.entity.npc.AbstractVillager;
+                                     ^
+  symbol:   class AbstractVillager
+  location: package net.minecraft.world.entity.npc
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitheredSymbiontEntity.java:94: error: cannot find symbol
+import net.minecraftforge.fml.DistExecutor;
+                             ^
+  symbol:   class DistExecutor
+  location: package net.minecraftforge.fml
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitheredSymbiontEntity.java:96: error: package net.minecraftforge.network.NetworkEvent does not exist
+import net.minecraftforge.network.NetworkEvent.Context;
+                                              ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/capability/BowelsEffectsManager.java:7: error: cannot find symbol
+/*     */ import net.minecraft.client.renderer.DimensionSpecialEffects;
+                                              ^
+  symbol:   class DimensionSpecialEffects
+  location: package net.minecraft.client.renderer
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/capability/BowelsEffectsManager.java:11: error: cannot find symbol
+/*     */ import net.minecraftforge.client.event.RegisterDimensionSpecialEffectsEvent;
+                                                ^
+  symbol:   class RegisterDimensionSpecialEffectsEvent
+  location: package net.minecraftforge.client.event
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitherStormHeadEntity.java:25: error: cannot find symbol
+import net.minecraft.world.entity.MobType;
+                                 ^
+  symbol:   class MobType
+  location: package net.minecraft.world.entity
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModClientCapabilities.java:53: error: cannot find symbol
+/*     */   public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+                                                    ^
+  symbol:   class RegisterCapabilitiesEvent
+  location: class WitherStormModClientCapabilities
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitherStormEntity.java:58: error: cannot find symbol
+import net.minecraft.world.entity.FlyingMob;
+                                 ^
+  symbol:   class FlyingMob
+  location: package net.minecraft.world.entity
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitherStormEntity.java:60: error: cannot find symbol
+import net.minecraft.world.entity.MobType;
+                                 ^
+  symbol:   class MobType
+  location: package net.minecraft.world.entity
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitherStormEntity.java:63: error: cannot find symbol
+import net.minecraft.world.entity.PowerableMob;
+                                 ^
+  symbol:   class PowerableMob
+  location: package net.minecraft.world.entity
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitherStormEntity.java:78: error: cannot find symbol
+import net.minecraft.world.entity.animal.AbstractSchoolingFish;
+                                        ^
+  symbol:   class AbstractSchoolingFish
+  location: package net.minecraft.world.entity.animal
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitherStormEntity.java:79: error: cannot find symbol
+import net.minecraft.world.entity.animal.Squid;
+                                        ^
+  symbol:   class Squid
+  location: package net.minecraft.world.entity.animal
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/capability/WitherStormBowelsManager.java:36: error: cannot find symbol
+import net.minecraft.world.entity.MobSpawnType;
+                                 ^
+  symbol:   class MobSpawnType
+  location: package net.minecraft.world.entity
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/capability/WitherStormBowelsManager.java:37: error: cannot find symbol
+import net.minecraft.world.entity.SpawnPlacements.Type;
+                                                 ^
+  symbol:   class Type
+  location: class SpawnPlacements
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/capability/WitherStormBowelsManager.java:47: error: cannot find symbol
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+                                                 ^
+  symbol:   class ConfiguredFeature
+  location: package net.minecraft.world.level.levelgen.feature
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/capability/WitherStormBowelsManager.java:56: error: cannot find symbol
+import net.minecraftforge.event.TickEvent.Phase;
+                                         ^
+  symbol:   class Phase
+  location: interface TickEvent
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/ai/witherstorm/PlayDeadManager.java:21: error: cannot find symbol
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+                                                 ^
+  symbol:   class ConfiguredFeature
+  location: package net.minecraft.world.level.levelgen.feature
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/ai/witherstorm/PlayDeadManager.java:22: error: package net.minecraft.world.level.levelgen.feature.configurations does not exist
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+                                                                ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitherStormEntity.java:204: error: cannot find symbol
+public class WitherStormEntity extends Monster implements PowerableMob, EntitySyncableData, BossThemeEntity, WitherStormBase, ChunkLoader {
+                                                          ^
+  symbol: class PowerableMob
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/ai/witherstorm/SymbiontSummoningManager.java:4: error: cannot find symbol
+/*     */ import net.minecraft.advancements.CriteriaTriggers;
+                                           ^
+  symbol:   class CriteriaTriggers
+  location: package net.minecraft.advancements
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitherStormEntity.java:2333: error: cannot find symbol
+   public MobType getMobType() {
+          ^
+  symbol:   class MobType
+  location: class WitherStormEntity
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/FormidibombEntity.java:34: error: cannot find symbol
+/*     */ import net.minecraft.world.item.enchantment.ProtectionEnchantment;
+                                                     ^
+  symbol:   class ProtectionEnchantment
+  location: package net.minecraft.world.item.enchantment
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/FormidibombEntity.java:52: error: cannot find symbol
+/*     */ import net.minecraftforge.network.NetworkHooks;
+                                           ^
+  symbol:   class NetworkHooks
+  location: package net.minecraftforge.network
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/BlockClusterEntity.java:36: error: cannot find symbol
+/*     */ import net.minecraft.world.level.GameRules;
+                                          ^
+  symbol:   class GameRules
+  location: package net.minecraft.world.level
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/BlockClusterEntity.java:46: error: cannot find symbol
+/*     */ import net.minecraftforge.network.NetworkHooks;
+                                           ^
+  symbol:   class NetworkHooks
+  location: package net.minecraftforge.network
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitherStormHeadEntity.java:475: error: cannot find symbol
+   public MobType getMobType() {
+          ^
+  symbol:   class MobType
+  location: class WitherStormHeadEntity
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/capability/WitheredSymbiontSoundManager.java:18: error: cannot find symbol
+/*    */   private static final Predicate<WitheredSymbiontEntity> SHOULD_STOP;
+                                ^
+  symbol:   class Predicate
+  location: class WitheredSymbiontSoundManager
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitheredSymbiontEntity.java:160: error: cannot find symbol
+   private static final SimpleWeightedRandomList<EntityType<? extends Mob>> SYMBIONT_NORMAL_MOBS = SimpleWeightedRandomList.builder()
+                        ^
+  symbol:   class SimpleWeightedRandomList
+  location: class WitheredSymbiontEntity
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitheredSymbiontEntity.java:178: error: cannot find symbol
+   private static final SimpleWeightedRandomList<EntityType<? extends Mob>> SYMBIONT_HARDER_MOBS = SimpleWeightedRandomList.builder()
+                        ^
+  symbol:   class SimpleWeightedRandomList
+  location: class WitheredSymbiontEntity
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/goal/symbiont/SummonMobsGoal.java:7: error: cannot find symbol
+/*    */ import net.minecraft.util.random.SimpleWeightedRandomList;
+                                         ^
+  symbol:   class SimpleWeightedRandomList
+  location: package net.minecraft.util.random
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitheredSymbiontEntity.java:592: error: cannot find symbol
+   public MobType getMobType() {
+          ^
+  symbol:   class MobType
+  location: class WitheredSymbiontEntity
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitheredSymbiontEntity.java:1078: error: cannot find symbol
+      ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType spawnType, SpawnGroupData groupData, CompoundTag tag
+                                                                                  ^
+  symbol:   class MobSpawnType
+  location: class WitheredSymbiontEntity
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/goal/symbiont/SummonMobsGoal.java:22: error: cannot find symbol
+/*    */   protected final SimpleWeightedRandomList<EntityType<? extends Mob>> spawnTypes;
+                           ^
+  symbol:   class SimpleWeightedRandomList
+  location: class SummonMobsGoal
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/goal/symbiont/SummonMobsGoal.java:23: error: cannot find symbol
+/*    */   protected final SimpleWeightedRandomList<EntityType<? extends Mob>> difficultSpawnTypes;
+                           ^
+  symbol:   class SimpleWeightedRandomList
+  location: class SummonMobsGoal
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/goal/symbiont/SummonMobsGoal.java:26: error: cannot find symbol
+/*    */   public SummonMobsGoal(WitheredSymbiontEntity entity, SimpleWeightedRandomList<EntityType<? extends Mob>> types, SimpleWeightedRandomList<EntityType<? extends Mob>> difficultTypes) {
+                                                                ^
+  symbol:   class SimpleWeightedRandomList
+  location: class SummonMobsGoal
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/goal/symbiont/SummonMobsGoal.java:26: error: cannot find symbol
+/*    */   public SummonMobsGoal(WitheredSymbiontEntity entity, SimpleWeightedRandomList<EntityType<? extends Mob>> types, SimpleWeightedRandomList<EntityType<? extends Mob>> difficultTypes) {
+                                                                                                                           ^
+  symbol:   class SimpleWeightedRandomList
+  location: class SummonMobsGoal
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/CommandBlockEntity.java:114: error: cannot find symbol
+   private static final SimpleWeightedRandomList<EntityType<? extends Mob>> IDLE_BOWELS_MOBS = SimpleWeightedRandomList.builder()
+                        ^
+  symbol:   class SimpleWeightedRandomList
+  location: class CommandBlockEntity
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/CommandBlockEntity.java:860: error: cannot find symbol
+   public Mob summonRandomBowelsMobNearPlayer(int minRadius, int maxRadius, SimpleWeightedRandomList<EntityType<? extends Mob>> types) {
+                                                                            ^
+  symbol:   class SimpleWeightedRandomList
+  location: class CommandBlockEntity
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/CommandBlockEntity.java:931: error: cannot find symbol
+   public Mob summonRandomMob(int diameter, SimpleWeightedRandomList<EntityType<? extends Mob>> types) {
+                                            ^
+  symbol:   class SimpleWeightedRandomList
+  location: class CommandBlockEntity
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/TentacleEntity.java:31: error: cannot find symbol
+import net.minecraft.world.entity.MobSpawnType;
+                                 ^
+  symbol:   class MobSpawnType
+  location: package net.minecraft.world.entity
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/TentacleEntity.java:32: error: cannot find symbol
+import net.minecraft.world.entity.MobType;
+                                 ^
+  symbol:   class MobType
+  location: package net.minecraft.world.entity
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/TentacleEntity.java:57: error: cannot find symbol
+import net.minecraftforge.fml.DistExecutor;
+                             ^
+  symbol:   class DistExecutor
+  location: package net.minecraftforge.fml
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/TentacleEntity.java:59: error: cannot find symbol
+import net.minecraftforge.network.NetworkEvent.Context;
+                                 ^
+  symbol:   class NetworkEvent
+  location: package net.minecraftforge.network
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/TentacleEntity.java:447: error: cannot find symbol
+   public MobType getMobType() {
+          ^
+  symbol:   class MobType
+  location: class TentacleEntity
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/TentacleEntity.java:759: error: cannot find symbol
+   public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, SpawnGroupData existing, CompoundTag data) {
+                                                                                                 ^
+  symbol:   class MobSpawnType
+  location: class TentacleEntity
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/capability/WitherStormDistantRenderer.java:120: error: cannot find symbol
+   public void renderTick(PoseStack stack, BufferSource buffer, float partialTicks, Frustum clippinghelper) {
+                                           ^
+  symbol:   class BufferSource
+  location: class WitherStormDistantRenderer
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/model/witherstorm/AbstractWitherStormModel.java:18: error: cannot find symbol
+/*     */ import net.minecraft.client.renderer.MultiBufferSource;
+                                              ^
+  symbol:   class MultiBufferSource
+  location: package net.minecraft.client.renderer
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/capability/WitherStormDistantRenderer.java:206: error: cannot find symbol
+      Frustum frustum, Vec3 cameraPos, float partialTicks, PoseStack stack, MultiBufferSource buffer, BiConsumer<T, AbstractWitherStormRenderer<T, M>> action
+                                                                            ^
+  symbol:   class MultiBufferSource
+  location: class WitherStormDistantRenderer
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/AbstractWitherStormRenderer.java:21: error: cannot find symbol
+/*     */ import net.minecraft.client.renderer.MultiBufferSource;
+                                              ^
+  symbol:   class MultiBufferSource
+  location: package net.minecraft.client.renderer
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/AbstractWitherStormRenderer.java:36: error: cannot find symbol
+/*     */ import net.minecraft.world.entity.animal.Sheep;
+                                                  ^
+  symbol:   class Sheep
+  location: package net.minecraft.world.entity.animal
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/AbstractWitherStormRenderer.java:119: error: cannot find symbol
+/*     */   public void render(T entity, float yRot, float partialTicks, PoseStack stack, MultiBufferSource buffer, int packedLight) {
+                                                                                          ^
+  symbol:   class MultiBufferSource
+  location: class AbstractWitherStormRenderer<T,M>
+  where T,M are type-variables:
+    T extends WitherStormEntity declared in class AbstractWitherStormRenderer
+    M extends AbstractWitherStormModel<T> declared in class AbstractWitherStormRenderer
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/AbstractWitherStormRenderer.java:172: error: cannot find symbol
+/*     */   protected void renderEnergyShield(T entity, PoseStack stack, MultiBufferSource bufferSource, float partialTicks, float bob, float yRot, float xRot, int packedLight, int overlayTexture) {
+                                                                         ^
+  symbol:   class MultiBufferSource
+  location: class AbstractWitherStormRenderer<T,M>
+  where T,M are type-variables:
+    T extends WitherStormEntity declared in class AbstractWitherStormRenderer
+    M extends AbstractWitherStormModel<T> declared in class AbstractWitherStormRenderer
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/AbstractWitherStormRenderer.java:180: error: cannot find symbol
+/*     */   protected void renderChristmasFestivities(T entity, PoseStack stack, MultiBufferSource bufferSource, int packedLight, int overlayTexture) {
+                                                                                 ^
+  symbol:   class MultiBufferSource
+  location: class AbstractWitherStormRenderer<T,M>
+  where T,M are type-variables:
+    T extends WitherStormEntity declared in class AbstractWitherStormRenderer
+    M extends AbstractWitherStormModel<T> declared in class AbstractWitherStormRenderer
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/AbstractWitherStormRenderer.java:196: error: cannot find symbol
+/*     */   protected void renderPulsing(T entity, PoseStack stack, MultiBufferSource bufferSource, float partialTicks, int packedLight, int overlayTexture) {
+                                                                    ^
+  symbol:   class MultiBufferSource
+  location: class AbstractWitherStormRenderer<T,M>
+  where T,M are type-variables:
+    T extends WitherStormEntity declared in class AbstractWitherStormRenderer
+    M extends AbstractWitherStormModel<T> declared in class AbstractWitherStormRenderer
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/AbstractWitherStormRenderer.java:235: error: cannot find symbol
+/*     */   public void renderTractorBeams(T entity, PoseStack stack, MultiBufferSource buffer, float partialTicks, int packedLight) {
+                                                                      ^
+  symbol:   class MultiBufferSource
+  location: class AbstractWitherStormRenderer<T,M>
+  where T,M are type-variables:
+    T extends WitherStormEntity declared in class AbstractWitherStormRenderer
+    M extends AbstractWitherStormModel<T> declared in class AbstractWitherStormRenderer
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/AbstractWitherStormRenderer.java:360: error: cannot find symbol
+/*     */   public void renderDebrisRings(WitherStormEntity entity, PoseStack stack, MultiBufferSource buffer, float partialTicks, int packedLightIn) {
+                                                                                     ^
+  symbol:   class MultiBufferSource
+  location: class AbstractWitherStormRenderer<T,M>
+  where T,M are type-variables:
+    T extends WitherStormEntity declared in class AbstractWitherStormRenderer
+    M extends AbstractWitherStormModel<T> declared in class AbstractWitherStormRenderer
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/AbstractWitherStormRenderer.java:415: error: cannot find symbol
+/*     */   public static void renderDebrisClusters(Identifier tex, WitherStormEntity entity, PoseStack stack, MultiBufferSource bufferSource, float partialTicks, int packedLight) {
+                                                                                                               ^
+  symbol:   class MultiBufferSource
+  location: class AbstractWitherStormRenderer<T,M>
+  where T,M are type-variables:
+    T extends WitherStormEntity declared in class AbstractWitherStormRenderer
+    M extends AbstractWitherStormModel<T> declared in class AbstractWitherStormRenderer
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/AbstractWitherStormRenderer.java:716: error: cannot find symbol
+/*     */   public static void renderShine(WitherStormEntity storm, PoseStack stack, float partialTicks, Camera camera, MultiBufferSource buffer) {
+                                                                                                                        ^
+  symbol:   class MultiBufferSource
+  location: class AbstractWitherStormRenderer<T,M>
+  where T,M are type-variables:
+    T extends WitherStormEntity declared in class AbstractWitherStormRenderer
+    M extends AbstractWitherStormModel<T> declared in class AbstractWitherStormRenderer
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/model/witherstorm/HeadModel.java:12: error: cannot find symbol
+/*     */ import net.minecraft.client.renderer.MultiBufferSource;
+                                              ^
+  symbol:   class MultiBufferSource
+  location: package net.minecraft.client.renderer
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/model/witherstorm/AbstractWitherStormModel.java:103: error: cannot find symbol
+/*     */   public void render(T entity, PoseStack stack, MultiBufferSource source, RenderType type, @Nullable RenderType emissiveType, @Nullable RenderType massEmissiveType, @Nullable RenderType hurtOverlayType, int packedLight, int overlayTexture, float r, float g, float b, float alpha) {
+                                                          ^
+  symbol:   class MultiBufferSource
+  location: class AbstractWitherStormModel<T>
+  where T is a type-variable:
+    T extends WitherStormEntity declared in class AbstractWitherStormModel
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/model/witherstorm/AbstractWitherStormModel.java:213: error: cannot find symbol
+/*     */   public void renderMassDecal(T entity, PoseStack stack, MultiBufferSource buffer, int packedLight, int overlayCoords, float r, float g, float b, float a) {}
+                                                                   ^
+  symbol:   class MultiBufferSource
+  location: class AbstractWitherStormModel<T>
+  where T is a type-variable:
+    T extends WitherStormEntity declared in class AbstractWitherStormModel
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/model/witherstorm/HeadModel.java:158: error: cannot find symbol
+/*     */   public void renderTractorBeam(T entity, PoseStack stack, MultiBufferSource buffer, int packedLightIn, float r, float g, float b, float a, float partialTicks, double tractorBeamCutoff, float endFadeAlpha) {
+                                                                     ^
+  symbol:   class MultiBufferSource
+  location: class HeadModel<T>
+  where T is a type-variable:
+    T extends LivingEntity,WitherStormBase declared in class HeadModel
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModRecipeBookTypes.java:3: error: cannot find symbol
+/*    */ import net.minecraft.client.RecipeBookCategories;
+                                    ^
+  symbol:   class RecipeBookCategories
+  location: package net.minecraft.client
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModRecipeBookTypes.java:6: error: cannot find symbol
+/*    */ import net.minecraftforge.client.event.RegisterRecipeBookCategoriesEvent;
+                                               ^
+  symbol:   class RegisterRecipeBookCategoriesEvent
+  location: package net.minecraftforge.client.event
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModRecipeBookTypes.java:10: error: cannot find symbol
+/*    */   public static void registerRecipeBookCategories(RegisterRecipeBookCategoriesEvent event) {
+                                                           ^
+  symbol:   class RegisterRecipeBookCategoriesEvent
+  location: class WitherStormModRecipeBookTypes
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/GlobalSoundMessage.java:7: error: cannot find symbol
+import net.minecraftforge.fml.DistExecutor;
+                             ^
+  symbol:   class DistExecutor
+  location: package net.minecraftforge.fml
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/GlobalSoundMessage.java:8: error: cannot find symbol
+import net.minecraftforge.network.NetworkEvent.Context;
+                                 ^
+  symbol:   class NetworkEvent
+  location: package net.minecraftforge.network
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/PlayerMotionMessage.java:6: error: cannot find symbol
+import net.minecraftforge.fml.DistExecutor;
+                             ^
+  symbol:   class DistExecutor
+  location: package net.minecraftforge.fml
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/PlayerMotionMessage.java:7: error: cannot find symbol
+import net.minecraftforge.network.NetworkEvent.Context;
+                                 ^
+  symbol:   class NetworkEvent
+  location: package net.minecraftforge.network
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/WitherStormToDistantRendererMessage.java:21: error: cannot find symbol
+import net.minecraftforge.fml.DistExecutor;
+                             ^
+  symbol:   class DistExecutor
+  location: package net.minecraftforge.fml
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/WitherStormToDistantRendererMessage.java:22: error: cannot find symbol
+import net.minecraftforge.network.NetworkEvent.Context;
+                                 ^
+  symbol:   class NetworkEvent
+  location: package net.minecraftforge.network
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/RemoveStormFromDistantRendererMessage.java:7: error: cannot find symbol
+import net.minecraftforge.fml.DistExecutor;
+                             ^
+  symbol:   class DistExecutor
+  location: package net.minecraftforge.fml
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/RemoveStormFromDistantRendererMessage.java:8: error: cannot find symbol
+import net.minecraftforge.network.NetworkEvent.Context;
+                                 ^
+  symbol:   class NetworkEvent
+  location: package net.minecraftforge.network
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/UpdateStormPositionMessage.java:6: error: cannot find symbol
+import net.minecraftforge.fml.DistExecutor;
+                             ^
+  symbol:   class DistExecutor
+  location: package net.minecraftforge.fml
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/UpdateStormPositionMessage.java:7: error: cannot find symbol
+import net.minecraftforge.network.NetworkEvent.Context;
+                                 ^
+  symbol:   class NetworkEvent
+  location: package net.minecraftforge.network
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/StormTeleportMessage.java:8: error: cannot find symbol
+import net.minecraftforge.fml.DistExecutor;
+                             ^
+  symbol:   class DistExecutor
+  location: package net.minecraftforge.fml
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/StormTeleportMessage.java:9: error: cannot find symbol
+import net.minecraftforge.network.NetworkEvent.Context;
+                                 ^
+  symbol:   class NetworkEvent
+  location: package net.minecraftforge.network
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/UpdateStormVelocityMessage.java:9: error: cannot find symbol
+import net.minecraftforge.fml.DistExecutor;
+                             ^
+  symbol:   class DistExecutor
+  location: package net.minecraftforge.fml
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/UpdateStormVelocityMessage.java:10: error: cannot find symbol
+import net.minecraftforge.network.NetworkEvent.Context;
+                                 ^
+  symbol:   class NetworkEvent
+  location: package net.minecraftforge.network
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/UpdateStormHeadLookMessage.java:7: error: cannot find symbol
+import net.minecraftforge.fml.DistExecutor;
+                             ^
+  symbol:   class DistExecutor
+  location: package net.minecraftforge.fml
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/UpdateStormHeadLookMessage.java:8: error: cannot find symbol
+import net.minecraftforge.network.NetworkEvent.Context;
+                                 ^
+  symbol:   class NetworkEvent
+  location: package net.minecraftforge.network
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/StormMetadataMessage.java:9: error: cannot find symbol
+import net.minecraftforge.fml.DistExecutor;
+                             ^
+  symbol:   class DistExecutor
+  location: package net.minecraftforge.fml
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/StormMetadataMessage.java:10: error: cannot find symbol
+import net.minecraftforge.network.NetworkEvent.Context;
+                                 ^
+  symbol:   class NetworkEvent
+  location: package net.minecraftforge.network
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/StormAttributesMessage.java:14: error: cannot find symbol
+import net.minecraftforge.fml.DistExecutor;
+                             ^
+  symbol:   class DistExecutor
+  location: package net.minecraftforge.fml
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/StormAttributesMessage.java:15: error: cannot find symbol
+import net.minecraftforge.network.NetworkEvent.Context;
+                                 ^
+  symbol:   class NetworkEvent
+  location: package net.minecraftforge.network
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/CreateLoopingSoundMessage.java:5: error: cannot find symbol
+import net.minecraftforge.fml.DistExecutor;
+                             ^
+  symbol:   class DistExecutor
+  location: package net.minecraftforge.fml
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/CreateLoopingSoundMessage.java:6: error: cannot find symbol
+import net.minecraftforge.network.NetworkEvent.Context;
+                                 ^
+  symbol:   class NetworkEvent
+  location: package net.minecraftforge.network
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/StormSoundPositionMessage.java:5: error: cannot find symbol
+import net.minecraftforge.fml.DistExecutor;
+                             ^
+  symbol:   class DistExecutor
+  location: package net.minecraftforge.fml
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/StormSoundPositionMessage.java:6: error: cannot find symbol
+import net.minecraftforge.network.NetworkEvent.Context;
+                                 ^
+  symbol:   class NetworkEvent
+  location: package net.minecraftforge.network
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/RemoveSoundLoopMessage.java:5: error: cannot find symbol
+import net.minecraftforge.fml.DistExecutor;
+                             ^
+  symbol:   class DistExecutor
+  location: package net.minecraftforge.fml
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/RemoveSoundLoopMessage.java:6: error: cannot find symbol
+import net.minecraftforge.network.NetworkEvent.Context;
+                                 ^
+  symbol:   class NetworkEvent
+  location: package net.minecraftforge.network
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/NotifyHeadInjuryMessage.java:5: error: cannot find symbol
+import net.minecraftforge.fml.DistExecutor;
+                             ^
+  symbol:   class DistExecutor
+  location: package net.minecraftforge.fml
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/NotifyHeadInjuryMessage.java:6: error: cannot find symbol
+import net.minecraftforge.network.NetworkEvent.Context;
+                                 ^
+  symbol:   class NetworkEvent
+  location: package net.minecraftforge.network
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/UpdateEffectInstanceMessage.java:7: error: cannot find symbol
+import net.minecraftforge.fml.DistExecutor;
+                             ^
+  symbol:   class DistExecutor
+  location: package net.minecraftforge.fml
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/UpdateEffectInstanceMessage.java:8: error: cannot find symbol
+import net.minecraftforge.network.NetworkEvent.Context;
+                                 ^
+  symbol:   class NetworkEvent
+  location: package net.minecraftforge.network
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/UpdateWitherSicknessTrackerMessage.java:6: error: cannot find symbol
+import net.minecraftforge.fml.DistExecutor;
+                             ^
+  symbol:   class DistExecutor
+  location: package net.minecraftforge.fml
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/UpdateWitherSicknessTrackerMessage.java:7: error: cannot find symbol
+import net.minecraftforge.network.NetworkEvent.Context;
+                                 ^
+  symbol:   class NetworkEvent
+  location: package net.minecraftforge.network
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/UpdatePlayDeadManagerMessage.java:5: error: cannot find symbol
+import net.minecraftforge.fml.DistExecutor;
+                             ^
+  symbol:   class DistExecutor
+  location: package net.minecraftforge.fml
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/UpdatePlayDeadManagerMessage.java:6: error: cannot find symbol
+import net.minecraftforge.network.NetworkEvent.Context;
+                                 ^
+  symbol:   class NetworkEvent
+  location: package net.minecraftforge.network
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/CreateDebrisMessage.java:5: error: cannot find symbol
+import net.minecraftforge.fml.DistExecutor;
+                             ^
+  symbol:   class DistExecutor
+  location: package net.minecraftforge.fml
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/CreateDebrisMessage.java:6: error: cannot find symbol
+import net.minecraftforge.network.NetworkEvent.Context;
+                                 ^
+  symbol:   class NetworkEvent
+  location: package net.minecraftforge.network
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/EntitySyncableDataMessage.java:5: error: cannot find symbol
+import net.minecraftforge.fml.DistExecutor;
+                             ^
+  symbol:   class DistExecutor
+  location: package net.minecraftforge.fml
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/EntitySyncableDataMessage.java:6: error: cannot find symbol
+import net.minecraftforge.network.NetworkEvent.Context;
+                                 ^
+  symbol:   class NetworkEvent
+  location: package net.minecraftforge.network
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/PlayAdditionalLoopingSoundMessage.java:6: error: cannot find symbol
+import net.minecraftforge.fml.DistExecutor;
+                             ^
+  symbol:   class DistExecutor
+  location: package net.minecraftforge.fml
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/PlayAdditionalLoopingSoundMessage.java:7: error: cannot find symbol
+import net.minecraftforge.network.NetworkEvent.Context;
+                                 ^
+  symbol:   class NetworkEvent
+  location: package net.minecraftforge.network
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/RemoveAdditionalLoopingSoundMessage.java:5: error: cannot find symbol
+import net.minecraftforge.fml.DistExecutor;
+                             ^
+  symbol:   class DistExecutor
+  location: package net.minecraftforge.fml
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/RemoveAdditionalLoopingSoundMessage.java:6: error: cannot find symbol
+import net.minecraftforge.network.NetworkEvent.Context;
+                                 ^
+  symbol:   class NetworkEvent
+  location: package net.minecraftforge.network
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/ShakeScreenMessage.java:5: error: cannot find symbol
+import net.minecraftforge.fml.DistExecutor;
+                             ^
+  symbol:   class DistExecutor
+  location: package net.minecraftforge.fml
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/ShakeScreenMessage.java:6: error: cannot find symbol
+import net.minecraftforge.network.NetworkEvent.Context;
+                                 ^
+  symbol:   class NetworkEvent
+  location: package net.minecraftforge.network
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/FormidibombExplosionMessage.java:7: error: cannot find symbol
+import net.minecraftforge.fml.DistExecutor;
+                             ^
+  symbol:   class DistExecutor
+  location: package net.minecraftforge.fml
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/FormidibombExplosionMessage.java:8: error: cannot find symbol
+import net.minecraftforge.network.NetworkEvent.Context;
+                                 ^
+  symbol:   class NetworkEvent
+  location: package net.minecraftforge.network
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/UpdateDamagingProjectileMessage.java:6: error: cannot find symbol
+import net.minecraftforge.fml.DistExecutor;
+                             ^
+  symbol:   class DistExecutor
+  location: package net.minecraftforge.fml
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/UpdateDamagingProjectileMessage.java:7: error: cannot find symbol
+import net.minecraftforge.network.NetworkEvent.Context;
+                                 ^
+  symbol:   class NetworkEvent
+  location: package net.minecraftforge.network
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/WitherStormMod.java:96: warning: [removal] get() in ModLoadingContext has been deprecated and marked for removal
+      ModLoadingContext context = ModLoadingContext.get();
+                                                   ^
+/workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/WitherStormMod.java:101: warning: [removal] get() in FMLJavaModLoadingContext has been deprecated and marked for removal
+      IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+                                                      ^
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+200 errors
+2 warnings
+
+> Task :compileJava FAILED
+
+[Incubating] Problems report is available at: file:///workspace/wither-storm-26.3/forge-port/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':compileJava' (registered by plugin class 'org.gradle.api.plugins.JavaBasePlugin').
+> Compilation failed; see the compiler output below.
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModClientCapabilities.java:72: error: type AttachCapabilitiesEvent does not take parameters
+  /*     */   public static void attachWorldCapabilities(AttachCapabilitiesEvent<Level> event) {
+                                                                                ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModClientCapabilities.java:137: error: type AttachCapabilitiesEvent does not take parameters
+  /*     */   private static <H> void registerSoundManager(AttachCapabilitiesEvent<Level> event, SoundManagersHolder holder, String id, ISoundManager manager, final Capability<H> capability) {
+                                                                                  ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModClientCapabilities.java:152: error: type AttachCapabilitiesEvent does not take parameters
+  /*     */   public static void attachEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
+                                                                                 ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/capability/WitherStormBowelsManager.java:627: error: type TicketType does not take parameters
+        private static final TicketType<ChunkPos> BOWELS = TicketType.create("witherstormmod:bowels", Comparator.comparingLong(ChunkPos::toLong));
+                                       ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/mixin/MixinDistanceManager.java:13: error: type Ticket does not take parameters
+    Long2ObjectOpenHashMap<SortedArraySet<Ticket<?>>> getTickets();
+                                                ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/init/WitherStormModFeatures.java:20: error: type Feature does not take parameters
+  /* 20 */   public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, "witherstormmod");
+                                                         ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/world/gen/feature/TemplateFeature.java:15: error: type Feature does not take parameters
+  public abstract class TemplateFeature<C extends FeatureConfiguration> extends Feature<C> {
+                                                                                       ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/init/WitherStormModCapabilities.java:50: error: type AttachCapabilitiesEvent does not take parameters
+  /*     */   public static void attachWorldCapabilities(AttachCapabilitiesEvent<Level> event) {
+                                                                                ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/init/WitherStormModCapabilities.java:154: error: type AttachCapabilitiesEvent does not take parameters
+  /*     */   public static void attachEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
+                                                                                 ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/capability/WitherStormAutoSpawner.java:26: error: type TicketType does not take parameters
+  /* 26 */   private static final TicketType<BlockPos> INITIAL_SPAWN = TicketType.create("initial_spawn", Vec3i::compareTo, 100);
+                                            ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/capability/WitherStormModChunkLoader.java:32: error: type TicketType does not take parameters
+  /*  32 */   public static final TicketType<ChunkPos> WITHER_STORM = TicketType.create("witherstormmod:wither_storm", Comparator.comparingLong(ChunkPos::toLong));
+                                            ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/capability/WitherStormModChunkLoader.java:33: error: type TicketType does not take parameters
+  /*  33 */   public static final TicketType<ChunkPos> LOAD = TicketType.create("witherstormmod:load", Comparator.comparingLong(ChunkPos::toLong), 100);
+                                            ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/world/gen/feature/template/BlockReplaceProcessor.java:39: error: type StructureProcessorType does not take parameters
+  /*    */   protected StructureProcessorType<?> getType() {
+                                             ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/command/ChunkLoaderCommands.java:117: error: type Ticket does not take parameters
+  /*     */   private static Long2ObjectOpenHashMap<SortedArraySet<Ticket<?>>> getTickets(ServerLevel level) {
+                                                                         ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/world/gen/feature/TemplateFeature.java:15: error: no interface expected here
+  public abstract class TemplateFeature<C extends FeatureConfiguration> extends Feature<C> {
+                                                                                ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/world/gen/feature/template/BlockReplaceProcessor.java:17: error: no interface expected here
+  /*    */ public class BlockReplaceProcessor extends StructureProcessor {
+                                                      ^
+  Note: Recompile with -Xlint:deprecation for details.
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/item/crafting/ResummonSuperBeaconRecipe.java:78: error: interface expected here
+  /*     */     implements RecipeSerializer<ResummonSuperBeaconRecipe>
+                           ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/item/crafting/ItemCraftSuperBeaconRecipe.java:59: error: interface expected here
+  /*     */     implements RecipeSerializer<ItemCraftSuperBeaconRecipe>
+                           ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/item/crafting/AnvilRecipe.java:107: error: interface expected here
+  /*     */     implements RecipeSerializer<AnvilRecipe>
+                           ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/AbstractWitherStormRenderer.java:66: error: wrong number of type arguments; required 2
+  /*     */   extends EntityRenderer<T> {
+                                    ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/WitherStormHeadRenderer.java:22: error: wrong number of type arguments; required 3
+  /*    */ public class WitherStormHeadRenderer extends MobRenderer<WitherStormHeadEntity, WitherStormHeadModel> {
+                                                                   ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/TaintedSlimeRenderer.java:12: error: wrong number of type arguments; required 3
+  /*    */ public class TaintedSlimeRenderer extends MobRenderer<TaintedSlime, TaintedSlimeModel<TaintedSlime>> {
+                                                                ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/SickenedCowRenderer.java:14: error: wrong number of type arguments; required 3
+  /*    */ public class SickenedCowRenderer extends MobRenderer<SickenedCow, CowModel<SickenedCow>> {
+                                                               ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/SickenedPillagerRenderer.java:15: error: wrong number of type arguments; required 2
+  /*    */ public class SickenedPillagerRenderer extends IllagerRenderer<SickenedPillager> {
+                                                                        ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/SickenedMushroomCowRenderer.java:15: error: wrong number of type arguments; required 3
+  /*    */ public class SickenedMushroomCowRenderer extends MobRenderer<SickenedMushroomCow, CowModel<SickenedMushroomCow>> {
+                                                                       ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/SickenedVillagerRenderer.java:16: error: wrong number of type arguments; required 3
+  /*    */ public class SickenedVillagerRenderer extends HumanoidMobRenderer<SickenedVillager, ZombieVillagerModel<SickenedVillager>> {
+                                                                            ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/FlamingWitherSkullRenderer.java:19: error: wrong number of type arguments; required 2
+  /*    */   extends EntityRenderer<T>
+                                   ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/CommandBlockRenderer.java:35: error: wrong number of type arguments; required 2
+  /*     */   extends EntityRenderer<CommandBlockEntity>
+                                    ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/SuperTNTRenderer.java:22: error: wrong number of type arguments; required 2
+  /*    */   extends EntityRenderer<SuperTNTEntity> {
+                                   ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/SickenedBeeRenderer.java:14: error: wrong number of type arguments; required 3
+  /*    */ public class SickenedBeeRenderer extends MobRenderer<SickenedBee, BeeModel<SickenedBee>> {
+                                                               ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/SickenedPhantomRenderer.java:17: error: wrong number of type arguments; required 3
+  /*    */ public class SickenedPhantomRenderer extends MobRenderer<SickenedPhantom, PhantomModel<SickenedPhantom>> {
+                                                                   ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/SickenedCreeperRenderer.java:21: error: wrong number of type arguments; required 3
+  /*    */ public class SickenedCreeperRenderer extends MobRenderer<SickenedCreeper, CreeperModel<SickenedCreeper>> {
+                                                                   ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/SickenedPigRenderer.java:14: error: wrong number of type arguments; required 3
+  /*    */ public class SickenedPigRenderer extends MobRenderer<SickenedPig, PigModel<SickenedPig>> {
+                                                               ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/FormidibombRenderer.java:26: error: wrong number of type arguments; required 2
+  /*     */   extends EntityRenderer<FormidibombEntity>
+                                    ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/SickenedChickenRenderer.java:15: error: wrong number of type arguments; required 3
+  /*    */ public class SickenedChickenRenderer extends MobRenderer<SickenedChicken, ChickenModel<SickenedChicken>> {
+                                                                   ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/SickenedGoatRenderer.java:14: error: wrong number of type arguments; required 3
+  /*    */ public class SickenedGoatRenderer extends MobRenderer<SickenedGoat, GoatModel<SickenedGoat>> {
+                                                                ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/TentacleSpikeRenderer.java:18: error: wrong number of type arguments; required 2
+  /*    */   extends EntityRenderer<TentacleSpike>
+                                   ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/BlockClusterRenderer.java:35: error: wrong number of type arguments; required 2
+  public class BlockClusterRenderer extends EntityRenderer<BlockClusterEntity> {
+                                                          ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/WitheredSymbiontRenderer.java:20: error: wrong number of type arguments; required 3
+  /*    */ public class WitheredSymbiontRenderer extends MobRenderer<WitheredSymbiontEntity, WitheredSymbiontModel<WitheredSymbiontEntity>> {
+                                                                    ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/SickenedVindicatorRenderer.java:20: error: wrong number of type arguments; required 2
+  /*    */ public class SickenedVindicatorRenderer extends IllagerRenderer<SickenedVindicator> {
+                                                                          ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/TentacleRenderer.java:17: error: wrong number of type arguments; required 2
+  /*    */   extends EntityRenderer<TentacleEntity> {
+                                   ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/SickenedIronGolemRenderer.java:18: error: wrong number of type arguments; required 3
+  /*    */ public class SickenedIronGolemRenderer extends MobRenderer<SickenedIronGolem, SickenedIronGolemModel<SickenedIronGolem>> {
+                                                                     ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/SickenedZombieRenderer.java:15: error: wrong number of type arguments; required 3
+  /*    */ public class SickenedZombieRenderer extends AbstractZombieRenderer<SickenedZombie, ZombieModel<SickenedZombie>> {
+                                                                             ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/SickenedSnowGolemRenderer.java:15: error: wrong number of type arguments; required 3
+  /*    */ public class SickenedSnowGolemRenderer extends MobRenderer<SickenedSnowGolem, SnowGolemModel<SickenedSnowGolem>> {
+                                                                     ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/blockentity/AbstractSuperBeaconRenderer.java:22: error: wrong number of type arguments; required 2
+  /*     */   implements BlockEntityRenderer<T>
+                                            ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/blockentity/WitheredPhlegmRenderer.java:16: error: wrong number of type arguments; required 2
+  /*    */   implements BlockEntityRenderer<WitheredPhlegmBlockEntity>
+                                           ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModRenderers.java:5: error: cannot find symbol
+  /*     */ import net.minecraft.client.model.BeeModel;
+                                             ^
+    symbol:   class BeeModel
+    location: package net.minecraft.client.model
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModRenderers.java:6: error: cannot find symbol
+  /*     */ import net.minecraft.client.model.ChickenModel;
+                                             ^
+    symbol:   class ChickenModel
+    location: package net.minecraft.client.model
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModRenderers.java:7: error: cannot find symbol
+  /*     */ import net.minecraft.client.model.CowModel;
+                                             ^
+    symbol:   class CowModel
+    location: package net.minecraft.client.model
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModRenderers.java:8: error: cannot find symbol
+  /*     */ import net.minecraft.client.model.CreeperModel;
+                                             ^
+    symbol:   class CreeperModel
+    location: package net.minecraft.client.model
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModRenderers.java:11: error: cannot find symbol
+  /*     */ import net.minecraft.client.model.IllagerModel;
+                                             ^
+    symbol:   class IllagerModel
+    location: package net.minecraft.client.model
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModRenderers.java:12: error: cannot find symbol
+  /*     */ import net.minecraft.client.model.ParrotModel;
+                                             ^
+    symbol:   class ParrotModel
+    location: package net.minecraft.client.model
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModRenderers.java:13: error: cannot find symbol
+  /*     */ import net.minecraft.client.model.PhantomModel;
+                                             ^
+    symbol:   class PhantomModel
+    location: package net.minecraft.client.model
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModRenderers.java:14: error: cannot find symbol
+  /*     */ import net.minecraft.client.model.PigModel;
+                                             ^
+    symbol:   class PigModel
+    location: package net.minecraft.client.model
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModRenderers.java:15: error: cannot find symbol
+  /*     */ import net.minecraft.client.model.SkeletonModel;
+                                             ^
+    symbol:   class SkeletonModel
+    location: package net.minecraft.client.model
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModRenderers.java:16: error: cannot find symbol
+  /*     */ import net.minecraft.client.model.SnowGolemModel;
+                                             ^
+    symbol:   class SnowGolemModel
+    location: package net.minecraft.client.model
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModRenderers.java:17: error: cannot find symbol
+  /*     */ import net.minecraft.client.model.SpiderModel;
+                                             ^
+    symbol:   class SpiderModel
+    location: package net.minecraft.client.model
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModRenderers.java:18: error: cannot find symbol
+  /*     */ import net.minecraft.client.model.ZombieVillagerModel;
+                                             ^
+    symbol:   class ZombieVillagerModel
+    location: package net.minecraft.client.model
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModShaders.java:6: error: cannot find symbol
+  /*    */ import net.minecraft.client.renderer.ShaderInstance;
+                                               ^
+    symbol:   class ShaderInstance
+    location: package net.minecraft.client.renderer
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModShaders.java:7: error: cannot find symbol
+  /*    */ import net.minecraftforge.client.event.RegisterShadersEvent;
+                                                 ^
+    symbol:   class RegisterShadersEvent
+    location: package net.minecraftforge.client.event
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModShaders.java:16: error: cannot find symbol
+  /*    */   private static ShaderInstance witherStormShader;
+                            ^
+    symbol:   class ShaderInstance
+    location: class WitherStormModShaders
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModShaders.java:17: error: cannot find symbol
+  /*    */   private static ShaderInstance witherStormDissolveShader;
+                            ^
+    symbol:   class ShaderInstance
+    location: class WitherStormModShaders
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModShaders.java:20: error: cannot find symbol
+  /*    */   public static void registerShaders(RegisterShadersEvent event) throws IOException {
+                                                ^
+    symbol:   class RegisterShadersEvent
+    location: class WitherStormModShaders
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModShaders.java:30: error: cannot find symbol
+  /*    */   public static ShaderInstance getWitherStormShader() {
+                           ^
+    symbol:   class ShaderInstance
+    location: class WitherStormModShaders
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModShaders.java:35: error: cannot find symbol
+  /*    */   public static ShaderInstance getWitherStormDissolveShader() {
+                           ^
+    symbol:   class ShaderInstance
+    location: class WitherStormModShaders
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/event/RenderWitherSicknessOverlay.java:14: error: cannot find symbol
+  /*     */ import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+                                                  ^
+    symbol:   class RenderGuiOverlayEvent
+    location: package net.minecraftforge.client.event
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/event/RenderWitherSicknessOverlay.java:15: error: cannot find symbol
+  /*     */ import net.minecraftforge.client.gui.overlay.ForgeGui;
+                                                        ^
+    symbol:   class ForgeGui
+    location: package net.minecraftforge.client.gui.overlay
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/event/RenderWitherSicknessOverlay.java:16: error: cannot find symbol
+  /*     */ import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
+                                                        ^
+    symbol:   class VanillaGuiOverlay
+    location: package net.minecraftforge.client.gui.overlay
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModClientCapabilities.java:13: error: cannot find symbol
+  /*     */ import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+                                                         ^
+    symbol:   class RegisterCapabilitiesEvent
+    location: package net.minecraftforge.common.capabilities
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/capability/WitherStormDistantRenderer.java:23: error: cannot find symbol
+  import net.minecraft.client.renderer.FogRenderer;
+                                      ^
+    symbol:   class FogRenderer
+    location: package net.minecraft.client.renderer
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/capability/WitherStormDistantRenderer.java:25: error: cannot find symbol
+  import net.minecraft.client.renderer.MultiBufferSource;
+                                      ^
+    symbol:   class MultiBufferSource
+    location: package net.minecraft.client.renderer
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/capability/WitherStormDistantRenderer.java:34: error: cannot find symbol
+  import net.minecraftforge.client.event.RenderLevelStageEvent;
+                                        ^
+    symbol:   class RenderLevelStageEvent
+    location: package net.minecraftforge.client.event
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/capability/WitherStormDistantRenderer.java:37: error: cannot find symbol
+  import net.minecraftforge.event.TickEvent.Phase;
+                                           ^
+    symbol:   class Phase
+    location: interface TickEvent
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/CommandBlockEntity.java:34: error: cannot find symbol
+  import net.minecraft.util.random.SimpleWeightedRandomList;
+                                  ^
+    symbol:   class SimpleWeightedRandomList
+    location: package net.minecraft.util.random
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/CommandBlockEntity.java:46: error: cannot find symbol
+  import net.minecraft.world.entity.MobSpawnType;
+                                   ^
+    symbol:   class MobSpawnType
+    location: package net.minecraft.world.entity
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/CommandBlockEntity.java:49: error: cannot find symbol
+  import net.minecraft.world.entity.SpawnPlacements.Type;
+                                                   ^
+    symbol:   class Type
+    location: class SpawnPlacements
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/CommandBlockEntity.java:71: error: cannot find symbol
+  import net.minecraftforge.fml.DistExecutor;
+                               ^
+    symbol:   class DistExecutor
+    location: package net.minecraftforge.fml
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitheredSymbiontEntity.java:35: error: cannot find symbol
+  import net.minecraft.util.random.SimpleWeightedRandomList;
+                                  ^
+    symbol:   class SimpleWeightedRandomList
+    location: package net.minecraft.util.random
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitheredSymbiontEntity.java:46: error: cannot find symbol
+  import net.minecraft.world.entity.MobSpawnType;
+                                   ^
+    symbol:   class MobSpawnType
+    location: package net.minecraft.world.entity
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitheredSymbiontEntity.java:47: error: cannot find symbol
+  import net.minecraft.world.entity.MobType;
+                                   ^
+    symbol:   class MobType
+    location: package net.minecraft.world.entity
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitheredSymbiontEntity.java:70: error: cannot find symbol
+  import net.minecraft.world.entity.monster.EnderMan;
+                                           ^
+    symbol:   class EnderMan
+    location: package net.minecraft.world.entity.monster
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitheredSymbiontEntity.java:73: error: cannot find symbol
+  import net.minecraft.world.entity.npc.AbstractVillager;
+                                       ^
+    symbol:   class AbstractVillager
+    location: package net.minecraft.world.entity.npc
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitheredSymbiontEntity.java:94: error: cannot find symbol
+  import net.minecraftforge.fml.DistExecutor;
+                               ^
+    symbol:   class DistExecutor
+    location: package net.minecraftforge.fml
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/capability/BowelsEffectsManager.java:7: error: cannot find symbol
+  /*     */ import net.minecraft.client.renderer.DimensionSpecialEffects;
+                                                ^
+    symbol:   class DimensionSpecialEffects
+    location: package net.minecraft.client.renderer
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/capability/BowelsEffectsManager.java:11: error: cannot find symbol
+  /*     */ import net.minecraftforge.client.event.RegisterDimensionSpecialEffectsEvent;
+                                                  ^
+    symbol:   class RegisterDimensionSpecialEffectsEvent
+    location: package net.minecraftforge.client.event
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitherStormHeadEntity.java:25: error: cannot find symbol
+  import net.minecraft.world.entity.MobType;
+                                   ^
+    symbol:   class MobType
+    location: package net.minecraft.world.entity
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModClientCapabilities.java:53: error: cannot find symbol
+  /*     */   public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+                                                      ^
+    symbol:   class RegisterCapabilitiesEvent
+    location: class WitherStormModClientCapabilities
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitherStormEntity.java:58: error: cannot find symbol
+  import net.minecraft.world.entity.FlyingMob;
+                                   ^
+    symbol:   class FlyingMob
+    location: package net.minecraft.world.entity
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitherStormEntity.java:60: error: cannot find symbol
+  import net.minecraft.world.entity.MobType;
+                                   ^
+    symbol:   class MobType
+    location: package net.minecraft.world.entity
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitherStormEntity.java:63: error: cannot find symbol
+  import net.minecraft.world.entity.PowerableMob;
+                                   ^
+    symbol:   class PowerableMob
+    location: package net.minecraft.world.entity
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitherStormEntity.java:78: error: cannot find symbol
+  import net.minecraft.world.entity.animal.AbstractSchoolingFish;
+                                          ^
+    symbol:   class AbstractSchoolingFish
+    location: package net.minecraft.world.entity.animal
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitherStormEntity.java:79: error: cannot find symbol
+  import net.minecraft.world.entity.animal.Squid;
+                                          ^
+    symbol:   class Squid
+    location: package net.minecraft.world.entity.animal
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/capability/WitherStormBowelsManager.java:36: error: cannot find symbol
+  import net.minecraft.world.entity.MobSpawnType;
+                                   ^
+    symbol:   class MobSpawnType
+    location: package net.minecraft.world.entity
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/capability/WitherStormBowelsManager.java:37: error: cannot find symbol
+  import net.minecraft.world.entity.SpawnPlacements.Type;
+                                                   ^
+    symbol:   class Type
+    location: class SpawnPlacements
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/capability/WitherStormBowelsManager.java:47: error: cannot find symbol
+  import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+                                                   ^
+    symbol:   class ConfiguredFeature
+    location: package net.minecraft.world.level.levelgen.feature
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/capability/WitherStormBowelsManager.java:56: error: cannot find symbol
+  import net.minecraftforge.event.TickEvent.Phase;
+                                           ^
+    symbol:   class Phase
+    location: interface TickEvent
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/ai/witherstorm/PlayDeadManager.java:21: error: cannot find symbol
+  import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+                                                   ^
+    symbol:   class ConfiguredFeature
+    location: package net.minecraft.world.level.levelgen.feature
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/ai/witherstorm/SymbiontSummoningManager.java:4: error: cannot find symbol
+  /*     */ import net.minecraft.advancements.CriteriaTriggers;
+                                             ^
+    symbol:   class CriteriaTriggers
+    location: package net.minecraft.advancements
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitherStormEntity.java:2333: error: cannot find symbol
+     public MobType getMobType() {
+            ^
+    symbol:   class MobType
+    location: class WitherStormEntity
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/FormidibombEntity.java:34: error: cannot find symbol
+  /*     */ import net.minecraft.world.item.enchantment.ProtectionEnchantment;
+                                                       ^
+    symbol:   class ProtectionEnchantment
+    location: package net.minecraft.world.item.enchantment
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/FormidibombEntity.java:52: error: cannot find symbol
+  /*     */ import net.minecraftforge.network.NetworkHooks;
+                                             ^
+    symbol:   class NetworkHooks
+    location: package net.minecraftforge.network
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/BlockClusterEntity.java:36: error: cannot find symbol
+  /*     */ import net.minecraft.world.level.GameRules;
+                                            ^
+    symbol:   class GameRules
+    location: package net.minecraft.world.level
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/BlockClusterEntity.java:46: error: cannot find symbol
+  /*     */ import net.minecraftforge.network.NetworkHooks;
+                                             ^
+    symbol:   class NetworkHooks
+    location: package net.minecraftforge.network
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitherStormHeadEntity.java:475: error: cannot find symbol
+     public MobType getMobType() {
+            ^
+    symbol:   class MobType
+    location: class WitherStormHeadEntity
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/capability/WitheredSymbiontSoundManager.java:18: error: cannot find symbol
+  /*    */   private static final Predicate<WitheredSymbiontEntity> SHOULD_STOP;
+                                  ^
+    symbol:   class Predicate
+    location: class WitheredSymbiontSoundManager
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitheredSymbiontEntity.java:160: error: cannot find symbol
+     private static final SimpleWeightedRandomList<EntityType<? extends Mob>> SYMBIONT_NORMAL_MOBS = SimpleWeightedRandomList.builder()
+                          ^
+    symbol:   class SimpleWeightedRandomList
+    location: class WitheredSymbiontEntity
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitheredSymbiontEntity.java:178: error: cannot find symbol
+     private static final SimpleWeightedRandomList<EntityType<? extends Mob>> SYMBIONT_HARDER_MOBS = SimpleWeightedRandomList.builder()
+                          ^
+    symbol:   class SimpleWeightedRandomList
+    location: class WitheredSymbiontEntity
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/goal/symbiont/SummonMobsGoal.java:7: error: cannot find symbol
+  /*    */ import net.minecraft.util.random.SimpleWeightedRandomList;
+                                           ^
+    symbol:   class SimpleWeightedRandomList
+    location: package net.minecraft.util.random
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitheredSymbiontEntity.java:592: error: cannot find symbol
+     public MobType getMobType() {
+            ^
+    symbol:   class MobType
+    location: class WitheredSymbiontEntity
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitheredSymbiontEntity.java:1078: error: cannot find symbol
+        ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType spawnType, SpawnGroupData groupData, CompoundTag tag
+                                                                                    ^
+    symbol:   class MobSpawnType
+    location: class WitheredSymbiontEntity
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/goal/symbiont/SummonMobsGoal.java:22: error: cannot find symbol
+  /*    */   protected final SimpleWeightedRandomList<EntityType<? extends Mob>> spawnTypes;
+                             ^
+    symbol:   class SimpleWeightedRandomList
+    location: class SummonMobsGoal
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/goal/symbiont/SummonMobsGoal.java:23: error: cannot find symbol
+  /*    */   protected final SimpleWeightedRandomList<EntityType<? extends Mob>> difficultSpawnTypes;
+                             ^
+    symbol:   class SimpleWeightedRandomList
+    location: class SummonMobsGoal
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/goal/symbiont/SummonMobsGoal.java:26: error: cannot find symbol
+  /*    */   public SummonMobsGoal(WitheredSymbiontEntity entity, SimpleWeightedRandomList<EntityType<? extends Mob>> types, SimpleWeightedRandomList<EntityType<? extends Mob>> difficultTypes) {
+                                                                  ^
+    symbol:   class SimpleWeightedRandomList
+    location: class SummonMobsGoal
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/goal/symbiont/SummonMobsGoal.java:26: error: cannot find symbol
+  /*    */   public SummonMobsGoal(WitheredSymbiontEntity entity, SimpleWeightedRandomList<EntityType<? extends Mob>> types, SimpleWeightedRandomList<EntityType<? extends Mob>> difficultTypes) {
+                                                                                                                             ^
+    symbol:   class SimpleWeightedRandomList
+    location: class SummonMobsGoal
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/CommandBlockEntity.java:114: error: cannot find symbol
+     private static final SimpleWeightedRandomList<EntityType<? extends Mob>> IDLE_BOWELS_MOBS = SimpleWeightedRandomList.builder()
+                          ^
+    symbol:   class SimpleWeightedRandomList
+    location: class CommandBlockEntity
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/CommandBlockEntity.java:860: error: cannot find symbol
+     public Mob summonRandomBowelsMobNearPlayer(int minRadius, int maxRadius, SimpleWeightedRandomList<EntityType<? extends Mob>> types) {
+                                                                              ^
+    symbol:   class SimpleWeightedRandomList
+    location: class CommandBlockEntity
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/CommandBlockEntity.java:931: error: cannot find symbol
+     public Mob summonRandomMob(int diameter, SimpleWeightedRandomList<EntityType<? extends Mob>> types) {
+                                              ^
+    symbol:   class SimpleWeightedRandomList
+    location: class CommandBlockEntity
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/TentacleEntity.java:31: error: cannot find symbol
+  import net.minecraft.world.entity.MobSpawnType;
+                                   ^
+    symbol:   class MobSpawnType
+    location: package net.minecraft.world.entity
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/TentacleEntity.java:32: error: cannot find symbol
+  import net.minecraft.world.entity.MobType;
+                                   ^
+    symbol:   class MobType
+    location: package net.minecraft.world.entity
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/TentacleEntity.java:57: error: cannot find symbol
+  import net.minecraftforge.fml.DistExecutor;
+                               ^
+    symbol:   class DistExecutor
+    location: package net.minecraftforge.fml
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/TentacleEntity.java:59: error: cannot find symbol
+  import net.minecraftforge.network.NetworkEvent.Context;
+                                   ^
+    symbol:   class NetworkEvent
+    location: package net.minecraftforge.network
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/TentacleEntity.java:447: error: cannot find symbol
+     public MobType getMobType() {
+            ^
+    symbol:   class MobType
+    location: class TentacleEntity
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/TentacleEntity.java:759: error: cannot find symbol
+     public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, SpawnGroupData existing, CompoundTag data) {
+                                                                                                   ^
+    symbol:   class MobSpawnType
+    location: class TentacleEntity
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/capability/WitherStormDistantRenderer.java:120: error: cannot find symbol
+     public void renderTick(PoseStack stack, BufferSource buffer, float partialTicks, Frustum clippinghelper) {
+                                             ^
+    symbol:   class BufferSource
+    location: class WitherStormDistantRenderer
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/model/witherstorm/AbstractWitherStormModel.java:18: error: cannot find symbol
+  /*     */ import net.minecraft.client.renderer.MultiBufferSource;
+                                                ^
+    symbol:   class MultiBufferSource
+    location: package net.minecraft.client.renderer
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/capability/WitherStormDistantRenderer.java:206: error: cannot find symbol
+        Frustum frustum, Vec3 cameraPos, float partialTicks, PoseStack stack, MultiBufferSource buffer, BiConsumer<T, AbstractWitherStormRenderer<T, M>> action
+                                                                              ^
+    symbol:   class MultiBufferSource
+    location: class WitherStormDistantRenderer
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/AbstractWitherStormRenderer.java:21: error: cannot find symbol
+  /*     */ import net.minecraft.client.renderer.MultiBufferSource;
+                                                ^
+    symbol:   class MultiBufferSource
+    location: package net.minecraft.client.renderer
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/AbstractWitherStormRenderer.java:36: error: cannot find symbol
+  /*     */ import net.minecraft.world.entity.animal.Sheep;
+                                                    ^
+    symbol:   class Sheep
+    location: package net.minecraft.world.entity.animal
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/AbstractWitherStormRenderer.java:119: error: cannot find symbol
+  /*     */   public void render(T entity, float yRot, float partialTicks, PoseStack stack, MultiBufferSource buffer, int packedLight) {
+                                                                                            ^
+    symbol:   class MultiBufferSource
+    location: class AbstractWitherStormRenderer<T,M>
+    where T,M are type-variables:
+      T extends WitherStormEntity declared in class AbstractWitherStormRenderer
+      M extends AbstractWitherStormModel<T> declared in class AbstractWitherStormRenderer
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/AbstractWitherStormRenderer.java:172: error: cannot find symbol
+  /*     */   protected void renderEnergyShield(T entity, PoseStack stack, MultiBufferSource bufferSource, float partialTicks, float bob, float yRot, float xRot, int packedLight, int overlayTexture) {
+                                                                           ^
+    symbol:   class MultiBufferSource
+    location: class AbstractWitherStormRenderer<T,M>
+    where T,M are type-variables:
+      T extends WitherStormEntity declared in class AbstractWitherStormRenderer
+      M extends AbstractWitherStormModel<T> declared in class AbstractWitherStormRenderer
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/AbstractWitherStormRenderer.java:180: error: cannot find symbol
+  /*     */   protected void renderChristmasFestivities(T entity, PoseStack stack, MultiBufferSource bufferSource, int packedLight, int overlayTexture) {
+                                                                                   ^
+    symbol:   class MultiBufferSource
+    location: class AbstractWitherStormRenderer<T,M>
+    where T,M are type-variables:
+      T extends WitherStormEntity declared in class AbstractWitherStormRenderer
+      M extends AbstractWitherStormModel<T> declared in class AbstractWitherStormRenderer
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/AbstractWitherStormRenderer.java:196: error: cannot find symbol
+  /*     */   protected void renderPulsing(T entity, PoseStack stack, MultiBufferSource bufferSource, float partialTicks, int packedLight, int overlayTexture) {
+                                                                      ^
+    symbol:   class MultiBufferSource
+    location: class AbstractWitherStormRenderer<T,M>
+    where T,M are type-variables:
+      T extends WitherStormEntity declared in class AbstractWitherStormRenderer
+      M extends AbstractWitherStormModel<T> declared in class AbstractWitherStormRenderer
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/AbstractWitherStormRenderer.java:235: error: cannot find symbol
+  /*     */   public void renderTractorBeams(T entity, PoseStack stack, MultiBufferSource buffer, float partialTicks, int packedLight) {
+                                                                        ^
+    symbol:   class MultiBufferSource
+    location: class AbstractWitherStormRenderer<T,M>
+    where T,M are type-variables:
+      T extends WitherStormEntity declared in class AbstractWitherStormRenderer
+      M extends AbstractWitherStormModel<T> declared in class AbstractWitherStormRenderer
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/AbstractWitherStormRenderer.java:360: error: cannot find symbol
+  /*     */   public void renderDebrisRings(WitherStormEntity entity, PoseStack stack, MultiBufferSource buffer, float partialTicks, int packedLightIn) {
+                                                                                       ^
+    symbol:   class MultiBufferSource
+    location: class AbstractWitherStormRenderer<T,M>
+    where T,M are type-variables:
+      T extends WitherStormEntity declared in class AbstractWitherStormRenderer
+      M extends AbstractWitherStormModel<T> declared in class AbstractWitherStormRenderer
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/AbstractWitherStormRenderer.java:415: error: cannot find symbol
+  /*     */   public static void renderDebrisClusters(Identifier tex, WitherStormEntity entity, PoseStack stack, MultiBufferSource bufferSource, float partialTicks, int packedLight) {
+                                                                                                                 ^
+    symbol:   class MultiBufferSource
+    location: class AbstractWitherStormRenderer<T,M>
+    where T,M are type-variables:
+      T extends WitherStormEntity declared in class AbstractWitherStormRenderer
+      M extends AbstractWitherStormModel<T> declared in class AbstractWitherStormRenderer
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/AbstractWitherStormRenderer.java:716: error: cannot find symbol
+  /*     */   public static void renderShine(WitherStormEntity storm, PoseStack stack, float partialTicks, Camera camera, MultiBufferSource buffer) {
+                                                                                                                          ^
+    symbol:   class MultiBufferSource
+    location: class AbstractWitherStormRenderer<T,M>
+    where T,M are type-variables:
+      T extends WitherStormEntity declared in class AbstractWitherStormRenderer
+      M extends AbstractWitherStormModel<T> declared in class AbstractWitherStormRenderer
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/model/witherstorm/HeadModel.java:12: error: cannot find symbol
+  /*     */ import net.minecraft.client.renderer.MultiBufferSource;
+                                                ^
+    symbol:   class MultiBufferSource
+    location: package net.minecraft.client.renderer
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/model/witherstorm/AbstractWitherStormModel.java:103: error: cannot find symbol
+  /*     */   public void render(T entity, PoseStack stack, MultiBufferSource source, RenderType type, @Nullable RenderType emissiveType, @Nullable RenderType massEmissiveType, @Nullable RenderType hurtOverlayType, int packedLight, int overlayTexture, float r, float g, float b, float alpha) {
+                                                            ^
+    symbol:   class MultiBufferSource
+    location: class AbstractWitherStormModel<T>
+    where T is a type-variable:
+      T extends WitherStormEntity declared in class AbstractWitherStormModel
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/model/witherstorm/AbstractWitherStormModel.java:213: error: cannot find symbol
+  /*     */   public void renderMassDecal(T entity, PoseStack stack, MultiBufferSource buffer, int packedLight, int overlayCoords, float r, float g, float b, float a) {}
+                                                                     ^
+    symbol:   class MultiBufferSource
+    location: class AbstractWitherStormModel<T>
+    where T is a type-variable:
+      T extends WitherStormEntity declared in class AbstractWitherStormModel
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/renderer/entity/model/witherstorm/HeadModel.java:158: error: cannot find symbol
+  /*     */   public void renderTractorBeam(T entity, PoseStack stack, MultiBufferSource buffer, int packedLightIn, float r, float g, float b, float a, float partialTicks, double tractorBeamCutoff, float endFadeAlpha) {
+                                                                       ^
+    symbol:   class MultiBufferSource
+    location: class HeadModel<T>
+    where T is a type-variable:
+      T extends LivingEntity,WitherStormBase declared in class HeadModel
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModRecipeBookTypes.java:3: error: cannot find symbol
+  /*    */ import net.minecraft.client.RecipeBookCategories;
+                                      ^
+    symbol:   class RecipeBookCategories
+    location: package net.minecraft.client
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModRecipeBookTypes.java:6: error: cannot find symbol
+  /*    */ import net.minecraftforge.client.event.RegisterRecipeBookCategoriesEvent;
+                                                 ^
+    symbol:   class RegisterRecipeBookCategoriesEvent
+    location: package net.minecraftforge.client.event
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/init/WitherStormModRecipeBookTypes.java:10: error: cannot find symbol
+  /*    */   public static void registerRecipeBookCategories(RegisterRecipeBookCategoriesEvent event) {
+                                                             ^
+    symbol:   class RegisterRecipeBookCategoriesEvent
+    location: class WitherStormModRecipeBookTypes
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/GlobalSoundMessage.java:7: error: cannot find symbol
+  import net.minecraftforge.fml.DistExecutor;
+                               ^
+    symbol:   class DistExecutor
+    location: package net.minecraftforge.fml
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/GlobalSoundMessage.java:8: error: cannot find symbol
+  import net.minecraftforge.network.NetworkEvent.Context;
+                                   ^
+    symbol:   class NetworkEvent
+    location: package net.minecraftforge.network
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/PlayerMotionMessage.java:6: error: cannot find symbol
+  import net.minecraftforge.fml.DistExecutor;
+                               ^
+    symbol:   class DistExecutor
+    location: package net.minecraftforge.fml
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/PlayerMotionMessage.java:7: error: cannot find symbol
+  import net.minecraftforge.network.NetworkEvent.Context;
+                                   ^
+    symbol:   class NetworkEvent
+    location: package net.minecraftforge.network
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/WitherStormToDistantRendererMessage.java:21: error: cannot find symbol
+  import net.minecraftforge.fml.DistExecutor;
+                               ^
+    symbol:   class DistExecutor
+    location: package net.minecraftforge.fml
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/WitherStormToDistantRendererMessage.java:22: error: cannot find symbol
+  import net.minecraftforge.network.NetworkEvent.Context;
+                                   ^
+    symbol:   class NetworkEvent
+    location: package net.minecraftforge.network
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/RemoveStormFromDistantRendererMessage.java:7: error: cannot find symbol
+  import net.minecraftforge.fml.DistExecutor;
+                               ^
+    symbol:   class DistExecutor
+    location: package net.minecraftforge.fml
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/RemoveStormFromDistantRendererMessage.java:8: error: cannot find symbol
+  import net.minecraftforge.network.NetworkEvent.Context;
+                                   ^
+    symbol:   class NetworkEvent
+    location: package net.minecraftforge.network
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/UpdateStormPositionMessage.java:6: error: cannot find symbol
+  import net.minecraftforge.fml.DistExecutor;
+                               ^
+    symbol:   class DistExecutor
+    location: package net.minecraftforge.fml
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/UpdateStormPositionMessage.java:7: error: cannot find symbol
+  import net.minecraftforge.network.NetworkEvent.Context;
+                                   ^
+    symbol:   class NetworkEvent
+    location: package net.minecraftforge.network
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/StormTeleportMessage.java:8: error: cannot find symbol
+  import net.minecraftforge.fml.DistExecutor;
+                               ^
+    symbol:   class DistExecutor
+    location: package net.minecraftforge.fml
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/StormTeleportMessage.java:9: error: cannot find symbol
+  import net.minecraftforge.network.NetworkEvent.Context;
+                                   ^
+    symbol:   class NetworkEvent
+    location: package net.minecraftforge.network
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/UpdateStormVelocityMessage.java:9: error: cannot find symbol
+  import net.minecraftforge.fml.DistExecutor;
+                               ^
+    symbol:   class DistExecutor
+    location: package net.minecraftforge.fml
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/UpdateStormVelocityMessage.java:10: error: cannot find symbol
+  import net.minecraftforge.network.NetworkEvent.Context;
+                                   ^
+    symbol:   class NetworkEvent
+    location: package net.minecraftforge.network
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/UpdateStormHeadLookMessage.java:7: error: cannot find symbol
+  import net.minecraftforge.fml.DistExecutor;
+                               ^
+    symbol:   class DistExecutor
+    location: package net.minecraftforge.fml
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/UpdateStormHeadLookMessage.java:8: error: cannot find symbol
+  import net.minecraftforge.network.NetworkEvent.Context;
+                                   ^
+    symbol:   class NetworkEvent
+    location: package net.minecraftforge.network
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/StormMetadataMessage.java:9: error: cannot find symbol
+  import net.minecraftforge.fml.DistExecutor;
+                               ^
+    symbol:   class DistExecutor
+    location: package net.minecraftforge.fml
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/StormMetadataMessage.java:10: error: cannot find symbol
+  import net.minecraftforge.network.NetworkEvent.Context;
+                                   ^
+    symbol:   class NetworkEvent
+    location: package net.minecraftforge.network
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/StormAttributesMessage.java:14: error: cannot find symbol
+  import net.minecraftforge.fml.DistExecutor;
+                               ^
+    symbol:   class DistExecutor
+    location: package net.minecraftforge.fml
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/StormAttributesMessage.java:15: error: cannot find symbol
+  import net.minecraftforge.network.NetworkEvent.Context;
+                                   ^
+    symbol:   class NetworkEvent
+    location: package net.minecraftforge.network
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/CreateLoopingSoundMessage.java:5: error: cannot find symbol
+  import net.minecraftforge.fml.DistExecutor;
+                               ^
+    symbol:   class DistExecutor
+    location: package net.minecraftforge.fml
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/CreateLoopingSoundMessage.java:6: error: cannot find symbol
+  import net.minecraftforge.network.NetworkEvent.Context;
+                                   ^
+    symbol:   class NetworkEvent
+    location: package net.minecraftforge.network
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/StormSoundPositionMessage.java:5: error: cannot find symbol
+  import net.minecraftforge.fml.DistExecutor;
+                               ^
+    symbol:   class DistExecutor
+    location: package net.minecraftforge.fml
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/StormSoundPositionMessage.java:6: error: cannot find symbol
+  import net.minecraftforge.network.NetworkEvent.Context;
+                                   ^
+    symbol:   class NetworkEvent
+    location: package net.minecraftforge.network
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/RemoveSoundLoopMessage.java:5: error: cannot find symbol
+  import net.minecraftforge.fml.DistExecutor;
+                               ^
+    symbol:   class DistExecutor
+    location: package net.minecraftforge.fml
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/RemoveSoundLoopMessage.java:6: error: cannot find symbol
+  import net.minecraftforge.network.NetworkEvent.Context;
+                                   ^
+    symbol:   class NetworkEvent
+    location: package net.minecraftforge.network
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/NotifyHeadInjuryMessage.java:5: error: cannot find symbol
+  import net.minecraftforge.fml.DistExecutor;
+                               ^
+    symbol:   class DistExecutor
+    location: package net.minecraftforge.fml
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/NotifyHeadInjuryMessage.java:6: error: cannot find symbol
+  import net.minecraftforge.network.NetworkEvent.Context;
+                                   ^
+    symbol:   class NetworkEvent
+    location: package net.minecraftforge.network
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/UpdateEffectInstanceMessage.java:7: error: cannot find symbol
+  import net.minecraftforge.fml.DistExecutor;
+                               ^
+    symbol:   class DistExecutor
+    location: package net.minecraftforge.fml
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/UpdateEffectInstanceMessage.java:8: error: cannot find symbol
+  import net.minecraftforge.network.NetworkEvent.Context;
+                                   ^
+    symbol:   class NetworkEvent
+    location: package net.minecraftforge.network
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/UpdateWitherSicknessTrackerMessage.java:6: error: cannot find symbol
+  import net.minecraftforge.fml.DistExecutor;
+                               ^
+    symbol:   class DistExecutor
+    location: package net.minecraftforge.fml
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/UpdateWitherSicknessTrackerMessage.java:7: error: cannot find symbol
+  import net.minecraftforge.network.NetworkEvent.Context;
+                                   ^
+    symbol:   class NetworkEvent
+    location: package net.minecraftforge.network
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/UpdatePlayDeadManagerMessage.java:5: error: cannot find symbol
+  import net.minecraftforge.fml.DistExecutor;
+                               ^
+    symbol:   class DistExecutor
+    location: package net.minecraftforge.fml
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/UpdatePlayDeadManagerMessage.java:6: error: cannot find symbol
+  import net.minecraftforge.network.NetworkEvent.Context;
+                                   ^
+    symbol:   class NetworkEvent
+    location: package net.minecraftforge.network
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/CreateDebrisMessage.java:5: error: cannot find symbol
+  import net.minecraftforge.fml.DistExecutor;
+                               ^
+    symbol:   class DistExecutor
+    location: package net.minecraftforge.fml
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/CreateDebrisMessage.java:6: error: cannot find symbol
+  import net.minecraftforge.network.NetworkEvent.Context;
+                                   ^
+    symbol:   class NetworkEvent
+    location: package net.minecraftforge.network
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/EntitySyncableDataMessage.java:5: error: cannot find symbol
+  import net.minecraftforge.fml.DistExecutor;
+                               ^
+    symbol:   class DistExecutor
+    location: package net.minecraftforge.fml
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/EntitySyncableDataMessage.java:6: error: cannot find symbol
+  import net.minecraftforge.network.NetworkEvent.Context;
+                                   ^
+    symbol:   class NetworkEvent
+    location: package net.minecraftforge.network
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/PlayAdditionalLoopingSoundMessage.java:6: error: cannot find symbol
+  import net.minecraftforge.fml.DistExecutor;
+                               ^
+    symbol:   class DistExecutor
+    location: package net.minecraftforge.fml
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/PlayAdditionalLoopingSoundMessage.java:7: error: cannot find symbol
+  import net.minecraftforge.network.NetworkEvent.Context;
+                                   ^
+    symbol:   class NetworkEvent
+    location: package net.minecraftforge.network
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/RemoveAdditionalLoopingSoundMessage.java:5: error: cannot find symbol
+  import net.minecraftforge.fml.DistExecutor;
+                               ^
+    symbol:   class DistExecutor
+    location: package net.minecraftforge.fml
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/RemoveAdditionalLoopingSoundMessage.java:6: error: cannot find symbol
+  import net.minecraftforge.network.NetworkEvent.Context;
+                                   ^
+    symbol:   class NetworkEvent
+    location: package net.minecraftforge.network
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/ShakeScreenMessage.java:5: error: cannot find symbol
+  import net.minecraftforge.fml.DistExecutor;
+                               ^
+    symbol:   class DistExecutor
+    location: package net.minecraftforge.fml
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/ShakeScreenMessage.java:6: error: cannot find symbol
+  import net.minecraftforge.network.NetworkEvent.Context;
+                                   ^
+    symbol:   class NetworkEvent
+    location: package net.minecraftforge.network
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/FormidibombExplosionMessage.java:7: error: cannot find symbol
+  import net.minecraftforge.fml.DistExecutor;
+                               ^
+    symbol:   class DistExecutor
+    location: package net.minecraftforge.fml
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/FormidibombExplosionMessage.java:8: error: cannot find symbol
+  import net.minecraftforge.network.NetworkEvent.Context;
+                                   ^
+    symbol:   class NetworkEvent
+    location: package net.minecraftforge.network
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/UpdateDamagingProjectileMessage.java:6: error: cannot find symbol
+  import net.minecraftforge.fml.DistExecutor;
+                               ^
+    symbol:   class DistExecutor
+    location: package net.minecraftforge.fml
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/packet/UpdateDamagingProjectileMessage.java:7: error: cannot find symbol
+  import net.minecraftforge.network.NetworkEvent.Context;
+                                   ^
+    symbol:   class NetworkEvent
+    location: package net.minecraftforge.network
+  Note: Recompile with -Xlint:unchecked for details.
+  Note: Some input files use or override a deprecated API.
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/WitherStormMod.java:96: warning: [removal] get() in ModLoadingContext has been deprecated and marked for removal
+        ModLoadingContext context = ModLoadingContext.get();
+                                                     ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/WitherStormMod.java:101: warning: [removal] get() in FMLJavaModLoadingContext has been deprecated and marked for removal
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+                                                        ^
+  Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/capability/WitheredSymbiontSpellLoopManager.java:10: error: cannot find symbol
+  /*    */ public class WitheredSymbiontSpellLoopManager extends EntitySoundManager<WitheredSymbiontEntity, WitheredSymbiontSpellLoop> {
+                                                                 ^
+    symbol: class EntitySoundManager
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitherStormEntity.java:204: error: cannot find symbol
+  public class WitherStormEntity extends Monster implements PowerableMob, EntitySyncableData, BossThemeEntity, WitherStormBase, ChunkLoader {
+                                                            ^
+    symbol: class PowerableMob
+  Note: Some input files use unchecked or unsafe operations.
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/event/RenderWitherSicknessOverlay.java:33: error: package RenderGuiOverlayEvent does not exist
+  /*     */   public void renderOverlay(RenderGuiOverlayEvent.Pre event) {
+                                                             ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/capability/WitherStormDistantRenderer.java:26: error: package net.minecraft.client.renderer.FogRenderer does not exist
+  import net.minecraft.client.renderer.FogRenderer.FogMode;
+                                                  ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/capability/WitherStormDistantRenderer.java:27: error: package net.minecraft.client.renderer.MultiBufferSource does not exist
+  import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
+                                                        ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/client/capability/WitherStormDistantRenderer.java:35: error: package net.minecraftforge.client.event.RenderLevelStageEvent does not exist
+  import net.minecraftforge.client.event.RenderLevelStageEvent.Stage;
+                                                              ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/CommandBlockEntity.java:73: error: package net.minecraftforge.network.NetworkEvent does not exist
+  import net.minecraftforge.network.NetworkEvent.Context;
+                                                ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/WitheredSymbiontEntity.java:96: error: package net.minecraftforge.network.NetworkEvent does not exist
+  import net.minecraftforge.network.NetworkEvent.Context;
+                                                ^
+  /workspace/wither-storm-26.3/port-candidates/nonamecrackers2/witherstormmod/common/entity/ai/witherstorm/PlayDeadManager.java:22: error: package net.minecraft.world.level.levelgen.feature.configurations does not exist
+  import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+                                                                  ^
+  200 errors
+  2 warnings
+
+* Try:
+> Check your code and dependencies to fix the compilation error(s)
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+BUILD FAILED in 21s
+1 actionable task: 1 executed
+Configuration cache entry stored.

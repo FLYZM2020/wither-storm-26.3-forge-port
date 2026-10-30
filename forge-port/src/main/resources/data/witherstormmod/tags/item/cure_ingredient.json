@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:wither_rose",
+    {"id": "witherstormmod:withered_flesh", "required": false},
+    {"id": "witherstormmod:withered_bone", "required": false},
+    {"id": "witherstormmod:withered_spider_eye", "required": false}
+  ]
+}

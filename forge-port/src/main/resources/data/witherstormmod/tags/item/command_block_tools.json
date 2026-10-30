@@ -1,0 +1,113 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "witherstormmod:command_block_sword",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:command_block_pickaxe",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:command_block_axe",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:command_block_shovel",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:command_block_hoe",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:wooden_command_block_sword",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:wooden_command_block_pickaxe",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:wooden_command_block_axe",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:wooden_command_block_shovel",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:wooden_command_block_hoe",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:stone_command_block_sword",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:stone_command_block_pickaxe",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:stone_command_block_axe",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:stone_command_block_shovel",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:stone_command_block_hoe",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:iron_command_block_sword",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:iron_command_block_pickaxe",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:iron_command_block_axe",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:iron_command_block_shovel",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:iron_command_block_hoe",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:gold_command_block_sword",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:gold_command_block_pickaxe",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:gold_command_block_axe",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:gold_command_block_shovel",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:gold_command_block_hoe",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:eye_of_the_storm",
+      "required": false
+    },
+    {
+      "id": "witherstormmod:formidi_blade",
+      "required": false
+    }
+  ]
+}

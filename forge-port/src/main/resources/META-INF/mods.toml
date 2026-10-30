@@ -1,0 +1,36 @@
+# See https://docs.minecraftforge.net/en/1.21.x/gettingstarted/modfiles/#modstoml
+# There are lots of things you can do with the mods.toml, and not all fields are included with this MDK
+# References: https://github.com/MinecraftForge/MDKExamples
+
+modLoader="javafml"
+loaderVersion="[66,)"
+license="All Rights Reserved"
+#issueTrackerURL="https://github.com/MyOrganization/MyMod/" #optional
+#clientSideOnly=true #optional, default=false
+
+[[mods]]
+modId="witherstormmod"
+version="0.0.1-dev"
+displayName="Wither Storm 26.3 Development Scaffold"
+#updateJSONURL="https://example.com/updates.json" #optional
+#displayURL="https://example.com/" #optional
+#logoFile="witherstormmod.png" #optional
+#credits="" #optional
+authors="nonamecrackers2, Nazaru" #optional
+#displayTest="MATCH_VERSION" #optional, default=MATCH_VERSION when not clientSideOnly, else IGNORE_ALL_VERSION
+
+description='''Early development build: a Wither-based storm entity and early-stage appearance are present. Original storm AI and later stages are not yet implemented.''' 
+
+[[dependencies.witherstormmod]] #recommended
+    modId="forge"
+    mandatory=true
+    versionRange="[66,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.witherstormmod]] #recommended
+    modId="minecraft"
+    mandatory=true
+    versionRange="[26.3,26.4,)"
+    ordering="NONE"
+    side="BOTH"

@@ -1,0 +1,151 @@
+Old imports: 699; missing in 26.3: 149; unique-name hints: 76
+
+ 44  net.minecraft.client.renderer.RenderType -> AMBIGUOUS (2)
+ 30  net.minecraft.client.renderer.MultiBufferSource -> NO MATCH
+ 22  net.minecraft.world.entity.MobType -> NO MATCH
+ 11  net.minecraft.world.entity.MobSpawnType -> NO MATCH
+ 10  net.minecraft.client.gui.GuiGraphics -> NO MATCH
+  9  net.minecraft.Util -> net.minecraft.util.Util
+  8  net.minecraft.world.item.Tier -> NO MATCH
+  7  net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance -> NO MATCH
+  7  net.minecraft.advancements.critereon.ContextAwarePredicate -> NO MATCH
+  7  net.minecraft.advancements.critereon.DeserializationContext -> NO MATCH
+  7  net.minecraft.advancements.critereon.EntityPredicate -> net.minecraft.advancements.predicates.entity.EntityPredicate
+  7  net.minecraft.advancements.critereon.SerializationContext -> NO MATCH
+  7  net.minecraft.advancements.critereon.SimpleCriterionTrigger -> net.minecraft.advancements.triggers.SimpleCriterionTrigger
+  7  net.minecraft.util.random.SimpleWeightedRandomList -> NO MATCH
+  7  net.minecraft.world.entity.projectile.AbstractHurtingProjectile -> net.minecraft.world.entity.projectile.hurtingprojectile.AbstractHurtingProjectile
+  6  net.minecraft.advancements.CriteriaTriggers -> net.minecraft.advancements.triggers.CriteriaTriggers
+  6  net.minecraft.world.entity.projectile.AbstractArrow -> net.minecraft.world.entity.projectile.arrow.AbstractArrow
+  5  net.minecraft.client.renderer.block.BlockRenderDispatcher -> NO MATCH
+  5  net.minecraft.data.recipes.FinishedRecipe -> NO MATCH
+  5  net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration -> NO MATCH
+  4  net.minecraft.client.model.CowModel -> net.minecraft.client.model.animal.cow.CowModel
+  4  net.minecraft.world.entity.animal.Bee -> net.minecraft.world.entity.animal.bee.Bee
+  4  net.minecraft.world.entity.monster.AbstractSkeleton -> net.minecraft.world.entity.monster.skeleton.AbstractSkeleton
+  4  net.minecraft.world.entity.npc.Villager -> net.minecraft.world.entity.npc.villager.Villager
+  4  net.minecraft.world.item.alchemy.PotionUtils -> NO MATCH
+  4  net.minecraft.world.level.chunk.ChunkStatus -> net.minecraft.world.level.chunk.status.ChunkStatus
+  4  net.minecraft.world.level.levelgen.feature.ConfiguredFeature -> NO MATCH
+  4  net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration -> NO MATCH
+  3  net.minecraft.advancements.critereon.MinMaxBounds -> net.minecraft.advancements.predicates.MinMaxBounds
+  3  net.minecraft.client.model.HierarchicalModel -> NO MATCH
+  3  net.minecraft.client.model.IllagerModel -> net.minecraft.client.model.monster.illager.IllagerModel
+  3  net.minecraft.client.model.SnowGolemModel -> net.minecraft.client.model.animal.golem.SnowGolemModel
+  3  net.minecraft.client.renderer.ItemBlockRenderTypes -> NO MATCH
+  3  net.minecraft.client.renderer.entity.ItemRenderer -> NO MATCH
+  3  net.minecraft.client.resources.model.BakedModel -> NO MATCH
+  3  net.minecraft.world.InteractionResultHolder -> NO MATCH
+  3  net.minecraft.world.entity.animal.AbstractGolem -> net.minecraft.world.entity.animal.golem.AbstractGolem
+  3  net.minecraft.world.entity.animal.Wolf -> net.minecraft.world.entity.animal.wolf.Wolf
+  3  net.minecraft.world.entity.monster.Slime -> net.minecraft.world.entity.monster.cubemob.Slime
+  3  net.minecraft.world.entity.monster.Spider -> net.minecraft.world.entity.monster.spider.Spider
+  3  net.minecraft.world.entity.monster.Zombie -> net.minecraft.world.entity.monster.zombie.Zombie
+  3  net.minecraft.world.entity.projectile.Arrow -> net.minecraft.world.entity.projectile.arrow.Arrow
+  3  net.minecraft.world.entity.projectile.Snowball -> net.minecraft.world.entity.projectile.throwableitemprojectile.Snowball
+  3  net.minecraft.world.entity.projectile.ThrownPotion -> NO MATCH
+  3  net.minecraft.world.entity.projectile.ThrownTrident -> net.minecraft.world.entity.projectile.arrow.ThrownTrident
+  3  net.minecraft.world.entity.projectile.WitherSkull -> net.minecraft.world.entity.projectile.hurtingprojectile.WitherSkull
+  3  net.minecraft.world.level.BlockAndTintGetter -> net.minecraft.client.renderer.block.BlockAndTintGetter
+  3  net.minecraft.world.level.GameRules -> net.minecraft.world.level.gamerules.GameRules
+  3  net.minecraft.world.level.block.state.properties.DirectionProperty -> NO MATCH
+  2  net.minecraft.client.model.BeeModel -> net.minecraft.client.model.animal.bee.BeeModel
+  2  net.minecraft.client.model.ChickenModel -> net.minecraft.client.model.animal.chicken.ChickenModel
+  2  net.minecraft.client.model.CreeperModel -> net.minecraft.client.model.monster.creeper.CreeperModel
+  2  net.minecraft.client.model.ParrotModel -> net.minecraft.client.model.animal.parrot.ParrotModel
+  2  net.minecraft.client.model.PhantomModel -> net.minecraft.client.model.monster.phantom.PhantomModel
+  2  net.minecraft.client.model.PigModel -> net.minecraft.client.model.animal.pig.PigModel
+  2  net.minecraft.client.model.SkeletonModel -> net.minecraft.client.model.monster.skeleton.SkeletonModel
+  2  net.minecraft.client.model.SpiderModel -> net.minecraft.client.model.monster.spider.SpiderModel
+  2  net.minecraft.client.model.VillagerHeadModel -> NO MATCH
+  2  net.minecraft.client.model.ZombieVillagerModel -> net.minecraft.client.model.monster.zombie.ZombieVillagerModel
+  2  net.minecraft.client.renderer.DimensionSpecialEffects -> NO MATCH
+  2  net.minecraft.client.renderer.FogRenderer -> net.minecraft.client.renderer.fog.FogRenderer
+  2  net.minecraft.client.renderer.ItemInHandRenderer -> NO MATCH
+  2  net.minecraft.client.renderer.PanoramaRenderer -> NO MATCH
+  2  net.minecraft.client.renderer.item.ItemProperties -> NO MATCH
+  2  net.minecraft.world.entity.SpawnPlacements.Type -> AMBIGUOUS (42)
+  2  net.minecraft.world.entity.animal.Cat -> net.minecraft.world.entity.animal.feline.Cat
+  2  net.minecraft.world.entity.animal.IronGolem -> net.minecraft.world.entity.animal.golem.IronGolem
+  2  net.minecraft.world.entity.animal.Parrot -> net.minecraft.world.entity.animal.parrot.Parrot
+  2  net.minecraft.world.entity.animal.Pig -> net.minecraft.world.entity.animal.pig.Pig
+  2  net.minecraft.world.entity.monster.EnderMan -> NO MATCH
+  2  net.minecraft.world.entity.monster.Pillager -> net.minecraft.world.entity.monster.illager.Pillager
+  2  net.minecraft.world.entity.monster.Vindicator -> net.minecraft.world.entity.monster.illager.Vindicator
+  2  net.minecraft.world.entity.monster.WitherSkeleton -> net.minecraft.world.entity.monster.skeleton.WitherSkeleton
+  2  net.minecraft.world.entity.monster.ZombieVillager -> net.minecraft.world.entity.monster.zombie.ZombieVillager
+  2  net.minecraft.world.entity.projectile.DragonFireball -> net.minecraft.world.entity.projectile.hurtingprojectile.DragonFireball
+  2  net.minecraft.world.entity.projectile.ThrownEnderpearl -> net.minecraft.world.entity.projectile.throwableitemprojectile.ThrownEnderpearl
+  2  net.minecraft.world.entity.vehicle.AbstractMinecart -> net.minecraft.world.entity.vehicle.minecart.AbstractMinecart
+  2  net.minecraft.world.entity.vehicle.Boat -> net.minecraft.world.entity.vehicle.boat.Boat
+  2  net.minecraft.world.item.SimpleFoiledItem -> NO MATCH
+  2  net.minecraft.world.level.storage.loot.providers.number.NumberProvider -> NO MATCH
+  2  net.minecraft.world.level.storage.loot.providers.number.UniformGenerator -> AMBIGUOUS (2)
+  1  net.minecraft.advancements.critereon.EnchantmentPredicate -> net.minecraft.advancements.predicates.EnchantmentPredicate
+  1  net.minecraft.advancements.critereon.EntityFlagsPredicate -> net.minecraft.advancements.predicates.entity.EntityFlagsPredicate
+  1  net.minecraft.advancements.critereon.ItemPredicate -> net.minecraft.advancements.predicates.ItemPredicate
+  1  net.minecraft.client.RecipeBookCategories -> net.minecraft.world.item.crafting.RecipeBookCategories
+  1  net.minecraft.client.model.AbstractZombieModel -> NO MATCH
+  1  net.minecraft.client.model.CatModel -> NO MATCH
+  1  net.minecraft.client.model.GoatModel -> net.minecraft.client.model.animal.goat.GoatModel
+  1  net.minecraft.client.model.IronGolemModel -> net.minecraft.client.model.animal.golem.IronGolemModel
+  1  net.minecraft.client.model.SkullModelBase -> net.minecraft.client.model.object.skull.SkullModelBase
+  1  net.minecraft.client.model.WolfModel -> net.minecraft.client.model.animal.wolf.WolfModel
+  1  net.minecraft.client.model.ZombieModel -> net.minecraft.client.model.monster.zombie.ZombieModel
+  1  net.minecraft.client.renderer.FogRenderer.FogMode -> net.minecraft.client.renderer.fog.FogRenderer.FogMode
+  1  net.minecraft.client.renderer.LightTexture -> NO MATCH
+  1  net.minecraft.client.renderer.MultiBufferSource.BufferSource -> NO MATCH
+  1  net.minecraft.client.renderer.RenderStateShard.CullStateShard -> NO MATCH
+  1  net.minecraft.client.renderer.RenderStateShard.DepthTestStateShard -> NO MATCH
+  1  net.minecraft.client.renderer.RenderStateShard.LightmapStateShard -> NO MATCH
+  1  net.minecraft.client.renderer.RenderStateShard.OverlayStateShard -> NO MATCH
+  1  net.minecraft.client.renderer.RenderStateShard.ShaderStateShard -> NO MATCH
+  1  net.minecraft.client.renderer.RenderStateShard.TextureStateShard -> NO MATCH
+  1  net.minecraft.client.renderer.RenderStateShard.TransparencyStateShard -> NO MATCH
+  1  net.minecraft.client.renderer.RenderStateShard.WriteMaskStateShard -> NO MATCH
+  1  net.minecraft.client.renderer.RenderType.CompositeState -> NO MATCH
+  1  net.minecraft.client.renderer.ShaderInstance -> NO MATCH
+  1  net.minecraft.client.resources.MobEffectTextureManager -> NO MATCH
+  1  net.minecraft.commands.arguments.ResourceLocationArgument -> NO MATCH
+  1  net.minecraft.core.particles.ParticleOptions.Deserializer -> AMBIGUOUS (5)
+  1  net.minecraft.world.entity.FlyingMob -> NO MATCH
+  1  net.minecraft.world.entity.PowerableMob -> NO MATCH
+  1  net.minecraft.world.entity.animal.AbstractSchoolingFish -> net.minecraft.world.entity.animal.fish.AbstractSchoolingFish
+  1  net.minecraft.world.entity.animal.Chicken -> net.minecraft.world.entity.animal.chicken.Chicken
+  1  net.minecraft.world.entity.animal.Cow -> net.minecraft.world.entity.animal.cow.Cow
+  1  net.minecraft.world.entity.animal.Sheep -> net.minecraft.world.entity.animal.sheep.Sheep
+  1  net.minecraft.world.entity.animal.SnowGolem -> net.minecraft.world.entity.animal.golem.SnowGolem
+  1  net.minecraft.world.entity.animal.Squid -> net.minecraft.world.entity.animal.squid.Squid
+  1  net.minecraft.world.entity.animal.horse.Llama -> net.minecraft.world.entity.animal.equine.Llama
+  1  net.minecraft.world.entity.decoration.PaintingVariant -> net.minecraft.world.entity.decoration.painting.PaintingVariant
+  1  net.minecraft.world.entity.monster.Evoker -> net.minecraft.world.entity.monster.illager.Evoker
+  1  net.minecraft.world.entity.monster.ZombifiedPiglin -> net.minecraft.world.entity.monster.zombie.ZombifiedPiglin
+  1  net.minecraft.world.entity.npc.AbstractVillager -> net.minecraft.world.entity.npc.villager.AbstractVillager
+  1  net.minecraft.world.entity.npc.VillagerData -> net.minecraft.world.entity.npc.villager.VillagerData
+  1  net.minecraft.world.entity.npc.VillagerDataHolder -> net.minecraft.world.entity.npc.villager.VillagerDataHolder
+  1  net.minecraft.world.entity.npc.VillagerProfession -> net.minecraft.world.entity.npc.villager.VillagerProfession
+  1  net.minecraft.world.entity.npc.VillagerTrades -> net.minecraft.world.item.trading.VillagerTrades
+  1  net.minecraft.world.entity.npc.VillagerType -> net.minecraft.world.entity.npc.villager.VillagerType
+  1  net.minecraft.world.entity.projectile.LargeFireball -> net.minecraft.world.entity.projectile.hurtingprojectile.LargeFireball
+  1  net.minecraft.world.entity.projectile.SmallFireball -> net.minecraft.world.entity.projectile.hurtingprojectile.SmallFireball
+  1  net.minecraft.world.entity.projectile.SpectralArrow -> net.minecraft.world.entity.projectile.arrow.SpectralArrow
+  1  net.minecraft.world.item.AxeItem -> NO MATCH
+  1  net.minecraft.world.item.BowlFoodItem -> NO MATCH
+  1  net.minecraft.world.item.Equipable -> NO MATCH
+  1  net.minecraft.world.item.HoeItem -> NO MATCH
+  1  net.minecraft.world.item.ItemNameBlockItem -> NO MATCH
+  1  net.minecraft.world.item.PickaxeItem -> NO MATCH
+  1  net.minecraft.world.item.ShovelItem -> NO MATCH
+  1  net.minecraft.world.item.SignItem -> NO MATCH
+  1  net.minecraft.world.item.SuspiciousStewItem -> NO MATCH
+  1  net.minecraft.world.item.SwordItem -> NO MATCH
+  1  net.minecraft.world.item.UseAnim -> NO MATCH
+  1  net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer -> NO MATCH
+  1  net.minecraft.world.item.enchantment.ProtectionEnchantment -> NO MATCH
+  1  net.minecraft.world.level.block.GlassBlock -> NO MATCH
+  1  net.minecraft.world.level.block.PressurePlateBlock.Sensitivity -> NO MATCH
+  1  net.minecraft.world.level.levelgen.feature.FeaturePlaceContext -> NO MATCH
+  1  net.minecraft.world.level.portal.PortalInfo -> NO MATCH
+  1  net.minecraft.world.level.storage.loot.functions.LootingEnchantFunction -> NO MATCH
+  1  net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceWithLootingCondition -> NO MATCH
+  1  net.minecraft.world.level.storage.loot.providers.number.ConstantValue -> AMBIGUOUS (2)
