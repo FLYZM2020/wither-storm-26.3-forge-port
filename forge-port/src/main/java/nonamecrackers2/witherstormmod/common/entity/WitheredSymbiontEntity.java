@@ -207,9 +207,10 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
         for (Arrow arrow : spellArrows) {
             if (!arrow.isAlive()) continue;
             if (arrow.tickCount == delay) {
-                double x = target.getX() + random.nextGaussian() * 2.0 - arrow.getX();
-                double y = target.getY(1.0 / 3.0) + random.nextGaussian() * 0.5 - arrow.getY();
-                double z = target.getZ() + random.nextGaussian() * 2.0 - arrow.getZ();
+                LivingEntity selected = randomPlayerTarget(level, target);
+                double x = selected.getX() + random.nextGaussian() * 2.0 - arrow.getX();
+                double y = selected.getY(1.0 / 3.0) + random.nextGaussian() * 0.5 - arrow.getY();
+                double z = selected.getZ() + random.nextGaussian() * 2.0 - arrow.getZ();
                 arrow.shoot(x, y + Math.sqrt(x * x + z * z) * 0.2, z, 2.5F, 14 - level.getDifficulty().getId() * 4);
                 arrow.setNoGravity(false);
                 arrow.playSound(SoundEvents.ARROW_SHOOT, 2.0F, 1.0F);
@@ -232,13 +233,7 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
 
     /** Original expanding fang rings; conversion-mob summons are not yet available. */
     private void castFangs(ServerLevel level, LivingEntity target) {
-        double range = getAttributeValue(Attributes.FOLLOW_RANGE);
-        TargetingConditions targeting = TargetingConditions.forCombat().range(range);
-        LivingEntity fallback = target;
-        List<Player> alternatives = level.getEntitiesOfClass(Player.class, getBoundingBox().inflate(range),
-                player -> player != fallback && targeting.test(level, this, player));
-        if (!alternatives.isEmpty() && random.nextInt(alternatives.size() + 1) != 0)
-            target = alternatives.get(random.nextInt(alternatives.size()));
+        target = randomPlayerTarget(level, target);
         double minHeight = Math.min(target.getY(), getY()) - 2.0;
         double maxHeight = Math.max(target.getY(), getY()) + 2.0;
         double expansion = 3.0 + random.nextDouble();
@@ -263,6 +258,16 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
                 }
             }
         }
+    }
+
+    private LivingEntity randomPlayerTarget(ServerLevel level, LivingEntity target) {
+        double range = getAttributeValue(Attributes.FOLLOW_RANGE);
+        TargetingConditions targeting = TargetingConditions.forCombat().range(range);
+        List<Player> alternatives = level.getEntitiesOfClass(Player.class, getBoundingBox().inflate(range),
+                player -> player != target && targeting.test(level, this, player));
+        if (!alternatives.isEmpty() && random.nextInt(alternatives.size() + 1) != 0)
+            return alternatives.get(random.nextInt(alternatives.size()));
+        return target;
     }
 
     /** Skulls circle the caster before firing toward the target, as in the old spell. */
