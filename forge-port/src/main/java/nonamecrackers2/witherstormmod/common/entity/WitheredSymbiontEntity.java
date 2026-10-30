@@ -61,6 +61,7 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
     private int pullTicks;
     private int fangsTicks;
     private int arrowTicks;
+    private int pulseTicks;
     private final List<Arrow> spellArrows = new ArrayList<>();
 
     public WitheredSymbiontEntity(EntityType<? extends WitherSkeleton> type, Level level) {
@@ -71,7 +72,7 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
         super.registerGoals();
         goalSelector.addGoal(0, new Goal() {
             { setFlags(EnumSet.of(Flag.MOVE)); }
-            @Override public boolean canUse() { return skullTicks > 0 || pullTicks > 0 || fangsTicks > 0 || arrowTicks > 0; }
+            @Override public boolean canUse() { return skullTicks > 0 || pullTicks > 0 || fangsTicks > 0 || arrowTicks > 0 || pulseTicks > 0; }
             @Override public boolean canContinueToUse() { return canUse(); }
             @Override public void start() { getNavigation().stop(); }
             @Override public void tick() { getNavigation().stop(); }
@@ -93,7 +94,7 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
             bossBar.setName(getDisplayName());
             if (isAlive() && level() instanceof ServerLevel server) tickPulse(server);
             entityData.set(PULLING, isAlive() && pullTicks > 0);
-            entityData.set(CASTING, isAlive() && (pullTicks > 0 || skullTicks > 0 || fangsTicks > 0 || arrowTicks > 0));
+            entityData.set(CASTING, isAlive() && (pullTicks > 0 || skullTicks > 0 || fangsTicks > 0 || arrowTicks > 0 || pulseTicks > 0));
             if (isCasting() && level() instanceof ServerLevel server) showCastingParticles(server);
         }
     }
@@ -112,7 +113,29 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
     /** A small first step toward the original pulse spell; terrain effects are unported. */
     private void tickPulse(ServerLevel level) {
         if (getTarget() == null || !getTarget().isAlive()) {
-            if (pulseCharge > 0 || skullTicks > 0 || pullTicks > 0 || fangsTicks > 0 || arrowTicks > 0) { pulseCharge = 0; skullTicks = 0; pullTicks = 0; fangsTicks = 0; arrowTicks = 0; clearSpellArrows(); pulseCooldown = 100; }
+            if (pulseCharge > 0 || skullTicks > 0 || pullTicks > 0 || fangsTicks > 0 || arrowTicks > 0 || pulseTicks > 0) { pulseCharge = 0; skullTicks = 0; pullTicks = 0; fangsTicks = 0; arrowTicks = 0; pulseTicks = 0; clearSpellArrows(); pulseCooldown = 100; }
+            return;
+        }
+        if (pulseTicks > 0) {
+            TargetingConditions protection = TargetingConditions.forNonCombat().range(6.0);
+            for (ServerPlayer player : level.getEntitiesOfClass(ServerPlayer.class, getBoundingBox().inflate(6.0),
+                    p -> protection.test(level, this, p))) {
+                Vec3 away = position().subtract(player.position()).normalize().add(0.0, -0.5, 0.0).scale(-2.0);
+                player.setDeltaMovement(away);
+                player.connection.send(new ClientboundSetEntityMotionPacket(player));
+            }
+            if (--pulseTicks == 0) {
+                playSound(SoundEvents.GENERIC_EXPLODE.value(), 2.0F, 1.4F);
+                for (LivingEntity victim : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(12.0),
+                        e -> e != this && e.isAlive() && e.isAttackable() && !(e instanceof WitherBoss)
+                                && !(e instanceof WitheredSymbiontEntity) && !e.isSpectator()
+                                && !(e instanceof Player p && p.isCreative()))) {
+                    Vec3 away = victim.position().subtract(position()).add(0.0, 1.0, 0.0).normalize().scale(2.0);
+                    victim.setDeltaMovement(away);
+                    if (victim instanceof ServerPlayer player) player.connection.send(new ClientboundSetEntityMotionPacket(player));
+                }
+                pulseCooldown = 480 + random.nextInt(120);
+            }
             return;
         }
         if (arrowTicks > 0) {
@@ -183,16 +206,7 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
                     return;
                 }
                 previousSpell = 0;
-                playSound(SoundEvents.GENERIC_EXPLODE.value(), 2.0F, 1.4F);
-                for (LivingEntity victim : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(12.0),
-                        e -> e != this && e.isAlive() && e.isAttackable() && !(e instanceof WitherBoss)
-                                && !(e instanceof WitheredSymbiontEntity) && !e.isSpectator()
-                                && !(e instanceof Player p && p.isCreative()))) {
-                    Vec3 away = victim.position().subtract(position()).add(0.0, 1.0, 0.0).normalize().scale(2.0);
-                    victim.setDeltaMovement(away);
-                    if (victim instanceof ServerPlayer player) player.connection.send(new ClientboundSetEntityMotionPacket(player));
-                }
-                pulseCooldown = 300 + random.nextInt(200);
+                pulseTicks = 160;
             }
         } else if (--pulseCooldown <= 0) {
             pendingSpell = random.nextInt(previousSpell < 0 ? 5 : 4);
@@ -323,6 +337,7 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
         output.putInt("PullTicks", pullTicks);
         output.putInt("FangsTicks", fangsTicks);
         output.putInt("ArrowTicks", arrowTicks);
+        output.putInt("PulseTicks", pulseTicks);
     }
 
     @Override protected void readAdditionalSaveData(ValueInput input) {
@@ -336,6 +351,7 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
         pullTicks = Math.clamp(input.getIntOr("PullTicks", 0), 0, 240);
         fangsTicks = Math.clamp(input.getIntOr("FangsTicks", 0), 0, 20);
         arrowTicks = Math.clamp(input.getIntOr("ArrowTicks", 0), 0, 120);
+        pulseTicks = Math.clamp(input.getIntOr("PulseTicks", 0), 0, 160);
     }
 
     @Override public void startSeenByPlayer(ServerPlayer player) {
