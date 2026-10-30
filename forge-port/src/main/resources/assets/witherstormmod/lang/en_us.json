@@ -38,5 +38,9 @@
   "commands.witherstormmod.sickness.cure_started": "Beginning treatment for %s.",
   "witherstormmod.subtitle.withered_symbiont_pull": "Withered Symbiont pulls",
   "witherstormmod.subtitle.withered_symbiont_prepare_spell": "Withered Symbiont prepares a spell",
-  "witherstormmod.subtitle.withered_symbiont_cast_spell": "Withered Symbiont casts a spell"
+  "witherstormmod.subtitle.withered_symbiont_cast_spell": "Withered Symbiont casts a spell",
+  "witherstormmod.subtitle.withered_symbiont_ambient": "Withered Symbiont murmurs",
+  "witherstormmod.subtitle.withered_symbiont_hurt": "Withered Symbiont hurts",
+  "witherstormmod.subtitle.withered_symbiont_death": "Withered Symbiont dies",
+  "witherstormmod.subtitle.withered_symbiont_step": "Withered Symbiont steps"
 }

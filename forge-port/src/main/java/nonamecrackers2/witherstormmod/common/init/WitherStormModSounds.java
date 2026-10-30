@@ -20,5 +20,13 @@ public final class WitherStormModSounds {
             SoundEvent.createVariableRangeEvent(WitherStormMod.id("withered_symbiont_prepare_spell")));
     public static final RegistryObject<SoundEvent> SYMBIONT_CAST = SOUNDS.register("withered_symbiont_cast_spell", () ->
             SoundEvent.createVariableRangeEvent(WitherStormMod.id("withered_symbiont_cast_spell")));
+    public static final RegistryObject<SoundEvent> SYMBIONT_AMBIENT = SOUNDS.register("withered_symbiont_ambient", () ->
+            SoundEvent.createVariableRangeEvent(WitherStormMod.id("withered_symbiont_ambient")));
+    public static final RegistryObject<SoundEvent> SYMBIONT_HURT = SOUNDS.register("withered_symbiont_hurt", () ->
+            SoundEvent.createVariableRangeEvent(WitherStormMod.id("withered_symbiont_hurt")));
+    public static final RegistryObject<SoundEvent> SYMBIONT_DEATH = SOUNDS.register("withered_symbiont_death", () ->
+            SoundEvent.createVariableRangeEvent(WitherStormMod.id("withered_symbiont_death")));
+    public static final RegistryObject<SoundEvent> SYMBIONT_STEP = SOUNDS.register("withered_symbiont_step", () ->
+            SoundEvent.createVariableRangeEvent(WitherStormMod.id("withered_symbiont_step")));
     private WitherStormModSounds() {}
 }

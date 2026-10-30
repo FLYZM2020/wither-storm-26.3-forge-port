@@ -16,11 +16,14 @@ import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.BossEvent.BossBarColor;
 import net.minecraft.world.BossEvent.BossBarOverlay;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -73,6 +76,12 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
     public WitheredSymbiontEntity(EntityType<? extends WitherSkeleton> type, Level level) {
         super(type, level);
     }
+
+    @Override protected SoundEvent getAmbientSound() { return WitherStormModSounds.SYMBIONT_AMBIENT.get(); }
+    @Override protected SoundEvent getHurtSound(DamageSource source) { return WitherStormModSounds.SYMBIONT_HURT.get(); }
+    @Override protected SoundEvent getDeathSound() { return WitherStormModSounds.SYMBIONT_DEATH.get(); }
+    @Override protected void playStepSound(BlockPos pos, BlockState state) { playSound(WitherStormModSounds.SYMBIONT_STEP.get(), 0.3F, 1.0F); }
+    @Override public float getVoicePitch() { return isDeadOrDying() ? 1.0F : super.getVoicePitch(); }
 
     @Override protected void registerGoals() {
         super.registerGoals();

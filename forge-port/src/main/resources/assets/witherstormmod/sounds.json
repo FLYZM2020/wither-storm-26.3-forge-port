@@ -53,5 +53,62 @@
         "name": "minecraft:entity.illusioner.cast_spell"
       }
     ]
+  },
+  "withered_symbiont_ambient": {
+    "category": "hostile",
+    "subtitle": "witherstormmod.subtitle.withered_symbiont_ambient",
+    "sounds": [
+      {
+        "name": "witherstormmod:withered_symbiont/withered_symbiont_say"
+      },
+      {
+        "name": "witherstormmod:withered_symbiont/withered_symbiont_say_1"
+      },
+      {
+        "name": "witherstormmod:withered_symbiont/withered_symbiont_say_2"
+      }
+    ]
+  },
+  "withered_symbiont_hurt": {
+    "category": "hostile",
+    "subtitle": "witherstormmod.subtitle.withered_symbiont_hurt",
+    "sounds": [
+      {
+        "name": "witherstormmod:withered_symbiont/withered_symbiont_hurt"
+      },
+      {
+        "name": "witherstormmod:withered_symbiont/withered_symbiont_hurt_1"
+      }
+    ]
+  },
+  "withered_symbiont_death": {
+    "category": "hostile",
+    "subtitle": "witherstormmod.subtitle.withered_symbiont_death",
+    "sounds": [
+      {
+        "name": "witherstormmod:withered_symbiont/withered_symbiont_death"
+      }
+    ]
+  },
+  "withered_symbiont_step": {
+    "category": "hostile",
+    "subtitle": "witherstormmod.subtitle.withered_symbiont_step",
+    "sounds": [
+      {
+        "name": "witherstormmod:withered_symbiont/withered_symbiont_step"
+      },
+      {
+        "name": "witherstormmod:withered_symbiont/withered_symbiont_step_1"
+      },
+      {
+        "name": "witherstormmod:withered_symbiont/withered_symbiont_step_2"
+      },
+      {
+        "name": "witherstormmod:withered_symbiont/withered_symbiont_step_3"
+      },
+      {
+        "name": "witherstormmod:withered_symbiont/withered_symbiont_step_4"
+      }
+    ]
   }
 }
