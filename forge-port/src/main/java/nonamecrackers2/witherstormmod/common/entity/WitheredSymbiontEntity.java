@@ -11,6 +11,13 @@ import net.minecraft.world.BossEvent.BossBarColor;
 import net.minecraft.world.BossEvent.BossBarOverlay;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.NeutralMob;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.golem.AbstractGolem;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.npc.villager.AbstractVillager;
+import nonamecrackers2.witherstormmod.common.tags.WitherStormModEntityTags;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.monster.skeleton.WitherSkeleton;
 import net.minecraft.world.entity.player.Player;
@@ -22,7 +29,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
-/** Early symbiont with melee and simplified versions of two spells. */
+/** Early symbiont with melee and simplified versions of three spells. */
 public final class WitheredSymbiontEntity extends WitherSkeleton {
     private final ServerBossEvent bossBar = new ServerBossEvent(UUID.randomUUID(), getDisplayName(), BossBarColor.PURPLE, BossBarOverlay.PROGRESS);
     private int pulseCooldown = 200;
@@ -53,14 +60,18 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
             return;
         }
         if (pullTicks > 0) {
-            for (LivingEntity victim : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(45.0),
+            double range = getAttributeValue(Attributes.FOLLOW_RANGE);
+            for (LivingEntity victim : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(range),
                     e -> e != this && e.isAlive() && e.isAttackable() && !e.isSpectator()
                             && !(e instanceof WitherBoss || e instanceof WitherSkeleton || e instanceof Enderman || e instanceof EnderDragon)
-                            && !(e instanceof Player p && p.isCreative()) && e.distanceToSqr(this) <= 45.0 * 45.0)) {
+                            && !e.typeHolder().is(WitherStormModEntityTags.SICKENED_MOBS)
+                            && (e instanceof AbstractVillager || e instanceof AbstractGolem || e instanceof Monster || e instanceof Animal || e instanceof NeutralMob || e instanceof Player)
+                            && !(e instanceof Player p && p.isCreative()) && e.distanceToSqr(this) <= range * range)) {
                 if (victim.distanceToSqr(this) < 9.0) { pullTicks = 0; break; }
                 Vec3 pull = position().subtract(victim.position()).normalize().scale(0.1);
                 victim.setDeltaMovement(pull.x, victim.getDeltaMovement().y, pull.z);
                 if (victim instanceof ServerPlayer player) player.connection.send(new ClientboundSetEntityMotionPacket(player));
+                if (tickCount % 5 == 0) level.sendParticles(ParticleTypes.PORTAL, victim.getX(), victim.getY(0.5), victim.getZ(), 3, 0.3, 0.3, 0.3, 0.05);
             }
             if (pullTicks > 0) pullTicks--;
             if (pullTicks == 0) pulseCooldown = 340 + random.nextInt(80);
