@@ -21,6 +21,7 @@ import net.minecraft.world.BossEvent.BossBarOverlay;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
@@ -62,6 +63,11 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
     private int fangsTicks;
     private int arrowTicks;
     private int pulseTicks;
+    private int smashTicks;
+    private int smashStomps;
+    private int smashCooldown;
+    private int smashAirTicks;
+    private boolean smashing;
     private final List<Arrow> spellArrows = new ArrayList<>();
 
     public WitheredSymbiontEntity(EntityType<? extends WitherSkeleton> type, Level level) {
@@ -72,7 +78,7 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
         super.registerGoals();
         goalSelector.addGoal(0, new Goal() {
             { setFlags(EnumSet.of(Flag.MOVE)); }
-            @Override public boolean canUse() { return skullTicks > 0 || pullTicks > 0 || fangsTicks > 0 || arrowTicks > 0 || pulseTicks > 0; }
+            @Override public boolean canUse() { return skullTicks > 0 || pullTicks > 0 || fangsTicks > 0 || arrowTicks > 0 || pulseTicks > 0 || smashTicks > 0; }
             @Override public boolean canContinueToUse() { return canUse(); }
             @Override public void start() { getNavigation().stop(); }
             @Override public void tick() { getNavigation().stop(); }
@@ -92,9 +98,12 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
         if (!level().isClientSide()) {
             bossBar.setProgress(Math.clamp(getHealth() / getMaxHealth(), 0.0F, 1.0F));
             bossBar.setName(getDisplayName());
-            if (isAlive() && level() instanceof ServerLevel server) tickPulse(server);
+            if (isAlive() && level() instanceof ServerLevel server) {
+                tickSmashLanding(server);
+                tickPulse(server);
+            }
             entityData.set(PULLING, isAlive() && pullTicks > 0);
-            entityData.set(CASTING, isAlive() && (pullTicks > 0 || skullTicks > 0 || fangsTicks > 0 || arrowTicks > 0 || pulseTicks > 0));
+            entityData.set(CASTING, isAlive() && (pullTicks > 0 || skullTicks > 0 || fangsTicks > 0 || arrowTicks > 0 || pulseTicks > 0 || smashTicks > 0));
             if (isCasting() && level() instanceof ServerLevel server) showCastingParticles(server);
         }
     }
@@ -113,7 +122,19 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
     /** A small first step toward the original pulse spell; terrain effects are unported. */
     private void tickPulse(ServerLevel level) {
         if (getTarget() == null || !getTarget().isAlive()) {
-            if (pulseCharge > 0 || skullTicks > 0 || pullTicks > 0 || fangsTicks > 0 || arrowTicks > 0 || pulseTicks > 0) { pulseCharge = 0; skullTicks = 0; pullTicks = 0; fangsTicks = 0; arrowTicks = 0; pulseTicks = 0; clearSpellArrows(); pulseCooldown = 100; }
+            if (pulseCharge > 0 || skullTicks > 0 || pullTicks > 0 || fangsTicks > 0 || arrowTicks > 0 || pulseTicks > 0 || smashTicks > 0) { pulseCharge = 0; skullTicks = 0; pullTicks = 0; fangsTicks = 0; arrowTicks = 0; pulseTicks = 0; smashTicks = 0; clearSpellArrows(); pulseCooldown = 100; }
+            return;
+        }
+        if (smashTicks > 0) {
+            if (smashStomps > 0 && smashCooldown <= 0) {
+                stomp(randomPlayerTarget(level, getTarget()));
+                smashStomps--;
+                smashCooldown = 5;
+            } else smashCooldown--;
+            if (--smashTicks == 0) {
+                stomp(getTarget());
+                pulseCooldown = 160 + random.nextInt(40);
+            }
             return;
         }
         if (pulseTicks > 0) {
@@ -185,6 +206,13 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
                 level.sendParticles(ParticleTypes.PORTAL, getX(), getY() + 1.2, getZ(), 12, 0.6, 0.8, 0.6, 0.1);
             if (pulseCharge == 0) {
                 playSound(WitherStormModSounds.SYMBIONT_CAST.get(), 4.0F, 1.0F);
+                if (pendingSpell == 5) {
+                    previousSpell = 5;
+                    smashTicks = 40;
+                    smashStomps = random.nextInt(3) + 1;
+                    smashCooldown = 0;
+                    return;
+                }
                 if (pendingSpell == 4) {
                     previousSpell = 4;
                     arrowTicks = 120;
@@ -210,11 +238,34 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
                 pulseTicks = 160;
             }
         } else if (--pulseCooldown <= 0) {
-            pendingSpell = random.nextInt(previousSpell < 0 ? 5 : 4);
+            pendingSpell = random.nextInt(previousSpell < 0 ? 6 : 5);
             if (previousSpell >= 0 && pendingSpell >= previousSpell) pendingSpell++;
             preparingSkulls = pendingSpell == 1;
             pulseCharge = 40 + random.nextInt(20);
             playSound(WitherStormModSounds.SYMBIONT_PREPARE.get(), 4.0F, 1.0F);
+        }
+    }
+
+    /** Old smash spell launches toward its target and slams down after a short flight. */
+    private void stomp(LivingEntity target) {
+        if (getBlockStateOn().isAir()) return;
+        float jump = getJumpPower() * 5.0F;
+        var boost = getEffect(MobEffects.JUMP_BOOST);
+        if (boost != null) jump += 0.1F * (boost.getAmplifier() + 1);
+        double factor = Math.min(0.2, distanceTo(target) * 0.05);
+        setDeltaMovement((target.getX() - getX()) * factor, jump, (target.getZ() - getZ()) * factor);
+        smashing = true;
+        smashAirTicks = 20;
+        playSound(getBlockStateOn().getSoundType().getBreakSound(), 4.0F, 1.0F);
+    }
+
+    private void tickSmashLanding(ServerLevel level) {
+        if (!smashing) return;
+        if (smashAirTicks > 0) {
+            if (--smashAirTicks == 0) setDeltaMovement(getDeltaMovement().x, -5.0, getDeltaMovement().z);
+        } else if (onGround()) {
+            smashing = false;
+            level.explode(this, getX(), getY(), getZ(), getHealth() <= getMaxHealth() * 0.5F ? 2.5F : 1.5F, Level.ExplosionInteraction.MOB);
         }
     }
 
@@ -339,6 +390,11 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
         output.putInt("FangsTicks", fangsTicks);
         output.putInt("ArrowTicks", arrowTicks);
         output.putInt("PulseTicks", pulseTicks);
+        output.putInt("SmashTicks", smashTicks);
+        output.putInt("SmashStomps", smashStomps);
+        output.putInt("SmashCooldown", smashCooldown);
+        output.putInt("SmashAirTicks", smashAirTicks);
+        output.putBoolean("Smashing", smashing);
     }
 
     @Override protected void readAdditionalSaveData(ValueInput input) {
@@ -347,12 +403,17 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
         pulseCharge = Math.clamp(input.getIntOr("PulseCharge", 0), 0, 59);
         skullTicks = Math.clamp(input.getIntOr("SkullTicks", 0), 0, 220);
         preparingSkulls = input.getBooleanOr("PreparingSkulls", false);
-        previousSpell = Math.clamp(input.getIntOr("PreviousSpell", -1), -1, 4);
-        pendingSpell = Math.clamp(input.getIntOr("PendingSpell", preparingSkulls ? 1 : 0), 0, 4);
+        previousSpell = Math.clamp(input.getIntOr("PreviousSpell", -1), -1, 5);
+        pendingSpell = Math.clamp(input.getIntOr("PendingSpell", preparingSkulls ? 1 : 0), 0, 5);
         pullTicks = Math.clamp(input.getIntOr("PullTicks", 0), 0, 240);
         fangsTicks = Math.clamp(input.getIntOr("FangsTicks", 0), 0, 20);
         arrowTicks = Math.clamp(input.getIntOr("ArrowTicks", 0), 0, 120);
         pulseTicks = Math.clamp(input.getIntOr("PulseTicks", 0), 0, 160);
+        smashTicks = Math.clamp(input.getIntOr("SmashTicks", 0), 0, 40);
+        smashStomps = Math.clamp(input.getIntOr("SmashStomps", 0), 0, 3);
+        smashCooldown = Math.clamp(input.getIntOr("SmashCooldown", 0), -1, 5);
+        smashAirTicks = Math.clamp(input.getIntOr("SmashAirTicks", 0), 0, 20);
+        smashing = input.getBooleanOr("Smashing", false);
     }
 
     @Override public void startSeenByPlayer(ServerPlayer player) {
