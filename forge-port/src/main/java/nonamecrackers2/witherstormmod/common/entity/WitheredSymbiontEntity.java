@@ -75,6 +75,7 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
 
     public WitheredSymbiontEntity(EntityType<? extends WitherSkeleton> type, Level level) {
         super(type, level);
+        xpReward = 150;
     }
 
     @Override protected SoundEvent getAmbientSound() { return WitherStormModSounds.SYMBIONT_AMBIENT.get(); }
@@ -82,6 +83,8 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
     @Override protected SoundEvent getDeathSound() { return WitherStormModSounds.SYMBIONT_DEATH.get(); }
     @Override protected void playStepSound(BlockPos pos, BlockState state) { playSound(WitherStormModSounds.SYMBIONT_STEP.get(), 0.3F, 1.0F); }
     @Override public float getVoicePitch() { return isDeadOrDying() ? 1.0F : super.getVoicePitch(); }
+    @Override public boolean causeFallDamage(double distance, float multiplier, DamageSource source) { return false; }
+    @Override public boolean canBeLeashed() { return false; }
 
     @Override protected void registerGoals() {
         super.registerGoals();
