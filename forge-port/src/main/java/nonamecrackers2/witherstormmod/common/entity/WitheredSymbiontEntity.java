@@ -27,6 +27,7 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
     private int pulseCharge;
     private int skullTicks;
     private boolean preparingSkulls;
+    private int previousSpell = -1;
 
     public WitheredSymbiontEntity(EntityType<? extends WitherSkeleton> type, Level level) {
         super(type, level);
@@ -59,9 +60,11 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
             if (pulseCharge == 0) {
                 if (preparingSkulls) {
                     preparingSkulls = false;
+                    previousSpell = 1;
                     skullTicks = 220;
                     return;
                 }
+                previousSpell = 0;
                 playSound(SoundEvents.GENERIC_EXPLODE.value(), 2.0F, 1.4F);
                 for (LivingEntity victim : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(12.0),
                         e -> e != this && e.isAlive() && e.isAttackable() && !(e instanceof WitherBoss)
@@ -74,8 +77,8 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
                 pulseCooldown = 300 + random.nextInt(200);
             }
         } else if (--pulseCooldown <= 0) {
-            preparingSkulls = random.nextBoolean();
-            pulseCharge = 40;
+            preparingSkulls = previousSpell < 0 ? random.nextBoolean() : previousSpell == 0;
+            pulseCharge = 40 + random.nextInt(20);
             playSound(SoundEvents.EVOKER_CAST_SPELL, 2.0F, 1.0F);
         }
     }
@@ -104,14 +107,16 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
         output.putInt("PulseCharge", pulseCharge);
         output.putInt("SkullTicks", skullTicks);
         output.putBoolean("PreparingSkulls", preparingSkulls);
+        output.putInt("PreviousSpell", previousSpell);
     }
 
     @Override protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
         pulseCooldown = Math.clamp(input.getIntOr("PulseCooldown", 200), 0, 500);
-        pulseCharge = Math.clamp(input.getIntOr("PulseCharge", 0), 0, 40);
+        pulseCharge = Math.clamp(input.getIntOr("PulseCharge", 0), 0, 59);
         skullTicks = Math.clamp(input.getIntOr("SkullTicks", 0), 0, 220);
         preparingSkulls = input.getBooleanOr("PreparingSkulls", false);
+        previousSpell = Math.clamp(input.getIntOr("PreviousSpell", -1), -1, 1);
     }
 
     @Override public void startSeenByPlayer(ServerPlayer player) {
