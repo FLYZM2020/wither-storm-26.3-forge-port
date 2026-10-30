@@ -37,6 +37,7 @@ import net.minecraft.world.phys.Vec3;
 /** Early symbiont with melee and simplified versions of three spells. */
 public final class WitheredSymbiontEntity extends WitherSkeleton {
     private static final EntityDataAccessor<Boolean> PULLING = SynchedEntityData.defineId(WitheredSymbiontEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> CASTING = SynchedEntityData.defineId(WitheredSymbiontEntity.class, EntityDataSerializers.BOOLEAN);
     private final ServerBossEvent bossBar = new ServerBossEvent(UUID.randomUUID(), getDisplayName(), BossBarColor.PURPLE, BossBarOverlay.PROGRESS);
     private int pulseCooldown = 200;
     private int pulseCharge;
@@ -53,8 +54,10 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
     @Override protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(PULLING, false);
+        builder.define(CASTING, false);
     }
     public boolean isPulling() { return entityData.get(PULLING); }
+    public boolean isCasting() { return entityData.get(CASTING); }
 
     @Override public void aiStep() {
         super.aiStep();
@@ -63,6 +66,7 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
             bossBar.setName(getDisplayName());
             if (isAlive() && level() instanceof ServerLevel server) tickPulse(server);
             entityData.set(PULLING, isAlive() && pullTicks > 0);
+            entityData.set(CASTING, isAlive() && (pullTicks > 0 || skullTicks > 0));
         }
     }
 

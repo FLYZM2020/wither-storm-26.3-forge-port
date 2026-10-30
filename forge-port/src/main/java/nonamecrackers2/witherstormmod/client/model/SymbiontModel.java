@@ -7,6 +7,7 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.model.monster.skeleton.SkeletonModel;
 import net.minecraft.client.renderer.entity.state.SkeletonRenderState;
 import net.minecraft.util.Mth;
+import nonamecrackers2.witherstormmod.client.renderer.SymbiontRenderer;
 
 /** Early adaptation of the original body geometry and tentacles. */
 public final class SymbiontModel extends SkeletonModel<SkeletonRenderState> {
@@ -70,6 +71,13 @@ public final class SymbiontModel extends SkeletonModel<SkeletonRenderState> {
 
     @Override public void setupAnim(SkeletonRenderState state) {
         super.setupAnim(state);
+        if (state instanceof SymbiontRenderer.State symbiont && symbiont.casting) {
+            float wave = Mth.sin(state.ageInTicks * 0.5F) * 0.8F;
+            leftArm.yRot = -0.4F - wave;
+            rightArm.yRot = -0.4F + wave;
+            leftArm.xRot = -2.5F;
+            rightArm.xRot = -2.5F;
+        }
         float[] xAngles = {10.0F, 15.0F, 50.0F};
         float[] yAngles = {-30.0F, 40.0F, -10.0F};
         for (int i = 0; i < 3; i++) {
