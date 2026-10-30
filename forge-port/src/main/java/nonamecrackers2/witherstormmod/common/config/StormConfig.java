@@ -36,6 +36,9 @@ public final class StormConfig {
             .defineInRange("formidibomb.explosionPower", 48.0, 1.0, 56.0);
     public static final ForgeConfigSpec.IntValue FORMIDIBOMB_CRAFT_FUSE = BUILDER
             .defineInRange("formidibomb.craftFuseTicks", 12000, 1, 12000);
+    public static final ForgeConfigSpec.IntValue FORMIDIBOMB_FIRE_FUSE = BUILDER
+            .comment("Maximum remaining fuse when a placed Formidibomb catches fire.")
+            .defineInRange("formidibomb.catchFireFuseTicks", 1200, 1, 12000);
     public static final ForgeConfigSpec.BooleanValue FORMIDIBOMB_AUTO_FUSE = BUILDER
             .define("formidibomb.formidibombFuseEnabled", true);
     public static final ForgeConfigSpec.BooleanValue REVIVAL_TIMER_ENABLED = BUILDER

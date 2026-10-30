@@ -32,10 +32,10 @@ public final class FormidibombBlockEntity extends BlockEntity {
         setChanged();
     }
     public static void tick(ServerLevel level, BlockPos pos, BlockState state, FormidibombBlockEntity entity) {
-        if (entity.startingFuse <= 0 || !StormConfig.FORMIDIBOMB_AUTO_FUSE.get()) return;
-        entity.fuse = Math.max(0, entity.fuse - 1);
-        if (entity.fuse == 0) {
-            FormidibombEntity bomb = FormidibombEntity.create(level, pos, state, entity.getOwner(level), 1);
+        if (entity.startingFuse <= 0) return;
+        if (StormConfig.FORMIDIBOMB_AUTO_FUSE.get()) entity.fuse = Math.max(0, entity.fuse - 1);
+        if (entity.fuse <= entity.startingFuse / 4) {
+            FormidibombEntity bomb = FormidibombEntity.create(level, pos, state, entity.getOwner(level), Math.max(1, entity.fuse));
             if (level.addFreshEntity(bomb)) level.removeBlock(pos, false);
         } else if (entity.fuse % 20 == 0) entity.setChanged();
     }

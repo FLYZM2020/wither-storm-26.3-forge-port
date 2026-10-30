@@ -29,6 +29,7 @@ import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.gameevent.GameEvent;
 import nonamecrackers2.witherstormmod.common.entity.FormidibombEntity;
+import nonamecrackers2.witherstormmod.common.config.StormConfig;
 import nonamecrackers2.witherstormmod.common.blockentity.FormidibombBlockEntity;
 import nonamecrackers2.witherstormmod.common.init.WitherStormModBlockEntities;
 import nonamecrackers2.witherstormmod.common.item.FormidibombItem;
@@ -46,8 +47,9 @@ public final class FormidibombBlock extends TntBlock implements EntityBlock {
     public boolean onCaughtFire(BlockState state, Level level, BlockPos pos, @Nullable Direction face, @Nullable LivingEntity igniter) {
         if (!(level instanceof ServerLevel server) || !server.getGameRules().get(GameRules.TNT_EXPLODES)) return false;
         BlockEntity entity = server.getBlockEntity(pos);
+        int fireFuse = StormConfig.FORMIDIBOMB_FIRE_FUSE.get();
         int fuse = entity instanceof FormidibombBlockEntity bombData && bombData.getStartingFuse() > 0
-                ? Math.min(1200, Math.max(1, bombData.getFuse())) : 1200;
+                ? Math.min(fireFuse, Math.max(1, bombData.getFuse())) : fireFuse;
         LivingEntity owner = entity instanceof FormidibombBlockEntity bombData && bombData.getStartingFuse() > 0
                 && bombData.getOwner(server) != null ? bombData.getOwner(server) : igniter;
         FormidibombEntity bomb = FormidibombEntity.create(server, pos, state, owner, fuse);
