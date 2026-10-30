@@ -14,6 +14,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.monster.skeleton.WitherSkeleton;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.monster.Enderman;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.projectile.hurtingprojectile.WitherSkull;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
@@ -28,6 +30,8 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
     private int skullTicks;
     private boolean preparingSkulls;
     private int previousSpell = -1;
+    private int pendingSpell;
+    private int pullTicks;
 
     public WitheredSymbiontEntity(EntityType<? extends WitherSkeleton> type, Level level) {
         super(type, level);
@@ -45,7 +49,21 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
     /** A small first step toward the original pulse spell; terrain effects are unported. */
     private void tickPulse(ServerLevel level) {
         if (getTarget() == null || !getTarget().isAlive()) {
-            if (pulseCharge > 0 || skullTicks > 0) { pulseCharge = 0; skullTicks = 0; pulseCooldown = 100; }
+            if (pulseCharge > 0 || skullTicks > 0 || pullTicks > 0) { pulseCharge = 0; skullTicks = 0; pullTicks = 0; pulseCooldown = 100; }
+            return;
+        }
+        if (pullTicks > 0) {
+            for (LivingEntity victim : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(45.0),
+                    e -> e != this && e.isAlive() && e.isAttackable() && !e.isSpectator()
+                            && !(e instanceof WitherBoss || e instanceof WitherSkeleton || e instanceof Enderman || e instanceof EnderDragon)
+                            && !(e instanceof Player p && p.isCreative()) && e.distanceToSqr(this) <= 45.0 * 45.0)) {
+                if (victim.distanceToSqr(this) < 9.0) { pullTicks = 0; break; }
+                Vec3 pull = position().subtract(victim.position()).normalize().scale(0.1);
+                victim.setDeltaMovement(pull.x, victim.getDeltaMovement().y, pull.z);
+                if (victim instanceof ServerPlayer player) player.connection.send(new ClientboundSetEntityMotionPacket(player));
+            }
+            if (pullTicks > 0) pullTicks--;
+            if (pullTicks == 0) pulseCooldown = 340 + random.nextInt(80);
             return;
         }
         if (skullTicks > 0) {
@@ -58,7 +76,12 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
             if (--pulseCharge % 5 == 0)
                 level.sendParticles(ParticleTypes.PORTAL, getX(), getY() + 1.2, getZ(), 12, 0.6, 0.8, 0.6, 0.1);
             if (pulseCharge == 0) {
-                if (preparingSkulls) {
+                if (pendingSpell == 2) {
+                    previousSpell = 2;
+                    pullTicks = 240;
+                    return;
+                }
+                if (pendingSpell == 1) {
                     preparingSkulls = false;
                     previousSpell = 1;
                     skullTicks = 220;
@@ -77,7 +100,9 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
                 pulseCooldown = 300 + random.nextInt(200);
             }
         } else if (--pulseCooldown <= 0) {
-            preparingSkulls = previousSpell < 0 ? random.nextBoolean() : previousSpell == 0;
+            pendingSpell = random.nextInt(previousSpell < 0 ? 3 : 2);
+            if (previousSpell >= 0 && pendingSpell >= previousSpell) pendingSpell++;
+            preparingSkulls = pendingSpell == 1;
             pulseCharge = 40 + random.nextInt(20);
             playSound(SoundEvents.EVOKER_CAST_SPELL, 2.0F, 1.0F);
         }
@@ -108,6 +133,8 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
         output.putInt("SkullTicks", skullTicks);
         output.putBoolean("PreparingSkulls", preparingSkulls);
         output.putInt("PreviousSpell", previousSpell);
+        output.putInt("PendingSpell", pendingSpell);
+        output.putInt("PullTicks", pullTicks);
     }
 
     @Override protected void readAdditionalSaveData(ValueInput input) {
@@ -116,7 +143,9 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
         pulseCharge = Math.clamp(input.getIntOr("PulseCharge", 0), 0, 59);
         skullTicks = Math.clamp(input.getIntOr("SkullTicks", 0), 0, 220);
         preparingSkulls = input.getBooleanOr("PreparingSkulls", false);
-        previousSpell = Math.clamp(input.getIntOr("PreviousSpell", -1), -1, 1);
+        previousSpell = Math.clamp(input.getIntOr("PreviousSpell", -1), -1, 2);
+        pendingSpell = Math.clamp(input.getIntOr("PendingSpell", preparingSkulls ? 1 : 0), 0, 2);
+        pullTicks = Math.clamp(input.getIntOr("PullTicks", 0), 0, 240);
     }
 
     @Override public void startSeenByPlayer(ServerPlayer player) {
