@@ -1,6 +1,7 @@
 package nonamecrackers2.witherstormmod.common.entity;
 
 import java.util.UUID;
+import java.util.EnumSet;
 import net.minecraft.core.particles.ParticleTypes;
 import nonamecrackers2.witherstormmod.WitherStormMod;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
@@ -18,6 +19,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.golem.AbstractGolem;
 import net.minecraft.world.entity.monster.Monster;
@@ -50,6 +52,17 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
 
     public WitheredSymbiontEntity(EntityType<? extends WitherSkeleton> type, Level level) {
         super(type, level);
+    }
+
+    @Override protected void registerGoals() {
+        super.registerGoals();
+        goalSelector.addGoal(0, new Goal() {
+            { setFlags(EnumSet.of(Flag.MOVE)); }
+            @Override public boolean canUse() { return skullTicks > 0 || pullTicks > 0; }
+            @Override public boolean canContinueToUse() { return canUse(); }
+            @Override public void start() { getNavigation().stop(); }
+            @Override public void tick() { getNavigation().stop(); }
+        });
     }
 
     @Override protected void defineSynchedData(SynchedEntityData.Builder builder) {
