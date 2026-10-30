@@ -94,6 +94,18 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
             if (isAlive() && level() instanceof ServerLevel server) tickPulse(server);
             entityData.set(PULLING, isAlive() && pullTicks > 0);
             entityData.set(CASTING, isAlive() && (pullTicks > 0 || skullTicks > 0 || fangsTicks > 0 || arrowTicks > 0));
+            if (isCasting() && level() instanceof ServerLevel server) showCastingParticles(server);
+        }
+    }
+
+    /** The original emits command particles towards the symbiont during each spell. */
+    private void showCastingParticles(ServerLevel level) {
+        for (int i = 0; i < 5; i++) {
+            double x = getX() + random.nextGaussian() * 2.0;
+            double y = getEyeY() + random.nextGaussian() * 2.0;
+            double z = getZ() + random.nextGaussian() * 2.0;
+            Vec3 direction = getEyePosition().subtract(x, y, z).normalize().scale(0.2);
+            level.sendParticles(WitherStormMod.COMMAND_PARTICLE.get(), x, y, z, 0, direction.x, direction.y, direction.z, 1.0);
         }
     }
 
