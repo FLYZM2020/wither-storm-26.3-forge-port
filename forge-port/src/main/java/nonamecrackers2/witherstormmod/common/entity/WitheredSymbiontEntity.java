@@ -17,6 +17,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.golem.AbstractGolem;
 import net.minecraft.world.entity.monster.Monster;
@@ -73,12 +74,13 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
         }
         if (pullTicks > 0) {
             double range = getAttributeValue(Attributes.FOLLOW_RANGE);
+            TargetingConditions conditions = TargetingConditions.forCombat().range(range);
             for (LivingEntity victim : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(range),
-                    e -> e != this && e.isAlive() && e.isAttackable() && !e.isSpectator()
+                    e -> e != this && conditions.test(level, this, e)
                             && !(e instanceof WitherBoss || e instanceof WitherSkeleton || e instanceof Enderman || e instanceof EnderDragon)
                             && !e.typeHolder().is(WitherStormModEntityTags.SICKENED_MOBS)
                             && (e instanceof AbstractVillager || e instanceof AbstractGolem || e instanceof Monster || e instanceof Animal || e instanceof NeutralMob || e instanceof Player)
-                            && !(e instanceof Player p && p.isCreative()) && e.distanceToSqr(this) <= range * range)) {
+                            && !(e instanceof Player p && p.isCreative()))) {
                 if (victim.distanceToSqr(this) < 9.0) { pullTicks = 0; break; }
                 Vec3 pull = position().subtract(victim.position()).normalize().scale(0.1);
                 victim.setDeltaMovement(pull.x, victim.getDeltaMovement().y, pull.z);
