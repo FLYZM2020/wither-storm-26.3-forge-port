@@ -52,6 +52,20 @@ public final class StormConfig {
             .defineInRange("wither_sickness.lowImmuneApplicationDelay", 410, 12, 1200);
     public static final ForgeConfigSpec.IntValue CURE_SECONDS = BUILDER
             .defineInRange("wither_sickness.cureDelay", 480, 12, 1200);
+    public static final ForgeConfigSpec.IntValue LOW_CURE_SECONDS = BUILDER
+            .defineInRange("wither_sickness.lowImmuneCureDelay", 480, 12, 1200);
+    public static final ForgeConfigSpec.IntValue HIGH_PROXIMITY_OFFSET = BUILDER
+            .defineInRange("wither_sickness.proximitySecondsModifierMax", 180, 12, 1200);
+    public static final ForgeConfigSpec.IntValue HIGH_APPLICATION_OFFSET = BUILDER
+            .defineInRange("wither_sickness.applicationDelayModifierMax", 300, 12, 1200);
+    public static final ForgeConfigSpec.IntValue HIGH_CURE_OFFSET = BUILDER
+            .defineInRange("wither_sickness.cureDelayModifierMax", 180, 12, 1200);
+    public static final ForgeConfigSpec.IntValue LOW_PROXIMITY_OFFSET = BUILDER
+            .defineInRange("wither_sickness.lowImmuneProximityModifierMax", 180, 12, 1200);
+    public static final ForgeConfigSpec.IntValue LOW_APPLICATION_OFFSET = BUILDER
+            .defineInRange("wither_sickness.lowImmuneApplicationModifierMax", 140, 12, 1200);
+    public static final ForgeConfigSpec.IntValue LOW_CURE_OFFSET = BUILDER
+            .defineInRange("wither_sickness.lowImmuneCureDelayModifierMax", 180, 12, 1200);
     public static final ForgeConfigSpec.BooleanValue KEEP_SICKNESS_AFTER_RESPAWN = BUILDER
             .define("wither_sickness.keepSicknessAfterRespawn", true);
     public static final ForgeConfigSpec SPEC = BUILDER.build();

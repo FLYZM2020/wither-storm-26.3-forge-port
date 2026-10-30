@@ -15,7 +15,7 @@ import nonamecrackers2.witherstormmod.common.tags.WitherStormModEntityTags;
 
 /**
  * Server-side, persistent early tracker. This ports proximity, application and
- * cure timers, target contact infections and reinfection strength. Random offsets, syncing
+ * cure timers, target contact infections and reinfection strength. Client syncing
  * and sickened-mob conversion have not yet been migrated.
  */
 public final class WitherSicknessTracker {
@@ -41,6 +41,19 @@ public final class WitherSicknessTracker {
             entity.getPersistentData().put(KEY, data);
         }
         return data;
+    }
+
+    /** Generate once and persist offsets, including for trackers created by older builds. */
+    private static void initializeOffsets(LivingEntity entity, CompoundTag data, boolean highImmunity) {
+        if (data.getBooleanOr("OffsetsInitialized", false)) return;
+        int sign = highImmunity ? 1 : -1;
+        int proximityMax = highImmunity ? StormConfig.HIGH_PROXIMITY_OFFSET.get() : StormConfig.LOW_PROXIMITY_OFFSET.get();
+        int applicationMax = highImmunity ? StormConfig.HIGH_APPLICATION_OFFSET.get() : StormConfig.LOW_APPLICATION_OFFSET.get();
+        int cureMax = highImmunity ? StormConfig.HIGH_CURE_OFFSET.get() : StormConfig.LOW_CURE_OFFSET.get();
+        data.putInt("ProximityOffset", sign * entity.getRandom().nextInt(proximityMax * 20));
+        data.putInt("ApplicationOffset", sign * entity.getRandom().nextInt(applicationMax * 20));
+        data.putInt("CureOffset", sign * entity.getRandom().nextInt(cureMax * 20));
+        data.putBoolean("OffsetsInitialized", true);
     }
 
     /** Called periodically by each eligible nearby storm on the server. */
@@ -106,8 +119,10 @@ public final class WitherSicknessTracker {
         CompoundTag data = existing(entity);
         if (data == null || immune(entity) || !(entity.level() instanceof ServerLevel level)) return;
         boolean highImmunity = entity.typeHolder().is(WitherStormModEntityTags.HIGH_IMMUNITY);
-        int required = (highImmunity ? StormConfig.HIGH_PROXIMITY_SECONDS.get() : StormConfig.LOW_PROXIMITY_SECONDS.get()) * 20;
-        int application = (highImmunity ? StormConfig.HIGH_APPLICATION_SECONDS.get() : StormConfig.LOW_APPLICATION_SECONDS.get()) * 20;
+        initializeOffsets(entity, data, highImmunity);
+        int required = Math.max(1200, (highImmunity ? StormConfig.HIGH_PROXIMITY_SECONDS.get() : StormConfig.LOW_PROXIMITY_SECONDS.get()) * 20 + data.getIntOr("ProximityOffset", 0));
+        int application = Math.max(1200, (highImmunity ? StormConfig.HIGH_APPLICATION_SECONDS.get() : StormConfig.LOW_APPLICATION_SECONDS.get()) * 20 + data.getIntOr("ApplicationOffset", 0));
+        int cure = Math.max(1200, (highImmunity ? StormConfig.CURE_SECONDS.get() : StormConfig.LOW_CURE_SECONDS.get()) * 20 + data.getIntOr("CureOffset", 0));
         int proximity = data.getIntOr("ProximityTicks", 0);
         boolean nearby = StormConfig.SICKNESS_ENABLED.get() && level.getLevelData().getGameTime() <= data.getLongOr("NearUntil", -1L);
         proximity = nearby ? Math.min(required, proximity + STEP) : Math.max(0, proximity - STEP);
@@ -170,7 +185,7 @@ public final class WitherSicknessTracker {
         if (curing) {
             int cureTicks = data.getIntOr("CureTicks", 0) + STEP;
             data.putInt("CureTicks", cureTicks);
-            if (cureTicks >= StormConfig.CURE_SECONDS.get() * 20) {
+            if (cureTicks >= cure) {
                 entity.removeEffect(effect);
                 data.putBoolean("IsInfected", false);
                 data.putBoolean("IsBeingCured", false);
