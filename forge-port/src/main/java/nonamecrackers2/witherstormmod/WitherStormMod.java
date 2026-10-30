@@ -7,6 +7,7 @@ import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.MobSpawnEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -74,6 +75,7 @@ public final class WitherStormMod {
         PlayerEvent.Clone.BUS.addListener(WitherSicknessTracker::onPlayerClone);
         BuildCreativeModeTabContentsEvent.BUS.addListener(WitherStormMod::addCreativeItems);
         BlockEvent.EntityPlaceEvent.BUS.addListener(WitherStormPatternChecker::onSkullPlaced);
+        TickEvent.LevelTickEvent.Post.BUS.addListener(WitherStormPatternChecker::onLevelTick);
     }
 
     private static void addCreativeItems(BuildCreativeModeTabContentsEvent event) {

@@ -1,5 +1,9 @@
 package nonamecrackers2.witherstormmod.common.event;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
 import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -13,6 +17,7 @@ import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import net.minecraft.world.level.block.state.pattern.BlockPattern;
 import net.minecraft.world.level.block.state.pattern.BlockPatternBuilder;
 import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.event.TickEvent;
 import nonamecrackers2.witherstormmod.WitherStormMod;
 import nonamecrackers2.witherstormmod.common.entity.WitherStormEntity;
 import nonamecrackers2.witherstormmod.common.tags.WitherStormModBlockTags;
@@ -20,6 +25,7 @@ import nonamecrackers2.witherstormmod.common.init.WitherStormModSounds;
 
 /** Summoning pattern from the 1.20.1 mod, adapted to Forge's 26.3 placement event. */
 public final class WitherStormPatternChecker {
+    private static final Map<ServerLevel, List<BlockPos>> PENDING = new WeakHashMap<>();
     private static final BlockPattern PATTERN = BlockPatternBuilder.start()
             .aisle("^^^", "#$#", "~#~")
             .where('#', BlockInWorld.hasState(state -> state.is(WitherStormModBlockTags.WITHER_STORM_SUMMON_BASE_BLOCKS)))
@@ -35,7 +41,24 @@ public final class WitherStormPatternChecker {
         if (!(event.getLevel() instanceof ServerLevel level) || level.getDifficulty() == Difficulty.PEACEFUL) return;
         if (!event.getPlacedBlock().is(Blocks.WITHER_SKELETON_SKULL)
                 && !event.getPlacedBlock().is(Blocks.WITHER_SKELETON_WALL_SKULL)) return;
-        BlockPattern.BlockPatternMatch match = PATTERN.find(level, event.getPos());
+        PENDING.computeIfAbsent(level, ignored -> new ArrayList<>()).add(event.getPos().immutable());
+    }
+
+    /** Wait until the placement event has completed and any cancellation was applied. */
+    public static void onLevelTick(TickEvent.LevelTickEvent.Post event) {
+        if (!(event.level() instanceof ServerLevel level)) return;
+        List<BlockPos> positions = PENDING.remove(level);
+        if (positions == null || level.getDifficulty() == Difficulty.PEACEFUL) return;
+        for (BlockPos pos : positions) {
+            if (!level.hasChunkAt(pos)) continue;
+            var state = level.getBlockState(pos);
+            if (!state.is(Blocks.WITHER_SKELETON_SKULL) && !state.is(Blocks.WITHER_SKELETON_WALL_SKULL)) continue;
+            trySummon(level, pos);
+        }
+    }
+
+    private static void trySummon(ServerLevel level, BlockPos pos) {
+        BlockPattern.BlockPatternMatch match = PATTERN.find(level, pos);
         if (match == null) return;
         WitherStormEntity storm = WitherStormMod.WITHER_STORM.get().create(level, EntitySpawnReason.TRIGGERED);
         if (storm == null) return;
