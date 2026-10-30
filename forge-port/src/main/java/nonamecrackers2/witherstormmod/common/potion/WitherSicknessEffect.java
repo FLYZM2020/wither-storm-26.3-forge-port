@@ -17,7 +17,7 @@ import nonamecrackers2.witherstormmod.common.init.WitherStormModDamageTypes;
 import nonamecrackers2.witherstormmod.common.tags.WitherStormModEntityTags;
 import nonamecrackers2.witherstormmod.common.sickness.WitherSicknessTracker;
 
-/** Basic sickness effect; proximity, infection and cure tracking are not yet ported. */
+/** Sickness damage and gradual maximum-health reduction. */
 public final class WitherSicknessEffect extends MobEffect {
     private static final Identifier HEALTH_MODIFIER = WitherStormMod.id("wither_sickness_health");
 
@@ -43,7 +43,7 @@ public final class WitherSicknessEffect extends MobEffect {
             if (existing != null) {
                 double value = Math.max(health.getBaseValue() * -1.0 + 1.0, existing.amount() - 0.5);
                 health.removeModifier(HEALTH_MODIFIER);
-                health.addPermanentModifier(new AttributeModifier(HEALTH_MODIFIER, value - 0.5, AttributeModifier.Operation.ADD_VALUE));
+                health.addPermanentModifier(new AttributeModifier(HEALTH_MODIFIER, value, AttributeModifier.Operation.ADD_VALUE));
             }
         }
         return true;

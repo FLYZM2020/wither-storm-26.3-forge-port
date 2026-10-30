@@ -22,6 +22,9 @@ public final class StormConfig {
     public static final ForgeConfigSpec.IntValue REQUIRED_CONTACTS = BUILDER
             .comment("Number of prior storm target acquisitions before another acquisition starts infection.")
             .defineInRange("wither_sickness.requiredContacts", 6, 1, 40);
+    public static final ForgeConfigSpec.BooleanValue INCREASE_SICKNESS_AMPLIFIER = BUILDER
+            .comment("Reinfection increases sickness strength until it decays away from the storm.")
+            .define("wither_sickness.increaseAmplifier", true);
     public static final ForgeConfigSpec.BooleanValue STORM_INVULNERABILITY = BUILDER
             .comment("Prevent ordinary damage and regenerate health from phase 4 onward.")
             .define("witherStorm.witherStormInvulnerability", true);

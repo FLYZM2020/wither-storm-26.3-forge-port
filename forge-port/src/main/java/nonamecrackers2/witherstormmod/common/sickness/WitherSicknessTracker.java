@@ -15,12 +15,14 @@ import nonamecrackers2.witherstormmod.common.tags.WitherStormModEntityTags;
 
 /**
  * Server-side, persistent early tracker. This ports proximity, application and
- * cure timers and target contact infections. Random offsets, multiplier decay, syncing
+ * cure timers, target contact infections and reinfection strength. Random offsets, syncing
  * and sickened-mob conversion have not yet been migrated.
  */
 public final class WitherSicknessTracker {
     private static final String KEY = "witherstormmod:sickness";
     private static final int STEP = 20;
+    // At level 13 the effect already ticks every game tick; higher values add no speed.
+    private static final int MAX_AMPLIFIER = 13;
     private WitherSicknessTracker() {}
 
     private static boolean immune(LivingEntity entity) {
@@ -86,6 +88,8 @@ public final class WitherSicknessTracker {
             copy.putInt("ProximityTicks", 0);
             copy.putInt("ApplicationTicks", 0);
             copy.putInt("CureTicks", 0);
+            copy.putInt("Contacts", 0);
+            copy.putInt("ContactDecayTicks", 0);
         }
         event.getEntity().getPersistentData().put(KEY, copy);
         if (StormConfig.KEEP_SICKNESS_AFTER_RESPAWN.get()) {
@@ -117,6 +121,14 @@ public final class WitherSicknessTracker {
             data.putInt("ContactDecayTicks", elapsed);
         }
         boolean infected = data.getBooleanOr("IsInfected", false);
+        if (!nearby && !infected && data.getIntOr("Amplifier", 0) > 0) {
+            int elapsed = data.getIntOr("AmplifierDecayTicks", 0) + STEP;
+            if (elapsed >= 7200) {
+                data.putInt("Amplifier", data.getIntOr("Amplifier", 0) - 1);
+                elapsed = 0;
+            }
+            data.putInt("AmplifierDecayTicks", elapsed);
+        }
         if (!infected && proximity >= required) {
             infected = true;
             data.putBoolean("IsInfected", true);
@@ -136,7 +148,11 @@ public final class WitherSicknessTracker {
         Holder<MobEffect> effect = WitherStormModEffects.WITHER_SICKNESS.getHolder().orElseThrow();
         if (delay >= application) {
             if (!curing && previousDelay < application) {
-                entity.addEffect(new MobEffectInstance(effect, 12000, 0, false, false, true));
+                int amplifier = Math.clamp(data.getIntOr("Amplifier", 0), 0, MAX_AMPLIFIER);
+                entity.addEffect(new MobEffectInstance(effect, 12000, amplifier, false, false, true));
+                data.putInt("TotalInfections", data.getIntOr("TotalInfections", 0) + 1);
+                if (StormConfig.INCREASE_SICKNESS_AMPLIFIER.get())
+                    data.putInt("Amplifier", Math.min(MAX_AMPLIFIER, amplifier + 1));
             }
             MobEffectInstance current = entity.getEffect(effect);
             if (current == null) {
