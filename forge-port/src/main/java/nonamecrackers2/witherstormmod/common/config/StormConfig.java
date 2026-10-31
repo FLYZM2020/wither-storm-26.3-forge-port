@@ -28,6 +28,13 @@ public final class StormConfig {
     public static final ForgeConfigSpec.BooleanValue SYMBIONT_ATTACK_MOBS = BUILDER
             .comment("Allow newly spawned symbionts to target eligible mobs as well as players.")
             .define("withered_symbiont.shouldSymbiontAttackMobs", false);
+    public static final ForgeConfigSpec.BooleanValue SYMBIONT_SUMMON_ENABLED = BUILDER
+            .define("withered_symbiont.canSummonSymbiont", true);
+    public static final ForgeConfigSpec.IntValue SYMBIONT_CHECK_SECONDS = BUILDER
+            .defineInRange("withered_symbiont.minimumSpawnCheckInterval", 60, 1, 240);
+    public static final ForgeConfigSpec.IntValue SYMBIONT_STORM_DELAY_MINUTES = BUILDER
+            .comment("Storm-wide summon delay in minutes, plus up to ten random minutes.")
+            .defineInRange("withered_symbiont.witherStormSummoningDelay", 10, 1, 20);
     public static final ForgeConfigSpec.BooleanValue STORM_INVULNERABILITY = BUILDER
             .comment("Prevent ordinary damage and regenerate health from phase 4 onward.")
             .define("witherStorm.witherStormInvulnerability", true);

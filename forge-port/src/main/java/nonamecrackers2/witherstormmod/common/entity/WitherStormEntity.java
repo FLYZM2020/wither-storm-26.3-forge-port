@@ -47,6 +47,7 @@ import nonamecrackers2.witherstormmod.common.init.WitherStormModSounds;
 import nonamecrackers2.witherstormmod.common.init.WitherStormModTickets;
 import nonamecrackers2.witherstormmod.common.init.WitherStormModDamageTypes;
 import nonamecrackers2.witherstormmod.common.init.WitherStormModItems;
+import nonamecrackers2.witherstormmod.common.item.FormidibombItem;
 import nonamecrackers2.witherstormmod.WitherStormMod;
 import nonamecrackers2.witherstormmod.common.tags.WitherStormModItemTags;
 import nonamecrackers2.witherstormmod.common.tags.WitherStormModEntityTags;
@@ -234,16 +235,17 @@ public final class WitherStormEntity extends WitherBoss {
     /** Approximate original spawn conditions; the spawned mob is a temporary melee stand-in. */
     private void tickSymbiontSummoning(ServerLevel level) {
         if (symbiontCooldown > 0) { symbiontCooldown--; return; }
-        if (tickCount % 1200 != 0 || getPhase() < 5
+        if (!StormConfig.SYMBIONT_SUMMON_ENABLED.get() || tickCount % (StormConfig.SYMBIONT_CHECK_SECONDS.get() * 20) != 0 || getPhase() < 5
                 || getConsumedEntities() < StormEvolutionRules.consumptionRequirement(5, getEvolutionSpeedModifier())) return;
-        double radius = getAttributeValue(Attributes.FOLLOW_RANGE) + 50.0;
-        AABB area = getBoundingBox().inflate(radius);
+        double range = getAttributeValue(Attributes.FOLLOW_RANGE);
+        AABB search = getBoundingBox().inflate(range, range + 255.0, range);
+        AABB area = search.inflate(50.0);
         if (!level.getEntitiesOfClass(WitheredSymbiontEntity.class, area, Entity::isAlive).isEmpty()
                 || !level.getEntitiesOfClass(FormidibombEntity.class, area, Entity::isAlive).isEmpty()) return;
         ServerPlayer player = level.players().stream().filter(p -> p.isAlive() && !p.isSpectator() && !p.isCreative()
-                && p.distanceToSqr(this) <= radius * radius
-                && !p.getInventory().contains(new ItemStack(WitherStormModItems.COMMAND_BLOCK_BOOK.get()))
-                && !p.getInventory().contains(new ItemStack(WitherStormModItems.FORMIDIBOMB.get())))
+                && search.intersects(p.getBoundingBox())
+                && p.position().subtract(position()).horizontalDistanceSqr() <= range * range
+                && !hasSymbiontBlockingItems(p))
                 .min(Comparator.comparingDouble(p -> p.distanceToSqr(this))).orElse(null);
         if (player == null) return;
         for (int attempt = 0; attempt < 10; attempt++) {
@@ -260,10 +262,21 @@ public final class WitherStormEntity extends WitherBoss {
             mob.setTarget(player);
             mob.setPersistenceRequired();
             if (level.addFreshEntity(mob)) {
-                symbiontCooldown = 12000 + random.nextInt(12000);
+                symbiontCooldown = StormConfig.SYMBIONT_STORM_DELAY_MINUTES.get() * 1200 + random.nextInt(12000);
                 return;
             }
         }
+    }
+
+    private boolean hasSymbiontBlockingItems(ServerPlayer player) {
+        var inventory = player.getInventory();
+        for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
+            ItemStack stack = inventory.getItem(slot);
+            if (stack.is(WitherStormModItems.COMMAND_BLOCK_BOOK.get())
+                    || stack.getItem() instanceof FormidibombItem && FormidibombItem.getStartFuse(stack) > 0
+                    || getPhase() > 5 && stack.is(WitherStormModItemTags.COMMAND_BLOCK_TOOLS)) return true;
+        }
+        return false;
     }
 
     /** Begin the original fall/play-dead sequence, without the not-yet-ported segments or podium. */
