@@ -61,6 +61,9 @@ public final class StormConfig {
             .define("playing_dead.revivalTimer", true);
     public static final ForgeConfigSpec.IntValue REVIVAL_TIME_MINUTES = BUILDER
             .defineInRange("playing_dead.revivalTimeMinutes", 60, 1, 120);
+    public static final ForgeConfigSpec.IntValue REVIVAL_PLAYER_PROTECTION_MINUTES = BUILDER
+            .comment("Minutes after revival during which the temporary target selector ignores players and symbiont summoning is disabled.")
+            .defineInRange("playing_dead.revivalPlayerProtection", 3, 1, 40);
     public static final ForgeConfigSpec.IntValue HIGH_PROXIMITY_SECONDS = BUILDER
             .defineInRange("wither_sickness.requiredProximitySeconds", 600, 12, 1200);
     public static final ForgeConfigSpec.IntValue LOW_PROXIMITY_SECONDS = BUILDER

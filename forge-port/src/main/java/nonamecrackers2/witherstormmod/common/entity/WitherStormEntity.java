@@ -89,6 +89,7 @@ public final class WitherStormEntity extends WitherBoss {
     private int collapseTicks;
     private boolean noAiBeforeCollapse;
     private int symbiontCooldown;
+    private int revivalProtectionTicks;
     private final UUID[] segmentIds = new UUID[2];
 
     public WitherStormEntity(EntityType<? extends WitherBoss> type, Level level) {
@@ -155,6 +156,7 @@ public final class WitherStormEntity extends WitherBoss {
             return;
         }
         if (!this.isAlive()) return;
+        if (revivalProtectionTicks > 0) revivalProtectionTicks--;
         if (this.tickCount % 20 == 1) this.entityData.set(VISUAL_EVOLUTION_SPEED, (float) getEvolutionSpeedModifier());
         if (this.tickCount % 20 == 1 && StormConfig.TEMPORARY_CHUNK_LOADING.get()
                 && this.level() instanceof ServerLevel server) {
@@ -239,7 +241,7 @@ public final class WitherStormEntity extends WitherBoss {
     /** Approximate original spawn conditions; the spawned mob is a temporary melee stand-in. */
     private void tickSymbiontSummoning(ServerLevel level) {
         if (symbiontCooldown > 0) { symbiontCooldown--; return; }
-        if (!StormConfig.SYMBIONT_SUMMON_ENABLED.get() || tickCount % (StormConfig.SYMBIONT_CHECK_SECONDS.get() * 20) != 0 || getPhase() < 5
+        if (revivalProtectionTicks > 0 || !StormConfig.SYMBIONT_SUMMON_ENABLED.get() || tickCount % (StormConfig.SYMBIONT_CHECK_SECONDS.get() * 20) != 0 || getPhase() < 5
                 || getConsumedEntities() < StormEvolutionRules.consumptionRequirement(5, getEvolutionSpeedModifier())) return;
         double range = getAttributeValue(Attributes.FOLLOW_RANGE);
         AABB search = getBoundingBox().inflate(range, range + 255.0, range);
@@ -320,6 +322,7 @@ public final class WitherStormEntity extends WitherBoss {
     public boolean beginCollapse() {
         if (!(this.level() instanceof ServerLevel server) || !isAlive() || getPhase() < 4 || getCollapseState() != NORMAL) return false;
         noAiBeforeCollapse = isNoAi();
+        revivalProtectionTicks = 0;
         setNoAi(true);
         setTarget(null);
         for (int head = 0; head < 3; head++) {
@@ -338,6 +341,7 @@ public final class WitherStormEntity extends WitherBoss {
     public boolean beginRevival() {
         if (this.level().isClientSide() || getCollapseState() != PLAYING_DEAD) return false;
         collapseTicks = 0;
+        revivalProtectionTicks = StormConfig.REVIVAL_PLAYER_PROTECTION_MINUTES.get() * 1200;
         this.entityData.set(COLLAPSE_STATE, REVIVING);
         return true;
     }
@@ -418,6 +422,7 @@ public final class WitherStormEntity extends WitherBoss {
     public boolean canSelectTarget(LivingEntity target) {
         return target != this && target.isAlive() && target.isAttackable() && !target.isSpectator()
                 && !(target instanceof Player player && player.isCreative())
+                && !(target instanceof Player && revivalProtectionTicks > 0)
                 && !(target instanceof ServerPlayer player && PlayerSymbiontData.protectedFromStorm(player))
                 && !(target instanceof WitherBoss || target instanceof WitheredSymbiontEntity || target instanceof EnderDragon || target instanceof AmbientCreature || target instanceof ArmorStand)
                 && !(getPhase() < 4 && (target instanceof AbstractSchoolingFish || target instanceof Squid))
@@ -645,6 +650,7 @@ public final class WitherStormEntity extends WitherBoss {
         output.putInt("CollapseTicks", collapseTicks);
         output.putBoolean("NoAiBeforeCollapse", noAiBeforeCollapse);
         output.putInt("SymbiontSummoningCooldown", symbiontCooldown);
+        output.putInt("RevivalProtectionTicks", revivalProtectionTicks);
         for (int i = 0; i < segmentIds.length; i++) if (segmentIds[i] != null) output.store("Segment" + i, UUIDUtil.CODEC, segmentIds[i]);
     }
 
@@ -660,6 +666,7 @@ public final class WitherStormEntity extends WitherBoss {
         collapseTicks = Math.max(0, input.getIntOr("CollapseTicks", 0));
         noAiBeforeCollapse = input.getBooleanOr("NoAiBeforeCollapse", false);
         symbiontCooldown = Math.max(0, input.getIntOr("SymbiontSummoningCooldown", 0));
+        revivalProtectionTicks = Math.max(0, input.getIntOr("RevivalProtectionTicks", 0));
         for (int i = 0; i < segmentIds.length; i++) segmentIds[i] = input.read("Segment" + i, UUIDUtil.CODEC).orElse(null);
         this.entityData.set(COLLAPSE_STATE, Math.clamp(input.getIntOr("CollapseState", NORMAL), NORMAL, REVIVING));
         if (getCollapseState() != NORMAL) setNoAi(true);
