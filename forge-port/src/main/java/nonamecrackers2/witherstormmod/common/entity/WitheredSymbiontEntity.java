@@ -48,6 +48,7 @@ import net.minecraft.world.entity.projectile.arrow.Arrow;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -98,6 +99,17 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
                     || owner != null && owner.typeHolder().is(WitherStormModEntityTags.SICKENED_MOBS)) return false;
         }
         return super.hurtServer(level, source, amount);
+    }
+
+    @Override public boolean doHurtTarget(ServerLevel level, Entity target) {
+        float baseDamage = (float) getAttributeValue(Attributes.ATTACK_DAMAGE);
+        float damage = (int) baseDamage > 0 ? baseDamage / 2.0F + random.nextInt((int) baseDamage) : baseDamage;
+        DamageSource source = damageSources().mobAttack(this);
+        if (!target.hurtServer(level, source, damage)) return false;
+        target.setDeltaMovement(target.getDeltaMovement().add(0.0, 0.8, 0.0));
+        if (target instanceof ServerPlayer player) player.connection.send(new ClientboundSetEntityMotionPacket(player));
+        EnchantmentHelper.doPostAttackEffects(level, target, source);
+        return true;
     }
 
     @Override protected void doPush(Entity entity) {
