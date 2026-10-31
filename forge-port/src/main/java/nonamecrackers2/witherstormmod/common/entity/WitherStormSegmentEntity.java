@@ -43,6 +43,7 @@ public final class WitherStormSegmentEntity extends WitherBoss {
     private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(WitherStormSegmentEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> PHASE = SynchedEntityData.defineId(WitherStormSegmentEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> COLLAPSE = SynchedEntityData.defineId(WitherStormSegmentEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> SQUASH_HITBOX = SynchedEntityData.defineId(WitherStormSegmentEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> BEAM_0 = SynchedEntityData.defineId(WitherStormSegmentEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> BEAM_1 = SynchedEntityData.defineId(WitherStormSegmentEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> BEAM_2 = SynchedEntityData.defineId(WitherStormSegmentEntity.class, EntityDataSerializers.INT);
@@ -60,6 +61,7 @@ public final class WitherStormSegmentEntity extends WitherBoss {
         builder.define(INDEX, 0);
         builder.define(PHASE, 6);
         builder.define(COLLAPSE, 0);
+        builder.define(SQUASH_HITBOX, false);
         builder.define(BEAM_0, 0); builder.define(BEAM_1, 0); builder.define(BEAM_2, 0);
     }
     public void attachTo(WitherStormEntity parent, int index) {
@@ -67,11 +69,17 @@ public final class WitherStormSegmentEntity extends WitherBoss {
         this.entityData.set(INDEX, Math.clamp(index, 0, 1));
         this.entityData.set(PHASE, parent.getPhase());
         this.entityData.set(COLLAPSE, parent.getCollapseState());
+        this.entityData.set(SQUASH_HITBOX, parent.isHitboxSquashed());
     }
     public int getSegmentIndex() { return this.entityData.get(INDEX); }
     public int getSegmentPhase() { return this.entityData.get(PHASE); }
     @Override protected EntityDimensions getDefaultDimensions(Pose pose) {
-        return EntityDimensions.scalable(15.0F, 17.5F).withEyeHeight(10.0F);
+        return EntityDimensions.scalable(15.0F, this.entityData.get(SQUASH_HITBOX) ? 1.0F : 17.5F).withEyeHeight(10.0F);
+    }
+
+    @Override public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
+        super.onSyncedDataUpdated(accessor);
+        if (SQUASH_HITBOX.equals(accessor)) refreshDimensions();
     }
 
     @Override public void aiStep() {
@@ -87,6 +95,7 @@ public final class WitherStormSegmentEntity extends WitherBoss {
         }
         this.entityData.set(PHASE, parent.getPhase());
         this.entityData.set(COLLAPSE, parent.getCollapseState());
+        this.entityData.set(SQUASH_HITBOX, parent.isHitboxSquashed());
         Vec3 offset = parent.segmentDestination(getSegmentIndex());
         Vec3 delta = offset.subtract(position());
         if (delta.lengthSqr() > 0.01) move(MoverType.SELF, delta.normalize().scale(Math.min(0.5, delta.length() * 0.1)));
@@ -196,6 +205,7 @@ public final class WitherStormSegmentEntity extends WitherBoss {
         output.putInt("SegmentIndex", getSegmentIndex());
         output.putInt("SegmentPhase", getSegmentPhase());
         output.putInt("SegmentCollapse", this.entityData.get(COLLAPSE));
+        output.putBoolean("SquashHitbox", this.entityData.get(SQUASH_HITBOX));
     }
     @Override protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
@@ -203,6 +213,7 @@ public final class WitherStormSegmentEntity extends WitherBoss {
         this.entityData.set(INDEX, Math.clamp(input.getIntOr("SegmentIndex", 0), 0, 1));
         this.entityData.set(PHASE, Math.clamp(input.getIntOr("SegmentPhase", 6), 6, 7));
         this.entityData.set(COLLAPSE, Math.clamp(input.getIntOr("SegmentCollapse", 0), 0, 3));
+        this.entityData.set(SQUASH_HITBOX, input.getBooleanOr("SquashHitbox", false));
         setNoAi(true); setNoGravity(true); noPhysics = true;
     }
 }

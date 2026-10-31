@@ -17,6 +17,9 @@ public final class StormConfig {
     public static final ForgeConfigSpec.IntValue TEMPORARY_CHUNK_RADIUS = BUILDER
             .comment("Temporary ticket radius; this does not restore a storm when a server restarts.")
             .defineInRange("performance.temporaryChunkRadius", 2, 0, 4);
+    public static final ForgeConfigSpec.BooleanValue SQUASH_HITBOX = BUILDER
+            .comment("Reduce the vertical hitbox of large storms and their segments to one block.")
+            .define("performance.squashHitbox", false);
     public static final ForgeConfigSpec.BooleanValue SICKNESS_ENABLED = BUILDER
             .define("wither_sickness.witherSicknessEnabled", true);
     public static final ForgeConfigSpec.IntValue REQUIRED_CONTACTS = BUILDER

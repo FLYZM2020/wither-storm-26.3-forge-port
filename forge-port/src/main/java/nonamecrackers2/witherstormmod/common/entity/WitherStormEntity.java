@@ -82,6 +82,7 @@ public final class WitherStormEntity extends WitherBoss {
     private static final EntityDataAccessor<Integer> RIGHT_BEAM_TARGET = SynchedEntityData.defineId(WitherStormEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> VISUAL_EVOLUTION_SPEED = SynchedEntityData.defineId(WitherStormEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> COLLAPSE_STATE = SynchedEntityData.defineId(WitherStormEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> SQUASH_HITBOX = SynchedEntityData.defineId(WitherStormEntity.class, EntityDataSerializers.BOOLEAN);
     private static final int NORMAL = 0, FALLING = 1, PLAYING_DEAD = 2, REVIVING = 3;
     private static final DustParticleOptions BEAM_DUST = new DustParticleOptions(0xA448E8, 1.0F);
     private final Set<UUID> trackedItems = new HashSet<>();
@@ -107,12 +108,14 @@ public final class WitherStormEntity extends WitherBoss {
         builder.define(RIGHT_BEAM_TARGET, 0);
         builder.define(VISUAL_EVOLUTION_SPEED, 1.0F);
         builder.define(COLLAPSE_STATE, NORMAL);
+        builder.define(SQUASH_HITBOX, false);
     }
 
     public int getPhase() { return this.entityData.get(PHASE); }
     public int getConsumedEntities() { return this.entityData.get(CONSUMED); }
     public float getVisualEvolutionSpeed() { return this.entityData.get(VISUAL_EVOLUTION_SPEED); }
     public int getCollapseState() { return this.entityData.get(COLLAPSE_STATE); }
+    public boolean isHitboxSquashed() { return this.entityData.get(SQUASH_HITBOX); }
 
     @Override
     protected EntityDimensions getDefaultDimensions(Pose pose) {
@@ -125,13 +128,14 @@ public final class WitherStormEntity extends WitherBoss {
         };
         if (dimensions == null) return super.getDefaultDimensions(pose);
         if (getCollapseState() == PLAYING_DEAD) return EntityDimensions.scalable(dimensions.width(), 0.1F).withEyeHeight(0.085F);
+        if (isHitboxSquashed()) return EntityDimensions.scalable(dimensions.width(), 1.0F).withEyeHeight(17.5F);
         return dimensions.withEyeHeight(17.5F);
     }
 
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
         super.onSyncedDataUpdated(accessor);
-        if (PHASE.equals(accessor) || COLLAPSE_STATE.equals(accessor)) refreshDimensions();
+        if (PHASE.equals(accessor) || COLLAPSE_STATE.equals(accessor) || SQUASH_HITBOX.equals(accessor)) refreshDimensions();
     }
 
     @Override
@@ -157,6 +161,7 @@ public final class WitherStormEntity extends WitherBoss {
             return;
         }
         if (!this.isAlive()) return;
+        if (this.tickCount % 20 == 1) this.entityData.set(SQUASH_HITBOX, StormConfig.SQUASH_HITBOX.get());
         if (revivalProtectionTicks > 0) revivalProtectionTicks--;
         if (this.tickCount % 20 == 1) this.entityData.set(VISUAL_EVOLUTION_SPEED, (float) getEvolutionSpeedModifier());
         if (this.tickCount % 20 == 1 && StormConfig.TEMPORARY_CHUNK_LOADING.get()
@@ -669,6 +674,7 @@ public final class WitherStormEntity extends WitherBoss {
         output.putBoolean("NoAiBeforeCollapse", noAiBeforeCollapse);
         output.putInt("SymbiontSummoningCooldown", symbiontCooldown);
         output.putInt("RevivalProtectionTicks", revivalProtectionTicks);
+        output.putBoolean("SquashHitbox", isHitboxSquashed());
         for (int i = 0; i < segmentIds.length; i++) if (segmentIds[i] != null) output.store("Segment" + i, UUIDUtil.CODEC, segmentIds[i]);
     }
 
@@ -685,6 +691,7 @@ public final class WitherStormEntity extends WitherBoss {
         noAiBeforeCollapse = input.getBooleanOr("NoAiBeforeCollapse", false);
         symbiontCooldown = Math.max(0, input.getIntOr("SymbiontSummoningCooldown", 0));
         revivalProtectionTicks = Math.max(0, input.getIntOr("RevivalProtectionTicks", 0));
+        this.entityData.set(SQUASH_HITBOX, input.getBooleanOr("SquashHitbox", false));
         for (int i = 0; i < segmentIds.length; i++) segmentIds[i] = input.read("Segment" + i, UUIDUtil.CODEC).orElse(null);
         this.entityData.set(COLLAPSE_STATE, Math.clamp(input.getIntOr("CollapseState", NORMAL), NORMAL, REVIVING));
         if (getCollapseState() != NORMAL) setNoAi(true);
