@@ -24,6 +24,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.effect.MobEffects;
@@ -31,12 +32,20 @@ import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.golem.AbstractGolem;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.villager.AbstractVillager;
 import nonamecrackers2.witherstormmod.common.tags.WitherStormModEntityTags;
 import nonamecrackers2.witherstormmod.common.init.WitherStormModSounds;
+import nonamecrackers2.witherstormmod.common.config.StormConfig;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.monster.skeleton.WitherSkeleton;
 import net.minecraft.world.entity.player.Player;
@@ -137,7 +146,6 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
     }
 
     @Override protected void registerGoals() {
-        super.registerGoals();
         goalSelector.addGoal(0, new Goal() {
             { setFlags(EnumSet.of(Flag.MOVE)); }
             @Override public boolean canUse() { return skullTicks > 0 || pullTicks > 0 || fangsTicks > 0 || arrowTicks > 0 || pulseTicks > 0 || smashTicks > 0; }
@@ -145,6 +153,28 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
             @Override public void start() { getNavigation().stop(); }
             @Override public void tick() { getNavigation().stop(); }
         });
+        goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0, true));
+        goalSelector.addGoal(4, new FloatGoal(this));
+        goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.7));
+        goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+        targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
+        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false,
+                (target, level) -> target.isAttackable()));
+        if (StormConfig.SYMBIONT_ATTACK_MOBS.get()) {
+            targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Mob.class, 10, true, false,
+                    (target, level) -> canTargetMob(target)));
+        }
+    }
+
+    /** Keep skeleton weapon reassessment from replacing the symbiont's melee goal. */
+    @Override public void reassessWeaponGoal() { }
+
+    private boolean canTargetMob(LivingEntity target) {
+        return target != this && target.isAttackable() && !target.typeHolder().is(WitherStormModEntityTags.SICKENED_MOBS)
+                && !(target instanceof WitherBoss || target instanceof WitherSkeleton || target instanceof Enderman || target instanceof EnderDragon)
+                && (target instanceof AbstractVillager || target instanceof AbstractGolem || target instanceof Monster
+                    || target instanceof Animal || target instanceof NeutralMob || target instanceof Player);
     }
 
     @Override protected void defineSynchedData(SynchedEntityData.Builder builder) {

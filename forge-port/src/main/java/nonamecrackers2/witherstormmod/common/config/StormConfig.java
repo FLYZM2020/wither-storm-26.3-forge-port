@@ -25,6 +25,9 @@ public final class StormConfig {
     public static final ForgeConfigSpec.BooleanValue INCREASE_SICKNESS_AMPLIFIER = BUILDER
             .comment("Reinfection increases sickness strength until it decays away from the storm.")
             .define("wither_sickness.increaseAmplifier", true);
+    public static final ForgeConfigSpec.BooleanValue SYMBIONT_ATTACK_MOBS = BUILDER
+            .comment("Allow newly spawned symbionts to target eligible mobs as well as players.")
+            .define("withered_symbiont.shouldSymbiontAttackMobs", false);
     public static final ForgeConfigSpec.BooleanValue STORM_INVULNERABILITY = BUILDER
             .comment("Prevent ordinary damage and regenerate health from phase 4 onward.")
             .define("witherStorm.witherStormInvulnerability", true);
