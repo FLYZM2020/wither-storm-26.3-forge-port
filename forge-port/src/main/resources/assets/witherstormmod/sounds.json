@@ -110,5 +110,23 @@
         "name": "witherstormmod:withered_symbiont/withered_symbiont_step_4"
       }
     ]
+  },
+  "command_block_summon": {
+    "category": "hostile",
+    "subtitle": "witherstormmod.subtitle.command_block_summon",
+    "sounds": [
+      {
+        "name": "witherstormmod:command_block/command_block_summon"
+      }
+    ]
+  },
+  "withered_symbiont_spawn": {
+    "category": "hostile",
+    "subtitle": "witherstormmod.subtitle.withered_symbiont_spawn",
+    "sounds": [
+      {
+        "name": "witherstormmod:withered_symbiont/withered_symbiont_spawn"
+      }
+    ]
   }
 }

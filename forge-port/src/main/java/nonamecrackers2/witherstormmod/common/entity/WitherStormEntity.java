@@ -1,6 +1,8 @@
 package nonamecrackers2.witherstormmod.common.entity;
 
 import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -263,6 +265,15 @@ public final class WitherStormEntity extends WitherBoss {
             mob.setPersistenceRequired();
             if (level.addFreshEntity(mob)) {
                 symbiontCooldown = StormConfig.SYMBIONT_STORM_DELAY_MINUTES.get() * 1200 + random.nextInt(12000);
+                for (ServerPlayer nearby : level.getEntitiesOfClass(ServerPlayer.class, search))
+                    CriteriaTriggers.SUMMONED_ENTITY.trigger(nearby, mob);
+                mob.spawnAnim();
+                level.sendParticles(WitherStormMod.COMMAND_PARTICLE.get(), mob.getX(), mob.getEyeY(), mob.getZ(), 20,
+                        random.nextGaussian(), random.nextGaussian(), random.nextGaussian(), 0.2);
+                level.sendParticles(ParticleTypes.LARGE_SMOKE, mob.getX(), mob.getEyeY(), mob.getZ(), 20,
+                        random.nextGaussian(), random.nextGaussian(), random.nextGaussian(), 0.01);
+                playSound(WitherStormModSounds.COMMAND_BLOCK_SUMMON.get(), 15.0F, 1.0F);
+                mob.playSound(WitherStormModSounds.SYMBIONT_SPAWN.get(), 12.0F, 1.0F);
                 return;
             }
         }
