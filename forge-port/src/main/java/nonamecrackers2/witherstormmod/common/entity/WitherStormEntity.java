@@ -44,6 +44,7 @@ import nonamecrackers2.witherstormmod.common.evolution.StormEvolutionRules;
 import nonamecrackers2.witherstormmod.common.beam.TractorBeamGeometry;
 import nonamecrackers2.witherstormmod.common.config.StormConfig;
 import nonamecrackers2.witherstormmod.common.sickness.WitherSicknessTracker;
+import nonamecrackers2.witherstormmod.common.player.PlayerSymbiontData;
 import nonamecrackers2.witherstormmod.common.init.WitherStormModAttributes;
 import nonamecrackers2.witherstormmod.common.init.WitherStormModSounds;
 import nonamecrackers2.witherstormmod.common.init.WitherStormModTickets;
@@ -247,6 +248,7 @@ public final class WitherStormEntity extends WitherBoss {
         ServerPlayer player = level.players().stream().filter(p -> p.isAlive() && !p.isSpectator() && !p.isCreative()
                 && search.intersects(p.getBoundingBox())
                 && p.position().subtract(position()).horizontalDistanceSqr() <= range * range
+                && !PlayerSymbiontData.summonBlocked(p, this)
                 && !hasSymbiontBlockingItems(p))
                 .min(Comparator.comparingDouble(p -> p.distanceToSqr(this))).orElse(null);
         if (player == null) return;
@@ -262,9 +264,11 @@ public final class WitherStormEntity extends WitherBoss {
             mob.setPos(x + 0.5, y, z + 0.5);
             if (!level.noCollision(mob)) continue;
             mob.setTarget(player);
+            mob.setStormOwner(this);
             mob.setPersistenceRequired();
             if (level.addFreshEntity(mob)) {
                 symbiontCooldown = StormConfig.SYMBIONT_STORM_DELAY_MINUTES.get() * 1200 + random.nextInt(12000);
+                PlayerSymbiontData.markSummoned(player, this);
                 for (ServerPlayer nearby : level.getEntitiesOfClass(ServerPlayer.class, search))
                     CriteriaTriggers.SUMMONED_ENTITY.trigger(nearby, mob);
                 mob.spawnAnim();
@@ -392,6 +396,7 @@ public final class WitherStormEntity extends WitherBoss {
     public boolean canSelectTarget(LivingEntity target) {
         return target != this && target.isAlive() && target.isAttackable() && !target.isSpectator()
                 && !(target instanceof Player player && player.isCreative())
+                && !(target instanceof ServerPlayer player && PlayerSymbiontData.protectedFromStorm(player))
                 && !(target instanceof WitherBoss || target instanceof WitheredSymbiontEntity || target instanceof EnderDragon || target instanceof AmbientCreature || target instanceof ArmorStand)
                 && !(getPhase() < 4 && (target instanceof AbstractSchoolingFish || target instanceof Squid))
                 && !target.typeHolder().is(WitherStormModEntityTags.WITHER_STORM_TARGETING_BLACKLIST);

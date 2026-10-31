@@ -35,6 +35,12 @@ public final class StormConfig {
     public static final ForgeConfigSpec.IntValue SYMBIONT_STORM_DELAY_MINUTES = BUILDER
             .comment("Storm-wide summon delay in minutes, plus up to ten random minutes.")
             .defineInRange("withered_symbiont.witherStormSummoningDelay", 10, 1, 20);
+    public static final ForgeConfigSpec.IntValue SYMBIONT_PLAYER_DELAY_MINUTES = BUILDER
+            .defineInRange("withered_symbiont.playerSummoningDelay", 10, 1, 60);
+    public static final ForgeConfigSpec.IntValue SYMBIONT_PLAYER_KILL_DELAY_MINUTES = BUILDER
+            .defineInRange("withered_symbiont.playerSummoningDelayOnKill", 40, 1, 60);
+    public static final ForgeConfigSpec.IntValue SYMBIONT_PLAYER_PROTECTION_MINUTES = BUILDER
+            .defineInRange("withered_symbiont.playerInvulnerableTime", 5, 1, 10);
     public static final ForgeConfigSpec.BooleanValue STORM_INVULNERABILITY = BUILDER
             .comment("Prevent ordinary damage and regenerate health from phase 4 onward.")
             .define("witherStorm.witherStormInvulnerability", true);

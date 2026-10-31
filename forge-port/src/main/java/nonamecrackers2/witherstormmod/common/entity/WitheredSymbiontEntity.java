@@ -1,6 +1,7 @@
 package nonamecrackers2.witherstormmod.common.entity;
 
 import java.util.UUID;
+import net.minecraft.core.UUIDUtil;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ import net.minecraft.world.entity.npc.villager.AbstractVillager;
 import nonamecrackers2.witherstormmod.common.tags.WitherStormModEntityTags;
 import nonamecrackers2.witherstormmod.common.init.WitherStormModSounds;
 import nonamecrackers2.witherstormmod.common.config.StormConfig;
+import nonamecrackers2.witherstormmod.common.player.PlayerSymbiontData;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.monster.skeleton.WitherSkeleton;
 import net.minecraft.world.entity.player.Player;
@@ -89,6 +91,7 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
     private int smashCooldown;
     private int smashAirTicks;
     private boolean smashing;
+    private @Nullable UUID stormOwner;
     private final List<Arrow> spellArrows = new ArrayList<>();
 
     public WitheredSymbiontEntity(EntityType<? extends WitherSkeleton> type, Level level) {
@@ -116,6 +119,18 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
     @Override public boolean causeFallDamage(double distance, float multiplier, DamageSource source) { return false; }
     @Override public boolean canBeLeashed() { return false; }
     @Override protected int decreaseAirSupply(int supply) { return supply; }
+    public void setStormOwner(WitherStormEntity owner) { stormOwner = owner.getUUID(); }
+
+    @Override public void die(DamageSource source) {
+        boolean wasDead = dead;
+        super.die(source);
+        if (wasDead || !dead || !(level() instanceof ServerLevel server)) return;
+        if (getKillCredit() instanceof ServerPlayer player && stormOwner != null
+                && server.getEntity(stormOwner) instanceof WitherStormEntity storm)
+            PlayerSymbiontData.markKilled(player, storm);
+        for (ServerPlayer player : server.getEntitiesOfClass(ServerPlayer.class, getBoundingBox().inflate(20.0)))
+            PlayerSymbiontData.protect(player);
+    }
 
     @Override public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
         Entity direct = source.getDirectEntity();
@@ -487,6 +502,7 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
         output.putInt("SmashCooldown", smashCooldown);
         output.putInt("SmashAirTicks", smashAirTicks);
         output.putBoolean("Smashing", smashing);
+        if (stormOwner != null) output.store("StormOwner", UUIDUtil.CODEC, stormOwner);
     }
 
     @Override protected void readAdditionalSaveData(ValueInput input) {
@@ -506,6 +522,7 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
         smashCooldown = Math.clamp(input.getIntOr("SmashCooldown", 0), -1, 5);
         smashAirTicks = Math.clamp(input.getIntOr("SmashAirTicks", 0), 0, 20);
         smashing = input.getBooleanOr("Smashing", false);
+        stormOwner = input.read("StormOwner", UUIDUtil.CODEC).orElse(null);
     }
 
     @Override public void startSeenByPlayer(ServerPlayer player) {
