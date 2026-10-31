@@ -62,6 +62,7 @@ import nonamecrackers2.witherstormmod.api.common.event.WitherStormChangePhaseEve
 import nonamecrackers2.witherstormmod.api.common.event.WitherStormEvolveEvent;
 import nonamecrackers2.witherstormmod.api.common.event.WitherStormModifyEvolutionSpeedEvent;
 import java.util.HashSet;
+import org.jspecify.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -422,11 +423,28 @@ public final class WitherStormEntity extends WitherBoss {
     public boolean canSelectTarget(LivingEntity target) {
         return target != this && target.isAlive() && target.isAttackable() && !target.isSpectator()
                 && !(target instanceof Player player && player.isCreative())
-                && !(target instanceof Player && revivalProtectionTicks > 0)
-                && !(target instanceof ServerPlayer player && PlayerSymbiontData.protectedFromStorm(player))
+                && !isProtectedPlayer(target)
                 && !(target instanceof WitherBoss || target instanceof WitheredSymbiontEntity || target instanceof EnderDragon || target instanceof AmbientCreature || target instanceof ArmorStand)
                 && !(getPhase() < 4 && (target instanceof AbstractSchoolingFish || target instanceof Squid))
                 && !target.typeHolder().is(WitherStormModEntityTags.WITHER_STORM_TARGETING_BLACKLIST);
+    }
+
+    private boolean isProtectedPlayer(LivingEntity target) {
+        return target instanceof Player && revivalProtectionTicks > 0
+                || target instanceof ServerPlayer player && PlayerSymbiontData.protectedFromStorm(player);
+    }
+
+    /** The temporary vanilla Wither AI must also honor player protection. */
+    @Override public boolean canAttack(LivingEntity target) {
+        return !isProtectedPlayer(target) && super.canAttack(target);
+    }
+
+    @Override public void setTarget(@Nullable LivingEntity target) {
+        super.setTarget(target != null && isProtectedPlayer(target) ? null : target);
+    }
+
+    @Override public void performRangedAttack(LivingEntity target, float distanceFactor) {
+        if (!isProtectedPlayer(target)) super.performRangedAttack(target, distanceFactor);
     }
 
     @Override
