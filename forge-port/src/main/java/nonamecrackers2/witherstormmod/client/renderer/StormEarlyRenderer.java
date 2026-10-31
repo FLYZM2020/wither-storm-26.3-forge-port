@@ -125,6 +125,6 @@ public final class StormEarlyRenderer extends WitherBossRenderer {
     @Override
     protected AABB getBoundingBoxForCulling(WitherBoss entity, float partialTick) {
         AABB bounds = super.getBoundingBoxForCulling(entity, partialTick);
-        return entity instanceof WitherStormEntity storm && storm.getPhase() >= 4 ? bounds.inflate(48.0) : bounds;
+        return entity instanceof WitherStormEntity ? bounds.inflate(50.0) : bounds;
     }
 }

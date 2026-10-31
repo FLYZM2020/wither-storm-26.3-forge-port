@@ -14,6 +14,7 @@ import nonamecrackers2.witherstormmod.WitherStormMod;
 import nonamecrackers2.witherstormmod.client.model.SymbiontModel;
 import nonamecrackers2.witherstormmod.common.entity.WitheredSymbiontEntity;
 import net.minecraft.world.entity.monster.skeleton.WitherSkeleton;
+import net.minecraft.world.phys.AABB;
 
 /** Original base geometry and texture; special overlays and combat animations remain unported. */
 public final class SymbiontRenderer extends WitherSkeletonRenderer {
@@ -30,6 +31,9 @@ public final class SymbiontRenderer extends WitherSkeletonRenderer {
         });
     }
     @Override public Identifier getTextureLocation(SkeletonRenderState state) { return TEXTURE; }
+    @Override protected AABB getBoundingBoxForCulling(WitherSkeleton entity, float partialTick) {
+        return super.getBoundingBoxForCulling(entity, partialTick).inflate(3.0);
+    }
     @Override public SkeletonRenderState createRenderState() { return new State(); }
     @Override public void extractRenderState(WitherSkeleton entity, SkeletonRenderState state, float partialTick) {
         super.extractRenderState(entity, state, partialTick);

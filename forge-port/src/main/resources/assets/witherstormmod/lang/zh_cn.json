@@ -37,5 +37,11 @@
   "commands.witherstormmod.sickness.cure_started": "开始治疗 %s。",
   "witherstormmod.subtitle.withered_symbiont_pull": "凋零共生体：吸引",
   "witherstormmod.subtitle.withered_symbiont_prepare_spell": "凋零共生体：准备施法",
-  "witherstormmod.subtitle.withered_symbiont_cast_spell": "凋零共生体：施法"
+  "witherstormmod.subtitle.withered_symbiont_cast_spell": "凋零共生体：施法",
+  "witherstormmod.subtitle.withered_symbiont_ambient": "凋零共生体：低鸣",
+  "witherstormmod.subtitle.withered_symbiont_hurt": "凋零共生体：受伤",
+  "witherstormmod.subtitle.withered_symbiont_death": "凋零共生体：死亡",
+  "witherstormmod.subtitle.withered_symbiont_step": "凋零共生体：脚步",
+  "witherstormmod.subtitle.command_block_summon": "命令方块：召唤",
+  "witherstormmod.subtitle.withered_symbiont_spawn": "凋零共生体：生成"
 }

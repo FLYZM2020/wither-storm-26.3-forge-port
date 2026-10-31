@@ -1,6 +1,8 @@
 package nonamecrackers2.witherstormmod.common.entity;
 
 import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,9 +18,8 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.tags.DamageTypeTags;
@@ -44,11 +45,13 @@ import nonamecrackers2.witherstormmod.common.evolution.StormEvolutionRules;
 import nonamecrackers2.witherstormmod.common.beam.TractorBeamGeometry;
 import nonamecrackers2.witherstormmod.common.config.StormConfig;
 import nonamecrackers2.witherstormmod.common.sickness.WitherSicknessTracker;
+import nonamecrackers2.witherstormmod.common.player.PlayerSymbiontData;
 import nonamecrackers2.witherstormmod.common.init.WitherStormModAttributes;
 import nonamecrackers2.witherstormmod.common.init.WitherStormModSounds;
 import nonamecrackers2.witherstormmod.common.init.WitherStormModTickets;
 import nonamecrackers2.witherstormmod.common.init.WitherStormModDamageTypes;
 import nonamecrackers2.witherstormmod.common.init.WitherStormModItems;
+import nonamecrackers2.witherstormmod.common.item.FormidibombItem;
 import nonamecrackers2.witherstormmod.WitherStormMod;
 import nonamecrackers2.witherstormmod.common.tags.WitherStormModItemTags;
 import nonamecrackers2.witherstormmod.common.tags.WitherStormModEntityTags;
@@ -59,6 +62,7 @@ import nonamecrackers2.witherstormmod.api.common.event.WitherStormChangePhaseEve
 import nonamecrackers2.witherstormmod.api.common.event.WitherStormEvolveEvent;
 import nonamecrackers2.witherstormmod.api.common.event.WitherStormModifyEvolutionSpeedEvent;
 import java.util.HashSet;
+import org.jspecify.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -78,6 +82,7 @@ public final class WitherStormEntity extends WitherBoss {
     private static final EntityDataAccessor<Integer> RIGHT_BEAM_TARGET = SynchedEntityData.defineId(WitherStormEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> VISUAL_EVOLUTION_SPEED = SynchedEntityData.defineId(WitherStormEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> COLLAPSE_STATE = SynchedEntityData.defineId(WitherStormEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> SQUASH_HITBOX = SynchedEntityData.defineId(WitherStormEntity.class, EntityDataSerializers.BOOLEAN);
     private static final int NORMAL = 0, FALLING = 1, PLAYING_DEAD = 2, REVIVING = 3;
     private static final DustParticleOptions BEAM_DUST = new DustParticleOptions(0xA448E8, 1.0F);
     private final Set<UUID> trackedItems = new HashSet<>();
@@ -86,6 +91,7 @@ public final class WitherStormEntity extends WitherBoss {
     private int collapseTicks;
     private boolean noAiBeforeCollapse;
     private int symbiontCooldown;
+    private int revivalProtectionTicks;
     private final UUID[] segmentIds = new UUID[2];
 
     public WitherStormEntity(EntityType<? extends WitherBoss> type, Level level) {
@@ -102,12 +108,14 @@ public final class WitherStormEntity extends WitherBoss {
         builder.define(RIGHT_BEAM_TARGET, 0);
         builder.define(VISUAL_EVOLUTION_SPEED, 1.0F);
         builder.define(COLLAPSE_STATE, NORMAL);
+        builder.define(SQUASH_HITBOX, false);
     }
 
     public int getPhase() { return this.entityData.get(PHASE); }
     public int getConsumedEntities() { return this.entityData.get(CONSUMED); }
     public float getVisualEvolutionSpeed() { return this.entityData.get(VISUAL_EVOLUTION_SPEED); }
     public int getCollapseState() { return this.entityData.get(COLLAPSE_STATE); }
+    public boolean isHitboxSquashed() { return this.entityData.get(SQUASH_HITBOX); }
 
     @Override
     protected EntityDimensions getDefaultDimensions(Pose pose) {
@@ -120,13 +128,14 @@ public final class WitherStormEntity extends WitherBoss {
         };
         if (dimensions == null) return super.getDefaultDimensions(pose);
         if (getCollapseState() == PLAYING_DEAD) return EntityDimensions.scalable(dimensions.width(), 0.1F).withEyeHeight(0.085F);
+        if (isHitboxSquashed()) return EntityDimensions.scalable(dimensions.width(), 1.0F).withEyeHeight(17.5F);
         return dimensions.withEyeHeight(17.5F);
     }
 
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
         super.onSyncedDataUpdated(accessor);
-        if (PHASE.equals(accessor) || COLLAPSE_STATE.equals(accessor)) refreshDimensions();
+        if (PHASE.equals(accessor) || COLLAPSE_STATE.equals(accessor) || SQUASH_HITBOX.equals(accessor)) refreshDimensions();
     }
 
     @Override
@@ -152,6 +161,8 @@ public final class WitherStormEntity extends WitherBoss {
             return;
         }
         if (!this.isAlive()) return;
+        if (this.tickCount % 20 == 1) this.entityData.set(SQUASH_HITBOX, StormConfig.SQUASH_HITBOX.get());
+        if (revivalProtectionTicks > 0) revivalProtectionTicks--;
         if (this.tickCount % 20 == 1) this.entityData.set(VISUAL_EVOLUTION_SPEED, (float) getEvolutionSpeedModifier());
         if (this.tickCount % 20 == 1 && StormConfig.TEMPORARY_CHUNK_LOADING.get()
                 && this.level() instanceof ServerLevel server) {
@@ -236,43 +247,88 @@ public final class WitherStormEntity extends WitherBoss {
     /** Approximate original spawn conditions; the spawned mob is a temporary melee stand-in. */
     private void tickSymbiontSummoning(ServerLevel level) {
         if (symbiontCooldown > 0) { symbiontCooldown--; return; }
-        if (tickCount % 1200 != 0 || getPhase() < 5
+        if (revivalProtectionTicks > 0 || !StormConfig.SYMBIONT_SUMMON_ENABLED.get() || tickCount % (StormConfig.SYMBIONT_CHECK_SECONDS.get() * 20) != 0 || getPhase() < 5
                 || getConsumedEntities() < StormEvolutionRules.consumptionRequirement(5, getEvolutionSpeedModifier())) return;
-        double radius = getAttributeValue(Attributes.FOLLOW_RANGE) + 50.0;
-        AABB area = getBoundingBox().inflate(radius);
+        double range = getAttributeValue(Attributes.FOLLOW_RANGE);
+        AABB search = getBoundingBox().inflate(range, range + 255.0, range);
+        AABB area = search.inflate(50.0);
         if (!level.getEntitiesOfClass(WitheredSymbiontEntity.class, area, Entity::isAlive).isEmpty()
                 || !level.getEntitiesOfClass(FormidibombEntity.class, area, Entity::isAlive).isEmpty()) return;
         ServerPlayer player = level.players().stream().filter(p -> p.isAlive() && !p.isSpectator() && !p.isCreative()
-                && p.distanceToSqr(this) <= radius * radius
-                && !p.getInventory().contains(new ItemStack(WitherStormModItems.COMMAND_BLOCK_BOOK.get()))
-                && !p.getInventory().contains(new ItemStack(WitherStormModItems.FORMIDIBOMB.get())))
+                && search.intersects(p.getBoundingBox())
+                && p.position().subtract(position()).horizontalDistanceSqr() <= range * range
+                && !PlayerSymbiontData.summonBlocked(p, this)
+                && !hasSymbiontBlockingItems(p))
                 .min(Comparator.comparingDouble(p -> p.distanceToSqr(this))).orElse(null);
         if (player == null) return;
+        float angle = -(float) Math.atan2(player.getX() - getX(), player.getZ() - getZ());
+        double centerX = getX() + Mth.cos(angle) * 30.0F;
+        double centerZ = getZ() + Mth.sin(angle) * 30.0F;
         for (int attempt = 0; attempt < 10; attempt++) {
-            int x = player.getBlockX() + random.nextInt(25) - 12;
-            int z = player.getBlockZ() + random.nextInt(25) - 12;
-            if (!level.hasChunkAt(new BlockPos(x, player.getBlockY(), z))) continue;
-            int y = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
-            BlockPos pos = new BlockPos(x, y, z);
-            if (!level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), Direction.UP)) continue;
+            int baseX = Mth.floor(centerX) + (int) (10.0 * random.nextGaussian()) + 5;
+            int baseZ = Mth.floor(centerZ) + (int) (10.0 * random.nextGaussian()) + 5;
+            BlockPos ground = null;
+            for (int dx = -5; dx <= 5; dx++) {
+                for (int dz = -5; dz <= 5; dz++) {
+                    int x = baseX + dx, z = baseZ + dz;
+                    if (!level.hasChunkAt(new BlockPos(x, player.getBlockY(), z))) continue;
+                    int height = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z) - 1;
+                    if (ground == null || height > ground.getY()) ground = new BlockPos(x, height, z);
+                }
+            }
+            if (ground == null) continue;
+            var state = level.getBlockState(ground);
+            if (!state.isFaceSturdy(level, ground, Direction.UP) || !state.isValidSpawn(level, ground, getType())) continue;
+            var shape = state.getCollisionShape(level, ground);
+            if (shape.isEmpty()) continue;
+            double y = ground.getY() + shape.max(Direction.Axis.Y);
+            BlockPos pos = BlockPos.containing(ground.getX() + 0.5, y, ground.getZ() + 0.5);
+            if (!SpawnPlacementTypes.ON_GROUND.isSpawnPositionOk(level, pos, WitherStormMod.WITHERED_SYMBIONT.get())) continue;
             WitheredSymbiontEntity mob = WitherStormMod.WITHERED_SYMBIONT.get().create(level, EntitySpawnReason.TRIGGERED);
             if (mob == null) return;
-            mob.setPos(x + 0.5, y, z + 0.5);
+            mob.setPos(ground.getX() + 0.5, y, ground.getZ() + 0.5);
             if (!level.noCollision(mob)) continue;
-            mob.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.STONE_SWORD));
+            double dx = player.getX() - mob.getX(), dy = player.getEyeY() - mob.getEyeY(), dz = player.getZ() - mob.getZ();
+            float yaw = (float) Math.toDegrees(Math.atan2(dz, dx)) - 90.0F;
+            mob.setYRot(yaw);
+            mob.yBodyRot = yaw;
+            mob.setXRot((float) -Math.toDegrees(Math.atan2(dy, Math.sqrt(dx * dx + dz * dz))));
             mob.setTarget(player);
+            mob.setStormOwner(this);
             mob.setPersistenceRequired();
             if (level.addFreshEntity(mob)) {
-                symbiontCooldown = 12000 + random.nextInt(12000);
+                symbiontCooldown = StormConfig.SYMBIONT_STORM_DELAY_MINUTES.get() * 1200 + random.nextInt(12000);
+                PlayerSymbiontData.markSummoned(player, this);
+                for (ServerPlayer nearby : level.getEntitiesOfClass(ServerPlayer.class, search))
+                    CriteriaTriggers.SUMMONED_ENTITY.trigger(nearby, mob);
+                mob.spawnAnim();
+                level.sendParticles(WitherStormMod.COMMAND_PARTICLE.get(), mob.getX(), mob.getEyeY(), mob.getZ(), 20,
+                        random.nextGaussian(), random.nextGaussian(), random.nextGaussian(), 0.2);
+                level.sendParticles(ParticleTypes.LARGE_SMOKE, mob.getX(), mob.getEyeY(), mob.getZ(), 20,
+                        random.nextGaussian(), random.nextGaussian(), random.nextGaussian(), 0.01);
+                playSound(WitherStormModSounds.COMMAND_BLOCK_SUMMON.get(), 15.0F, 1.0F);
+                mob.playSound(WitherStormModSounds.SYMBIONT_SPAWN.get(), 12.0F, 1.0F);
                 return;
             }
         }
+    }
+
+    private boolean hasSymbiontBlockingItems(ServerPlayer player) {
+        var inventory = player.getInventory();
+        for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
+            ItemStack stack = inventory.getItem(slot);
+            if (stack.is(WitherStormModItems.COMMAND_BLOCK_BOOK.get())
+                    || stack.getItem() instanceof FormidibombItem && FormidibombItem.getStartFuse(stack) > 0
+                    || getPhase() > 5 && stack.is(WitherStormModItemTags.COMMAND_BLOCK_TOOLS)) return true;
+        }
+        return false;
     }
 
     /** Begin the original fall/play-dead sequence, without the not-yet-ported segments or podium. */
     public boolean beginCollapse() {
         if (!(this.level() instanceof ServerLevel server) || !isAlive() || getPhase() < 4 || getCollapseState() != NORMAL) return false;
         noAiBeforeCollapse = isNoAi();
+        revivalProtectionTicks = 0;
         setNoAi(true);
         setTarget(null);
         for (int head = 0; head < 3; head++) {
@@ -291,6 +347,7 @@ public final class WitherStormEntity extends WitherBoss {
     public boolean beginRevival() {
         if (this.level().isClientSide() || getCollapseState() != PLAYING_DEAD) return false;
         collapseTicks = 0;
+        revivalProtectionTicks = StormConfig.REVIVAL_PLAYER_PROTECTION_MINUTES.get() * 1200;
         this.entityData.set(COLLAPSE_STATE, REVIVING);
         return true;
     }
@@ -371,9 +428,28 @@ public final class WitherStormEntity extends WitherBoss {
     public boolean canSelectTarget(LivingEntity target) {
         return target != this && target.isAlive() && target.isAttackable() && !target.isSpectator()
                 && !(target instanceof Player player && player.isCreative())
+                && !isProtectedPlayer(target)
                 && !(target instanceof WitherBoss || target instanceof WitheredSymbiontEntity || target instanceof EnderDragon || target instanceof AmbientCreature || target instanceof ArmorStand)
                 && !(getPhase() < 4 && (target instanceof AbstractSchoolingFish || target instanceof Squid))
                 && !target.typeHolder().is(WitherStormModEntityTags.WITHER_STORM_TARGETING_BLACKLIST);
+    }
+
+    private boolean isProtectedPlayer(LivingEntity target) {
+        return target instanceof Player && revivalProtectionTicks > 0
+                || target instanceof ServerPlayer player && PlayerSymbiontData.protectedFromStorm(player);
+    }
+
+    /** The temporary vanilla Wither AI must also honor player protection. */
+    @Override public boolean canAttack(LivingEntity target) {
+        return !isProtectedPlayer(target) && super.canAttack(target);
+    }
+
+    @Override public void setTarget(@Nullable LivingEntity target) {
+        super.setTarget(target != null && isProtectedPlayer(target) ? null : target);
+    }
+
+    @Override public void performRangedAttack(LivingEntity target, float distanceFactor) {
+        if (!isProtectedPlayer(target)) super.performRangedAttack(target, distanceFactor);
     }
 
     @Override
@@ -597,6 +673,8 @@ public final class WitherStormEntity extends WitherBoss {
         output.putInt("CollapseTicks", collapseTicks);
         output.putBoolean("NoAiBeforeCollapse", noAiBeforeCollapse);
         output.putInt("SymbiontSummoningCooldown", symbiontCooldown);
+        output.putInt("RevivalProtectionTicks", revivalProtectionTicks);
+        output.putBoolean("SquashHitbox", isHitboxSquashed());
         for (int i = 0; i < segmentIds.length; i++) if (segmentIds[i] != null) output.store("Segment" + i, UUIDUtil.CODEC, segmentIds[i]);
     }
 
@@ -612,6 +690,8 @@ public final class WitherStormEntity extends WitherBoss {
         collapseTicks = Math.max(0, input.getIntOr("CollapseTicks", 0));
         noAiBeforeCollapse = input.getBooleanOr("NoAiBeforeCollapse", false);
         symbiontCooldown = Math.max(0, input.getIntOr("SymbiontSummoningCooldown", 0));
+        revivalProtectionTicks = Math.max(0, input.getIntOr("RevivalProtectionTicks", 0));
+        this.entityData.set(SQUASH_HITBOX, input.getBooleanOr("SquashHitbox", false));
         for (int i = 0; i < segmentIds.length; i++) segmentIds[i] = input.read("Segment" + i, UUIDUtil.CODEC).orElse(null);
         this.entityData.set(COLLAPSE_STATE, Math.clamp(input.getIntOr("CollapseState", NORMAL), NORMAL, REVIVING));
         if (getCollapseState() != NORMAL) setNoAi(true);

@@ -39,6 +39,7 @@ import nonamecrackers2.witherstormmod.common.init.WitherStormModItems;
 import nonamecrackers2.witherstormmod.common.init.WitherStormModBlocks;
 import nonamecrackers2.witherstormmod.common.init.WitherStormModBlockEntities;
 import nonamecrackers2.witherstormmod.common.sickness.WitherSicknessTracker;
+import nonamecrackers2.witherstormmod.common.player.PlayerSymbiontData;
 
 @Mod(WitherStormMod.MOD_ID)
 public final class WitherStormMod {
@@ -76,8 +77,10 @@ public final class WitherStormMod {
         EntityAttributeCreationEvent.BUS.addListener(WitherStormMod::registerAttributes);
         RegisterCommandsEvent.BUS.addListener(StormCommands::register);
         LivingEvent.LivingTickEvent.BUS.addListener(WitherSicknessTracker::onLivingTick);
+        LivingEvent.LivingTickEvent.BUS.addListener(PlayerSymbiontData::onLivingTick);
         MobSpawnEvent.AllowDespawn.BUS.addListener(WitherSicknessTracker::onAllowDespawn);
         PlayerEvent.Clone.BUS.addListener(WitherSicknessTracker::onPlayerClone);
+        PlayerEvent.Clone.BUS.addListener(PlayerSymbiontData::onPlayerClone);
         BuildCreativeModeTabContentsEvent.BUS.addListener(WitherStormMod::addCreativeItems);
         BlockEvent.EntityPlaceEvent.BUS.addListener(WitherStormPatternChecker::onSkullPlaced);
         TickEvent.LevelTickEvent.Post.BUS.addListener(WitherStormPatternChecker::onLevelTick);
@@ -104,7 +107,7 @@ public final class WitherStormMod {
         event.put(WITHERED_SYMBIONT.get(), WitherSkeleton.createAttributes()
                 .add(Attributes.MAX_HEALTH, 60.0).add(Attributes.MOVEMENT_SPEED, 0.15)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0).add(Attributes.ATTACK_DAMAGE, 16.0)
-                .add(Attributes.FOLLOW_RANGE, 45.0).build());
+                .add(Attributes.FOLLOW_RANGE, 45.0).add(Attributes.STEP_HEIGHT, 1.0).build());
         event.put(WITHER_STORM_SEGMENT.get(), WitherBoss.createAttributes()
                 .add(Attributes.MAX_HEALTH, 4000.0).add(Attributes.MOVEMENT_SPEED, 0.6)
                 .add(Attributes.FOLLOW_RANGE, 160.0).add(Attributes.ARMOR, 6.0).build());

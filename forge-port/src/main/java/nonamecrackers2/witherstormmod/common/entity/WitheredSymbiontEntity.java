@@ -1,6 +1,7 @@
 package nonamecrackers2.witherstormmod.common.entity;
 
 import java.util.UUID;
+import net.minecraft.core.UUIDUtil;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.ArrayList;
@@ -16,33 +17,56 @@ import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.BossEvent.BossBarColor;
 import net.minecraft.world.BossEvent.BossBarOverlay;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.golem.AbstractGolem;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.villager.AbstractVillager;
 import nonamecrackers2.witherstormmod.common.tags.WitherStormModEntityTags;
 import nonamecrackers2.witherstormmod.common.init.WitherStormModSounds;
+import nonamecrackers2.witherstormmod.common.config.StormConfig;
+import nonamecrackers2.witherstormmod.common.player.PlayerSymbiontData;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.monster.skeleton.WitherSkeleton;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.projectile.hurtingprojectile.WitherSkull;
+import net.minecraft.world.entity.projectile.hurtingprojectile.AbstractHurtingProjectile;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.EvokerFangs;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.util.RandomSource;
+import org.jspecify.annotations.Nullable;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
@@ -62,21 +86,110 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
     private int fangsTicks;
     private int arrowTicks;
     private int pulseTicks;
+    private int smashTicks;
+    private int smashStomps;
+    private int smashCooldown;
+    private int smashAirTicks;
+    private boolean smashing;
+    private @Nullable UUID stormOwner;
     private final List<Arrow> spellArrows = new ArrayList<>();
 
     public WitheredSymbiontEntity(EntityType<? extends WitherSkeleton> type, Level level) {
         super(type, level);
+        xpReward = 150;
+    }
+
+    @Override protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {
+        // The original symbiont does not spawn with the temporary skeleton sword.
+    }
+
+    @Override public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
+            EntitySpawnReason reason, @Nullable SpawnGroupData data) {
+        SpawnGroupData result = super.finalizeSpawn(level, difficulty, reason, data);
+        var damage = getAttribute(Attributes.ATTACK_DAMAGE);
+        if (damage != null) damage.setBaseValue(16.0);
+        return result;
+    }
+
+    @Override protected SoundEvent getAmbientSound() { return WitherStormModSounds.SYMBIONT_AMBIENT.get(); }
+    @Override protected SoundEvent getHurtSound(DamageSource source) { return WitherStormModSounds.SYMBIONT_HURT.get(); }
+    @Override protected SoundEvent getDeathSound() { return WitherStormModSounds.SYMBIONT_DEATH.get(); }
+    @Override protected void playStepSound(BlockPos pos, BlockState state) { playSound(WitherStormModSounds.SYMBIONT_STEP.get(), 0.3F, 1.0F); }
+    @Override public float getVoicePitch() { return isDeadOrDying() ? 1.0F : super.getVoicePitch(); }
+    @Override public boolean causeFallDamage(double distance, float multiplier, DamageSource source) { return false; }
+    @Override public boolean canBeLeashed() { return false; }
+    @Override protected int decreaseAirSupply(int supply) { return supply; }
+    public void setStormOwner(WitherStormEntity owner) { stormOwner = owner.getUUID(); }
+
+    @Override public void die(DamageSource source) {
+        boolean wasDead = dead;
+        super.die(source);
+        if (wasDead || !dead || !(level() instanceof ServerLevel server)) return;
+        if (getKillCredit() instanceof ServerPlayer player && stormOwner != null
+                && server.getEntity(stormOwner) instanceof WitherStormEntity storm)
+            PlayerSymbiontData.markKilled(player, storm);
+        for (ServerPlayer player : server.getEntitiesOfClass(ServerPlayer.class, getBoundingBox().inflate(20.0)))
+            PlayerSymbiontData.protect(player);
+    }
+
+    @Override public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
+        Entity direct = source.getDirectEntity();
+        if ((direct instanceof AbstractHurtingProjectile || direct instanceof AbstractArrow)
+                && direct instanceof Projectile projectile) {
+            Entity owner = projectile.getOwner();
+            if (owner instanceof WitheredSymbiontEntity
+                    || owner != null && owner.typeHolder().is(WitherStormModEntityTags.SICKENED_MOBS)) return false;
+        }
+        return super.hurtServer(level, source, amount);
+    }
+
+    @Override public boolean doHurtTarget(ServerLevel level, Entity target) {
+        float baseDamage = (float) getAttributeValue(Attributes.ATTACK_DAMAGE);
+        float damage = (int) baseDamage > 0 ? baseDamage / 2.0F + random.nextInt((int) baseDamage) : baseDamage;
+        DamageSource source = damageSources().mobAttack(this);
+        if (!target.hurtServer(level, source, damage)) return false;
+        target.setDeltaMovement(target.getDeltaMovement().add(0.0, 0.8, 0.0));
+        if (target instanceof ServerPlayer player) player.connection.send(new ClientboundSetEntityMotionPacket(player));
+        EnchantmentHelper.doPostAttackEffects(level, target, source);
+        return true;
+    }
+
+    @Override protected void doPush(Entity entity) {
+        if (!level().isClientSide() && entity instanceof Player player && player.isAttackable()
+                && !player.isSpectator() && !player.isCreative() && random.nextInt(20) == 0) setTarget(player);
+        super.doPush(entity);
     }
 
     @Override protected void registerGoals() {
-        super.registerGoals();
         goalSelector.addGoal(0, new Goal() {
             { setFlags(EnumSet.of(Flag.MOVE)); }
-            @Override public boolean canUse() { return skullTicks > 0 || pullTicks > 0 || fangsTicks > 0 || arrowTicks > 0 || pulseTicks > 0; }
+            @Override public boolean canUse() { return skullTicks > 0 || pullTicks > 0 || fangsTicks > 0 || arrowTicks > 0 || pulseTicks > 0 || smashTicks > 0; }
             @Override public boolean canContinueToUse() { return canUse(); }
             @Override public void start() { getNavigation().stop(); }
             @Override public void tick() { getNavigation().stop(); }
         });
+        goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0, true));
+        goalSelector.addGoal(4, new FloatGoal(this));
+        goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.7));
+        goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+        targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
+        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false,
+                (target, level) -> target.isAttackable()));
+        if (StormConfig.SYMBIONT_ATTACK_MOBS.get()) {
+            targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Mob.class, 10, true, false,
+                    (target, level) -> canTargetMob(target)));
+        }
+    }
+
+    /** Keep skeleton weapon reassessment from replacing the symbiont's melee goal. */
+    @Override public void reassessWeaponGoal() { }
+
+    private boolean canTargetMob(LivingEntity target) {
+        return target != this && target.isAttackable() && !target.typeHolder().is(WitherStormModEntityTags.SICKENED_MOBS)
+                && !(target instanceof WitherBoss || target instanceof WitherSkeleton || target instanceof Enderman || target instanceof EnderDragon)
+                && (target instanceof AbstractVillager || target instanceof AbstractGolem || target instanceof Monster
+                    || target instanceof Animal || target instanceof NeutralMob || target instanceof Player);
     }
 
     @Override protected void defineSynchedData(SynchedEntityData.Builder builder) {
@@ -92,9 +205,12 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
         if (!level().isClientSide()) {
             bossBar.setProgress(Math.clamp(getHealth() / getMaxHealth(), 0.0F, 1.0F));
             bossBar.setName(getDisplayName());
-            if (isAlive() && level() instanceof ServerLevel server) tickPulse(server);
+            if (isAlive() && level() instanceof ServerLevel server) {
+                tickSmashLanding(server);
+                tickPulse(server);
+            }
             entityData.set(PULLING, isAlive() && pullTicks > 0);
-            entityData.set(CASTING, isAlive() && (pullTicks > 0 || skullTicks > 0 || fangsTicks > 0 || arrowTicks > 0 || pulseTicks > 0));
+            entityData.set(CASTING, isAlive() && (pullTicks > 0 || skullTicks > 0 || fangsTicks > 0 || arrowTicks > 0 || pulseTicks > 0 || smashTicks > 0));
             if (isCasting() && level() instanceof ServerLevel server) showCastingParticles(server);
         }
     }
@@ -113,7 +229,19 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
     /** A small first step toward the original pulse spell; terrain effects are unported. */
     private void tickPulse(ServerLevel level) {
         if (getTarget() == null || !getTarget().isAlive()) {
-            if (pulseCharge > 0 || skullTicks > 0 || pullTicks > 0 || fangsTicks > 0 || arrowTicks > 0 || pulseTicks > 0) { pulseCharge = 0; skullTicks = 0; pullTicks = 0; fangsTicks = 0; arrowTicks = 0; pulseTicks = 0; clearSpellArrows(); pulseCooldown = 100; }
+            if (pulseCharge > 0 || skullTicks > 0 || pullTicks > 0 || fangsTicks > 0 || arrowTicks > 0 || pulseTicks > 0 || smashTicks > 0) { pulseCharge = 0; skullTicks = 0; pullTicks = 0; fangsTicks = 0; arrowTicks = 0; pulseTicks = 0; smashTicks = 0; clearSpellArrows(); pulseCooldown = 100; }
+            return;
+        }
+        if (smashTicks > 0) {
+            if (smashStomps > 0 && smashCooldown <= 0) {
+                stomp(randomPlayerTarget(level, getTarget()));
+                smashStomps--;
+                smashCooldown = 5;
+            } else smashCooldown--;
+            if (--smashTicks == 0) {
+                stomp(getTarget());
+                pulseCooldown = 160 + random.nextInt(40);
+            }
             return;
         }
         if (pulseTicks > 0) {
@@ -185,6 +313,13 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
                 level.sendParticles(ParticleTypes.PORTAL, getX(), getY() + 1.2, getZ(), 12, 0.6, 0.8, 0.6, 0.1);
             if (pulseCharge == 0) {
                 playSound(WitherStormModSounds.SYMBIONT_CAST.get(), 4.0F, 1.0F);
+                if (pendingSpell == 5) {
+                    previousSpell = 5;
+                    smashTicks = 40;
+                    smashStomps = random.nextInt(3) + 1;
+                    smashCooldown = 0;
+                    return;
+                }
                 if (pendingSpell == 4) {
                     previousSpell = 4;
                     arrowTicks = 120;
@@ -210,11 +345,34 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
                 pulseTicks = 160;
             }
         } else if (--pulseCooldown <= 0) {
-            pendingSpell = random.nextInt(previousSpell < 0 ? 5 : 4);
+            pendingSpell = random.nextInt(previousSpell < 0 ? 6 : 5);
             if (previousSpell >= 0 && pendingSpell >= previousSpell) pendingSpell++;
             preparingSkulls = pendingSpell == 1;
             pulseCharge = 40 + random.nextInt(20);
             playSound(WitherStormModSounds.SYMBIONT_PREPARE.get(), 4.0F, 1.0F);
+        }
+    }
+
+    /** Old smash spell launches toward its target and slams down after a short flight. */
+    private void stomp(LivingEntity target) {
+        if (getBlockStateOn().isAir()) return;
+        float jump = getJumpPower() * 5.0F;
+        var boost = getEffect(MobEffects.JUMP_BOOST);
+        if (boost != null) jump += 0.1F * (boost.getAmplifier() + 1);
+        double factor = Math.min(0.2, distanceTo(target) * 0.05);
+        setDeltaMovement((target.getX() - getX()) * factor, jump, (target.getZ() - getZ()) * factor);
+        smashing = true;
+        smashAirTicks = 20;
+        playSound(getBlockStateOn().getSoundType().getBreakSound(), 4.0F, 1.0F);
+    }
+
+    private void tickSmashLanding(ServerLevel level) {
+        if (!smashing) return;
+        if (smashAirTicks > 0) {
+            if (--smashAirTicks == 0) setDeltaMovement(getDeltaMovement().x, -5.0, getDeltaMovement().z);
+        } else if (onGround()) {
+            smashing = false;
+            level.explode(this, getX(), getY(), getZ(), getHealth() <= getMaxHealth() * 0.5F ? 2.5F : 1.5F, Level.ExplosionInteraction.MOB);
         }
     }
 
@@ -339,6 +497,12 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
         output.putInt("FangsTicks", fangsTicks);
         output.putInt("ArrowTicks", arrowTicks);
         output.putInt("PulseTicks", pulseTicks);
+        output.putInt("SmashTicks", smashTicks);
+        output.putInt("SmashStomps", smashStomps);
+        output.putInt("SmashCooldown", smashCooldown);
+        output.putInt("SmashAirTicks", smashAirTicks);
+        output.putBoolean("Smashing", smashing);
+        if (stormOwner != null) output.store("StormOwner", UUIDUtil.CODEC, stormOwner);
     }
 
     @Override protected void readAdditionalSaveData(ValueInput input) {
@@ -347,12 +511,18 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
         pulseCharge = Math.clamp(input.getIntOr("PulseCharge", 0), 0, 59);
         skullTicks = Math.clamp(input.getIntOr("SkullTicks", 0), 0, 220);
         preparingSkulls = input.getBooleanOr("PreparingSkulls", false);
-        previousSpell = Math.clamp(input.getIntOr("PreviousSpell", -1), -1, 4);
-        pendingSpell = Math.clamp(input.getIntOr("PendingSpell", preparingSkulls ? 1 : 0), 0, 4);
+        previousSpell = Math.clamp(input.getIntOr("PreviousSpell", -1), -1, 5);
+        pendingSpell = Math.clamp(input.getIntOr("PendingSpell", preparingSkulls ? 1 : 0), 0, 5);
         pullTicks = Math.clamp(input.getIntOr("PullTicks", 0), 0, 240);
         fangsTicks = Math.clamp(input.getIntOr("FangsTicks", 0), 0, 20);
         arrowTicks = Math.clamp(input.getIntOr("ArrowTicks", 0), 0, 120);
         pulseTicks = Math.clamp(input.getIntOr("PulseTicks", 0), 0, 160);
+        smashTicks = Math.clamp(input.getIntOr("SmashTicks", 0), 0, 40);
+        smashStomps = Math.clamp(input.getIntOr("SmashStomps", 0), 0, 3);
+        smashCooldown = Math.clamp(input.getIntOr("SmashCooldown", 0), -1, 5);
+        smashAirTicks = Math.clamp(input.getIntOr("SmashAirTicks", 0), 0, 20);
+        smashing = input.getBooleanOr("Smashing", false);
+        stormOwner = input.read("StormOwner", UUIDUtil.CODEC).orElse(null);
     }
 
     @Override public void startSeenByPlayer(ServerPlayer player) {

@@ -17,6 +17,9 @@ public final class StormConfig {
     public static final ForgeConfigSpec.IntValue TEMPORARY_CHUNK_RADIUS = BUILDER
             .comment("Temporary ticket radius; this does not restore a storm when a server restarts.")
             .defineInRange("performance.temporaryChunkRadius", 2, 0, 4);
+    public static final ForgeConfigSpec.BooleanValue SQUASH_HITBOX = BUILDER
+            .comment("Reduce the vertical hitbox of large storms and their segments to one block.")
+            .define("performance.squashHitbox", false);
     public static final ForgeConfigSpec.BooleanValue SICKNESS_ENABLED = BUILDER
             .define("wither_sickness.witherSicknessEnabled", true);
     public static final ForgeConfigSpec.IntValue REQUIRED_CONTACTS = BUILDER
@@ -25,6 +28,22 @@ public final class StormConfig {
     public static final ForgeConfigSpec.BooleanValue INCREASE_SICKNESS_AMPLIFIER = BUILDER
             .comment("Reinfection increases sickness strength until it decays away from the storm.")
             .define("wither_sickness.increaseAmplifier", true);
+    public static final ForgeConfigSpec.BooleanValue SYMBIONT_ATTACK_MOBS = BUILDER
+            .comment("Allow newly spawned symbionts to target eligible mobs as well as players.")
+            .define("withered_symbiont.shouldSymbiontAttackMobs", false);
+    public static final ForgeConfigSpec.BooleanValue SYMBIONT_SUMMON_ENABLED = BUILDER
+            .define("withered_symbiont.canSummonSymbiont", true);
+    public static final ForgeConfigSpec.IntValue SYMBIONT_CHECK_SECONDS = BUILDER
+            .defineInRange("withered_symbiont.minimumSpawnCheckInterval", 60, 1, 240);
+    public static final ForgeConfigSpec.IntValue SYMBIONT_STORM_DELAY_MINUTES = BUILDER
+            .comment("Storm-wide summon delay in minutes, plus up to ten random minutes.")
+            .defineInRange("withered_symbiont.witherStormSummoningDelay", 10, 1, 20);
+    public static final ForgeConfigSpec.IntValue SYMBIONT_PLAYER_DELAY_MINUTES = BUILDER
+            .defineInRange("withered_symbiont.playerSummoningDelay", 10, 1, 60);
+    public static final ForgeConfigSpec.IntValue SYMBIONT_PLAYER_KILL_DELAY_MINUTES = BUILDER
+            .defineInRange("withered_symbiont.playerSummoningDelayOnKill", 40, 1, 60);
+    public static final ForgeConfigSpec.IntValue SYMBIONT_PLAYER_PROTECTION_MINUTES = BUILDER
+            .defineInRange("withered_symbiont.playerInvulnerableTime", 5, 1, 10);
     public static final ForgeConfigSpec.BooleanValue STORM_INVULNERABILITY = BUILDER
             .comment("Prevent ordinary damage and regenerate health from phase 4 onward.")
             .define("witherStorm.witherStormInvulnerability", true);
@@ -45,6 +64,9 @@ public final class StormConfig {
             .define("playing_dead.revivalTimer", true);
     public static final ForgeConfigSpec.IntValue REVIVAL_TIME_MINUTES = BUILDER
             .defineInRange("playing_dead.revivalTimeMinutes", 60, 1, 120);
+    public static final ForgeConfigSpec.IntValue REVIVAL_PLAYER_PROTECTION_MINUTES = BUILDER
+            .comment("Minutes after revival during which the temporary target selector ignores players and symbiont summoning is disabled.")
+            .defineInRange("playing_dead.revivalPlayerProtection", 3, 1, 40);
     public static final ForgeConfigSpec.IntValue HIGH_PROXIMITY_SECONDS = BUILDER
             .defineInRange("wither_sickness.requiredProximitySeconds", 600, 12, 1200);
     public static final ForgeConfigSpec.IntValue LOW_PROXIMITY_SECONDS = BUILDER
