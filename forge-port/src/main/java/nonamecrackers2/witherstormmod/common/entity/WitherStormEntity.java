@@ -16,9 +16,7 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.tags.DamageTypeTags;
@@ -259,7 +257,6 @@ public final class WitherStormEntity extends WitherBoss {
             if (mob == null) return;
             mob.setPos(x + 0.5, y, z + 0.5);
             if (!level.noCollision(mob)) continue;
-            mob.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.STONE_SWORD));
             mob.setTarget(player);
             mob.setPersistenceRequired();
             if (level.addFreshEntity(mob)) {

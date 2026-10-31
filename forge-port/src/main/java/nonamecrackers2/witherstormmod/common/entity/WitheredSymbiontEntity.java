@@ -21,6 +21,8 @@ import net.minecraft.world.BossEvent.BossBarColor;
 import net.minecraft.world.BossEvent.BossBarOverlay;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.level.block.state.BlockState;
@@ -50,6 +52,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.util.RandomSource;
+import org.jspecify.annotations.Nullable;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
@@ -79,6 +85,18 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
     public WitheredSymbiontEntity(EntityType<? extends WitherSkeleton> type, Level level) {
         super(type, level);
         xpReward = 150;
+    }
+
+    @Override protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {
+        // The original symbiont does not spawn with the temporary skeleton sword.
+    }
+
+    @Override public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
+            EntitySpawnReason reason, @Nullable SpawnGroupData data) {
+        SpawnGroupData result = super.finalizeSpawn(level, difficulty, reason, data);
+        var damage = getAttribute(Attributes.ATTACK_DAMAGE);
+        if (damage != null) damage.setBaseValue(16.0);
+        return result;
     }
 
     @Override protected SoundEvent getAmbientSound() { return WitherStormModSounds.SYMBIONT_AMBIENT.get(); }
