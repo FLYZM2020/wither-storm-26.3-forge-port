@@ -18,6 +18,7 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -252,17 +253,38 @@ public final class WitherStormEntity extends WitherBoss {
                 && !hasSymbiontBlockingItems(p))
                 .min(Comparator.comparingDouble(p -> p.distanceToSqr(this))).orElse(null);
         if (player == null) return;
+        float angle = -(float) Math.atan2(player.getX() - getX(), player.getZ() - getZ());
+        double centerX = getX() + Mth.cos(angle) * 30.0F;
+        double centerZ = getZ() + Mth.sin(angle) * 30.0F;
         for (int attempt = 0; attempt < 10; attempt++) {
-            int x = player.getBlockX() + random.nextInt(25) - 12;
-            int z = player.getBlockZ() + random.nextInt(25) - 12;
-            if (!level.hasChunkAt(new BlockPos(x, player.getBlockY(), z))) continue;
-            int y = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
-            BlockPos pos = new BlockPos(x, y, z);
-            if (!level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), Direction.UP)) continue;
+            int baseX = Mth.floor(centerX) + (int) (10.0 * random.nextGaussian()) + 5;
+            int baseZ = Mth.floor(centerZ) + (int) (10.0 * random.nextGaussian()) + 5;
+            BlockPos ground = null;
+            for (int dx = -5; dx <= 5; dx++) {
+                for (int dz = -5; dz <= 5; dz++) {
+                    int x = baseX + dx, z = baseZ + dz;
+                    if (!level.hasChunkAt(new BlockPos(x, player.getBlockY(), z))) continue;
+                    int height = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z) - 1;
+                    if (ground == null || height > ground.getY()) ground = new BlockPos(x, height, z);
+                }
+            }
+            if (ground == null) continue;
+            var state = level.getBlockState(ground);
+            if (!state.isFaceSturdy(level, ground, Direction.UP) || !state.isValidSpawn(level, ground, getType())) continue;
+            var shape = state.getCollisionShape(level, ground);
+            if (shape.isEmpty()) continue;
+            double y = ground.getY() + shape.max(Direction.Axis.Y);
+            BlockPos pos = BlockPos.containing(ground.getX() + 0.5, y, ground.getZ() + 0.5);
+            if (!SpawnPlacementTypes.ON_GROUND.isSpawnPositionOk(level, pos, WitherStormMod.WITHERED_SYMBIONT.get())) continue;
             WitheredSymbiontEntity mob = WitherStormMod.WITHERED_SYMBIONT.get().create(level, EntitySpawnReason.TRIGGERED);
             if (mob == null) return;
-            mob.setPos(x + 0.5, y, z + 0.5);
+            mob.setPos(ground.getX() + 0.5, y, ground.getZ() + 0.5);
             if (!level.noCollision(mob)) continue;
+            double dx = player.getX() - mob.getX(), dy = player.getEyeY() - mob.getEyeY(), dz = player.getZ() - mob.getZ();
+            float yaw = (float) Math.toDegrees(Math.atan2(dz, dx)) - 90.0F;
+            mob.setYRot(yaw);
+            mob.yBodyRot = yaw;
+            mob.setXRot((float) -Math.toDegrees(Math.atan2(dy, Math.sqrt(dx * dx + dz * dz))));
             mob.setTarget(player);
             mob.setStormOwner(this);
             mob.setPersistenceRequired();
