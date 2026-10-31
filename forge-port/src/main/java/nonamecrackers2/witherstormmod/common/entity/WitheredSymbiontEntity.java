@@ -85,6 +85,7 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
     @Override public float getVoicePitch() { return isDeadOrDying() ? 1.0F : super.getVoicePitch(); }
     @Override public boolean causeFallDamage(double distance, float multiplier, DamageSource source) { return false; }
     @Override public boolean canBeLeashed() { return false; }
+    @Override protected int decreaseAirSupply(int supply) { return supply; }
 
     @Override protected void registerGoals() {
         super.registerGoals();

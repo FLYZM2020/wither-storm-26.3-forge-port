@@ -104,7 +104,7 @@ public final class WitherStormMod {
         event.put(WITHERED_SYMBIONT.get(), WitherSkeleton.createAttributes()
                 .add(Attributes.MAX_HEALTH, 60.0).add(Attributes.MOVEMENT_SPEED, 0.15)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0).add(Attributes.ATTACK_DAMAGE, 16.0)
-                .add(Attributes.FOLLOW_RANGE, 45.0).build());
+                .add(Attributes.FOLLOW_RANGE, 45.0).add(Attributes.STEP_HEIGHT, 1.0).build());
         event.put(WITHER_STORM_SEGMENT.get(), WitherBoss.createAttributes()
                 .add(Attributes.MAX_HEALTH, 4000.0).add(Attributes.MOVEMENT_SPEED, 0.6)
                 .add(Attributes.FOLLOW_RANGE, 160.0).add(Attributes.ARMOR, 6.0).build());
