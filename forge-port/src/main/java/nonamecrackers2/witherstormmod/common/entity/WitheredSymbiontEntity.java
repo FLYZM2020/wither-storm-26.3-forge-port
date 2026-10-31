@@ -87,6 +87,12 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
     @Override public boolean canBeLeashed() { return false; }
     @Override protected int decreaseAirSupply(int supply) { return supply; }
 
+    @Override protected void doPush(Entity entity) {
+        if (!level().isClientSide() && entity instanceof Player player && player.isAttackable()
+                && !player.isSpectator() && !player.isCreative() && random.nextInt(20) == 0) setTarget(player);
+        super.doPush(entity);
+    }
+
     @Override protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(0, new Goal() {
