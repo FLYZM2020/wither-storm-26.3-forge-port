@@ -41,6 +41,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.projectile.hurtingprojectile.WitherSkull;
+import net.minecraft.world.entity.projectile.hurtingprojectile.AbstractHurtingProjectile;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.EvokerFangs;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
@@ -86,6 +88,17 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
     @Override public boolean causeFallDamage(double distance, float multiplier, DamageSource source) { return false; }
     @Override public boolean canBeLeashed() { return false; }
     @Override protected int decreaseAirSupply(int supply) { return supply; }
+
+    @Override public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
+        Entity direct = source.getDirectEntity();
+        if ((direct instanceof AbstractHurtingProjectile || direct instanceof AbstractArrow)
+                && direct instanceof Projectile projectile) {
+            Entity owner = projectile.getOwner();
+            if (owner instanceof WitheredSymbiontEntity
+                    || owner != null && owner.typeHolder().is(WitherStormModEntityTags.SICKENED_MOBS)) return false;
+        }
+        return super.hurtServer(level, source, amount);
+    }
 
     @Override protected void doPush(Entity entity) {
         if (!level().isClientSide() && entity instanceof Player player && player.isAttackable()
