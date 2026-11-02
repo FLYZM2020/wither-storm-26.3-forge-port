@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import nonamecrackers2.witherstormmod.WitherStormMod;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -30,6 +31,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
@@ -63,10 +65,15 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.EvokerFangs;
 import net.minecraft.world.entity.projectile.ShulkerBullet;
 import net.minecraft.world.entity.projectile.throwableitemprojectile.Snowball;
+import net.minecraft.world.entity.projectile.throwableitemprojectile.ThrownSplashPotion;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.SpectralArrow;
+import net.minecraft.world.entity.projectile.arrow.ThrownTrident;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -98,7 +105,7 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
     private int shulkerTicks;
     private int bombingTicks;
     private int throwingTicks;
-    private record PendingThrow(Vec3 position, int releaseTick, boolean arrow) { }
+    private record PendingThrow(Vec3 position, int releaseTick, int kind) { }
     private final List<PendingThrow> pendingThrows = new ArrayList<>();
     private int smashStomps;
     private int smashCooldown;
@@ -446,7 +453,7 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
         }
     }
 
-    /** The original uses more projectile types; pending markers do not persist across unloads. */
+    /** Pending markers are visual only and do not persist across unloads. */
     private void tickThrowing(ServerLevel level, LivingEntity target) {
         int difficulty = Math.max(1, level.getDifficulty().getId());
         int interval = Math.max(2, 24 / difficulty);
@@ -454,7 +461,7 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
             Vec3 position = position().add(random.nextGaussian() * 5.0, getEyeHeight() + 2.0 + random.nextDouble() * 10.0,
                     random.nextGaussian() * 5.0);
             if (level.hasChunkAt(BlockPos.containing(position)))
-                pendingThrows.add(new PendingThrow(position, tickCount + 40, random.nextBoolean()));
+                pendingThrows.add(new PendingThrow(position, tickCount + 40, random.nextInt(5)));
         }
         var iterator = pendingThrows.iterator();
         while (iterator.hasNext()) {
@@ -466,21 +473,56 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
                 continue;
             }
             LivingEntity selected = randomPlayerTarget(level, target);
-            Projectile projectile;
-            if (pending.arrow()) {
-                Arrow arrow = new Arrow(level, this, new ItemStack(Items.ARROW), null);
-                arrow.pickup = AbstractArrow.Pickup.DISALLOWED;
-                projectile = arrow;
-            } else {
-                projectile = new Snowball(level, this, new ItemStack(Items.SNOWBALL));
-            }
+            Projectile projectile = createThrownProjectile(level, pending.kind());
+            if (projectile instanceof AbstractArrow arrow) arrow.pickup = AbstractArrow.Pickup.DISALLOWED;
             projectile.setPos(pos);
             Vec3 delta = selected.getBoundingBox().getCenter().subtract(pos);
             double horizontal = Math.sqrt(delta.horizontalDistanceSqr());
-            projectile.shoot(delta.x, delta.y + horizontal * 0.2, delta.z, (float) (1.6 + horizontal * 0.02), 14 - difficulty * 4);
+            float speed = (float) ((pending.kind() == 0 ? 0.75 : 1.6) + horizontal * 0.02);
+            projectile.shoot(delta.x, delta.y + horizontal * 0.2, delta.z, speed, pending.kind() == 0 ? 8.0F : 14 - difficulty * 4);
             if (level.addFreshEntity(projectile)) projectile.playSound(SoundEvents.ARROW_SHOOT, 4.0F, 1.0F);
             iterator.remove();
         }
+    }
+
+    private Projectile createThrownProjectile(ServerLevel level, int kind) {
+        return switch (kind) {
+            case 0 -> {
+                ItemStack stack = PotionContents.createItemStack(Items.SPLASH_POTION, Potions.WATER);
+                MobEffectInstance effect = randomThrownEffect(random.nextInt(8), false);
+                if (effect != null) stack.set(DataComponents.POTION_CONTENTS, new PotionContents(Potions.WATER).withEffectAdded(effect));
+                yield new ThrownSplashPotion(level, this, stack);
+            }
+            case 1 -> new Snowball(level, this, new ItemStack(Items.SNOWBALL));
+            case 2 -> {
+                Arrow arrow = new Arrow(level, this, new ItemStack(Items.ARROW), null);
+                if (random.nextBoolean()) arrow.addEffect(randomThrownEffect(random.nextInt(6), true));
+                yield arrow;
+            }
+            case 3 -> new SpectralArrow(level, this, new ItemStack(Items.SPECTRAL_ARROW), null);
+            default -> new ThrownTrident(level, this, new ItemStack(Items.TRIDENT));
+        };
+    }
+
+    private static @Nullable MobEffectInstance randomThrownEffect(int choice, boolean arrow) {
+        if (arrow) return switch (choice) {
+            case 0 -> new MobEffectInstance(MobEffects.BLINDNESS, 10, 5);
+            case 1 -> new MobEffectInstance(MobEffects.SLOWNESS, 5, 8);
+            case 2 -> new MobEffectInstance(MobEffects.WEAKNESS, 10, 1);
+            case 3 -> new MobEffectInstance(MobEffects.HUNGER, 10, 2);
+            case 4 -> new MobEffectInstance(MobEffects.MINING_FATIGUE, 10, 3);
+            default -> new MobEffectInstance(MobEffects.NAUSEA, 10);
+        };
+        return switch (choice) {
+            case 0 -> new MobEffectInstance(MobEffects.WITHER, 60, 2);
+            case 1 -> new MobEffectInstance(MobEffects.MINING_FATIGUE, 400, 2);
+            case 2 -> new MobEffectInstance(MobEffects.HUNGER, 100, 1);
+            case 3 -> new MobEffectInstance(MobEffects.UNLUCK, 800, 2);
+            case 4 -> new MobEffectInstance(MobEffects.WEAKNESS, 100, 1);
+            case 5 -> new MobEffectInstance(MobEffects.SLOWNESS, 40, 1);
+            case 6 -> new MobEffectInstance(MobEffects.BLINDNESS, 60);
+            default -> null;
+        };
     }
 
     private void startFireballs(ServerLevel level) {
