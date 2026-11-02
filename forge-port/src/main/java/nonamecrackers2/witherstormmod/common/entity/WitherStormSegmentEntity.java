@@ -164,8 +164,8 @@ public final class WitherStormSegmentEntity extends WitherBoss {
                 player.hurtServer(level, WitherStormModDamageTypes.source(level, WitherStormModDamageTypes.WITHER_STORM_ATTACK, this), 3.5F);
                 if (player.isDeadOrDying()) parent.recordSegmentConsumption(player, 1);
             } else {
-                parent.recordSegmentConsumption(target, 1);
                 target.hurtServer(level, WitherStormModDamageTypes.source(level, WitherStormModDamageTypes.WITHER_STORM_ATTACK_MOB, this), Float.MAX_VALUE);
+                if (target.isDeadOrDying()) parent.recordSegmentConsumption(target, 1);
             }
         }
     }

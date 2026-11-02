@@ -574,9 +574,9 @@ public final class WitherStormEntity extends WitherBoss {
                     (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
             if (player.isDeadOrDying()) recordConsumption(player, 1);
         } else {
-            recordConsumption(target, 1);
             target.hurtServer(level, WitherStormModDamageTypes.source(level, WitherStormModDamageTypes.WITHER_STORM_ATTACK_MOB, this),
                     Float.MAX_VALUE);
+            if (target.isDeadOrDying()) recordConsumption(target, 1);
         }
     }
 
