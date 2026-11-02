@@ -2,7 +2,7 @@
 /*     */ 
 /*     */ import com.google.common.collect.Maps;
 /*     */ import com.mojang.blaze3d.shaders.FogShape;
-/*     */ import com.mojang.blaze3d.shaders.Uniform;
+/*     */ import com.mojang.renderpearl.backend.opengl.Uniform;
 /*     */ import com.mojang.blaze3d.systems.RenderSystem;
 /*     */ import com.mojang.blaze3d.vertex.PoseStack;
 /*     */ import com.mojang.blaze3d.vertex.VertexBuffer;

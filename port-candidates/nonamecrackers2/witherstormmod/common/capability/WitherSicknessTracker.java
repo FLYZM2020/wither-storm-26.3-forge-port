@@ -44,7 +44,7 @@ public class WitherSicknessTracker extends EntityCapability<nonamecrackers2.with
 
    public WitherSicknessTracker(LivingEntity entity) {
       super(entity);
-      if (!entity.level().isClientSide) {
+      if (!entity.level().isClientSide()) {
          this.randomizeModifiers();
       }
    }
@@ -150,24 +150,24 @@ public class WitherSicknessTracker extends EntityCapability<nonamecrackers2.with
    }
 
    public void read(CompoundTag compound) {
-      this.proximityTicks = compound.getInt("ProximityTicks");
-      this.delayTicks = compound.getInt("DelayTicks");
-      this.contacts = compound.getInt("Contacts");
-      this.amplifierDecreaseTicks = compound.getInt("AmplifierDecreaseTicks");
-      this.amplifier = compound.getInt("Amplifier");
-      this.totalInfections = compound.getInt("TotalInfections");
-      this.isInfected = compound.getBoolean("IsInfected");
-      this.proximityTicksModifier = compound.getInt("ProximityTicksModifier");
-      this.applicationDelayModifier = compound.getInt("ApplicationDelayModifier");
-      this.cureDelayModifier = compound.getInt("CureDelayModifier");
-      this.contactsDecreaseTicks = compound.getInt("ContactsDecreaseTicks");
-      this.cureDelayTicks = compound.getInt("CureDelayTicks");
-      this.isBeingCured = compound.getBoolean("IsBeingCured");
-      this.totalCures = compound.getInt("TotalCures");
+      this.proximityTicks = compound.getIntOr("ProximityTicks", 0);
+      this.delayTicks = compound.getIntOr("DelayTicks", 0);
+      this.contacts = compound.getIntOr("Contacts", 0);
+      this.amplifierDecreaseTicks = compound.getIntOr("AmplifierDecreaseTicks", 0);
+      this.amplifier = compound.getIntOr("Amplifier", 0);
+      this.totalInfections = compound.getIntOr("TotalInfections", 0);
+      this.isInfected = compound.getBooleanOr("IsInfected", false);
+      this.proximityTicksModifier = compound.getIntOr("ProximityTicksModifier", 0);
+      this.applicationDelayModifier = compound.getIntOr("ApplicationDelayModifier", 0);
+      this.cureDelayModifier = compound.getIntOr("CureDelayModifier", 0);
+      this.contactsDecreaseTicks = compound.getIntOr("ContactsDecreaseTicks", 0);
+      this.cureDelayTicks = compound.getIntOr("CureDelayTicks", 0);
+      this.isBeingCured = compound.getBooleanOr("IsBeingCured", false);
+      this.totalCures = compound.getIntOr("TotalCures", 0);
    }
 
    public void tick() {
-      if (!((LivingEntity)this.entity).level().isClientSide) {
+      if (!((LivingEntity)this.entity).level().isClientSide()) {
          boolean flag = ((LivingEntity)this.entity).getType().is(WitherStormModEntityTags.WITHER_SICKNESS_IMMUNE);
          if (this.isActuallyImmune != flag) {
             this.shouldUpdate = true;
@@ -226,7 +226,7 @@ public class WitherSicknessTracker extends EntityCapability<nonamecrackers2.with
                this.delayTicks++;
             }
 
-            if (this.delayTicks >= this.getApplicationDelay() && !((LivingEntity)this.entity).level().isClientSide) {
+            if (this.delayTicks >= this.getApplicationDelay() && !((LivingEntity)this.entity).level().isClientSide()) {
                if (this.delayTicks != this.prevDelayTicks) {
                   this.infect();
                }
@@ -242,7 +242,7 @@ public class WitherSicknessTracker extends EntityCapability<nonamecrackers2.with
                }
             }
 
-            if (!((LivingEntity)this.entity).level().isClientSide
+            if (!((LivingEntity)this.entity).level().isClientSide()
                && !((LivingEntity)this.entity).hasEffect((MobEffect)WitherStormModEffects.WITHER_SICKNESS.get())
                && this.delayTicks >= this.getApplicationDelay()) {
                this.setInfected(false);

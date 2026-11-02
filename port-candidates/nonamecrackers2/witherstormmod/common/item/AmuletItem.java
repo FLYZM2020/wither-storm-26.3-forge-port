@@ -75,7 +75,7 @@
 /*  75 */             if (nearest != null)
 /*     */             {
 /*  77 */               tag.putString(id + "Type", ForgeRegistries.ENTITY_TYPES.getKey(nearest.getType()).toString());
-/*  78 */               tag.putUUID(id, nearest.getUUID());
+/*  78 */               tag.store(id, net.minecraft.core.UUIDUtil.CODEC, nearest.getUUID());
 /*  79 */               tag.putInt(id + "Dist", (int)player.distanceTo((Entity)nearest));
 /*  80 */               tag.putString(id + "Name", nearest.getDisplayName().getString());
 /*  81 */               tag.put(id + "Pos", (Tag)NbtUtils.writeBlockPos(nearest.blockPosition()));
@@ -88,7 +88,7 @@
 /*     */           
 /*     */           }
 /*  90 */           else if (tag.contains(id)) {
-/*  91 */             saveDistFor(serverLevel, tag, player, tag.getUUID(id), id);
+/*  91 */             saveDistFor(serverLevel, tag, player, tag.read(id, net.minecraft.core.UUIDUtil.CODEC).orElse(null), id);
 /*     */           } else {
 /*  93 */             tag.putInt(id + "Dist", -1);
 /*     */           } 
@@ -100,12 +100,12 @@
 /*     */   
 /*     */   public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 /* 102 */     ItemStack stack = player.getItemInHand(hand);
-/* 103 */     if (!level.isClientSide && player.isShiftKeyDown())
+/* 103 */     if (!level.isClientSide() && player.isShiftKeyDown())
 /*     */     {
 /* 105 */       if (stack.getItem() instanceof AmuletItem) {
 /*     */         
 /* 107 */         CompoundTag tag = stack.getOrCreateTag();
-/* 108 */         int index = tag.getInt("SelectedIndex");
+/* 108 */         int index = tag.getIntOr("SelectedIndex", 0);
 /* 109 */         index++;
 /* 110 */         if (index < TRACKING.length) {
 /* 111 */           tag.putInt("SelectedIndex", index);
@@ -128,16 +128,16 @@
 /* 128 */         CompoundTag tag = item.getOrCreateTag();
 /* 129 */         if (!tag.getBoolean("Locked")) {
 /*     */           
-/* 131 */           int index = tag.getInt("SelectedIndex");
+/* 131 */           int index = tag.getIntOr("SelectedIndex", 0);
 /* 132 */           if (index >= 1 && index < TRACKING.length) {
 /*     */             
-/* 134 */             if (!(player.level()).isClientSide) {
+/* 134 */             if (!(player.level()).isClientSide()) {
 /*     */               
 /* 136 */               String id = TRACKING[index];
-/* 137 */               if (!tag.contains(id) || !tag.getUUID(id).equals(entity.getUUID())) {
+/* 137 */               if (!tag.contains(id) || !tag.read(id, net.minecraft.core.UUIDUtil.CODEC).orElse(null).equals(entity.getUUID())) {
 /*     */                 
 /* 139 */                 tag.putString(id + "Type", ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString());
-/* 140 */                 tag.putUUID(id, entity.getUUID());
+/* 140 */                 tag.store(id, net.minecraft.core.UUIDUtil.CODEC, entity.getUUID());
 /* 141 */                 player.playNotifySound((SoundEvent)WitherStormModSoundEvents.AMULET_BIND.get(), SoundSource.PLAYERS, 1.0F, 0.0F);
 /* 142 */                 if (player instanceof ServerPlayer) { ServerPlayer serverPlayer = (ServerPlayer)player;
 /* 143 */                   WitherStormModCriteriaTriggers.LINK_AMULET.trigger(serverPlayer, (Entity)entity, getTotalUniqueLinked(stack)); }
@@ -152,7 +152,7 @@
 /* 152 */                 player.playNotifySound((SoundEvent)WitherStormModSoundEvents.AMULET_UNBIND.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
 /*     */               } 
 /*     */             } 
-/* 155 */             return InteractionResult.sidedSuccess((player.level()).isClientSide);
+/* 155 */             return InteractionResult.sidedSuccess((player.level()).isClientSide());
 /*     */           } 
 /*     */         } 
 /*     */       } 
@@ -163,15 +163,15 @@
 /*     */   
 /*     */   private void saveDistFor(ServerLevel level, CompoundTag tag, Player player, UUID uuid, String id) {
 /* 165 */     Entity tracking = null;
-/* 166 */     if (tag.getBoolean("TrackEntityTypes")) {
+/* 166 */     if (tag.getBooleanOr("TrackEntityTypes", false)) {
 /*     */       
-/* 168 */       EntityType<?> type = (EntityType)ForgeRegistries.ENTITY_TYPES.getValue(Identifier.parse(tag.getString(id + "Type")));
+/* 168 */       EntityType<?> type = (EntityType)ForgeRegistries.ENTITY_TYPES.getValue(Identifier.parse(tag.getStringOr(id + "Type", "")));
 /* 169 */       List<Entity> entities = level.getEntitiesOfClass(Entity.class, player.getBoundingBox().inflate(500.0D), e -> (e.getType().equals(type) && e != player));
 /* 170 */       tracking = (Entity)WorldUtil.getNearest(entities, player.position(), Entity::position);
 /*     */     }
 /* 172 */     else if (tag.contains(id)) {
 /*     */       
-/* 174 */       tracking = level.getEntity(tag.getUUID(id));
+/* 174 */       tracking = level.getEntity(tag.read(id, net.minecraft.core.UUIDUtil.CODEC).orElse(null));
 /*     */     } 
 /*     */     
 /* 177 */     if (tracking != null) {
@@ -191,7 +191,7 @@
 /*     */   public void appendHoverText(ItemStack stack, Level level, List<Component> text, TooltipFlag flag) {
 /* 192 */     super.appendHoverText(stack, level, text, flag);
 /* 193 */     CompoundTag tag = stack.getOrCreateTag();
-/* 194 */     boolean locked = tag.getBoolean("Locked");
+/* 194 */     boolean locked = tag.getBooleanOr("Locked", false);
 /* 195 */     if (((Boolean)WitherStormModConfig.SERVER.amuletOverride.get()).booleanValue())
 /* 196 */       text.add(Component.translatable("description.amulet.mainUse").withStyle(ChatFormatting.DARK_GRAY)); 
 /* 197 */     text.add(Component.translatable("description.amulet.trackingDesc").withStyle(ChatFormatting.DARK_GRAY));
@@ -205,13 +205,13 @@
 /* 205 */     text.add(Component.translatable("description.amulet.tracking", new Object[] { getTrackingName("TrackingRed", tag), getDistString("TrackingRed", tag) }).withStyle(ChatFormatting.RED));
 /* 206 */     if (locked)
 /* 207 */       text.add(Component.translatable("description.amulet.locked").withStyle(ChatFormatting.YELLOW)); 
-/* 208 */     if (tag.getBoolean("TrackEntityTypes")) {
+/* 208 */     if (tag.getBooleanOr("TrackEntityTypes", false)) {
 /* 209 */       text.add(Component.translatable("description.amulet.tracksEntityTypes").withStyle(ChatFormatting.GOLD));
 /*     */     }
 /*     */   }
 /*     */   
 /*     */   private static String getDistString(String id, CompoundTag tag) {
-/* 214 */     int dist = tag.getInt(id + "Dist");
+/* 214 */     int dist = tag.getIntOr(id + "Dist", 0);
 /* 215 */     if (dist >= 0)
 /* 216 */       return String.valueOf(dist); 
 /* 217 */     if (tag.contains(id + "Name")) {
@@ -231,7 +231,7 @@
 /*     */     } 
 /*     */ 
 /*     */     
-/* 234 */     return tag.getString(id + "Name");
+/* 234 */     return tag.getStringOr(id + "Name", "");
 /*     */   }
 /*     */ 
 /*     */ 
@@ -250,7 +250,7 @@
 /* 250 */       String id = TRACKING[i];
 /* 251 */       if (!id.equals("TrackingBlue") && tag.contains(id)) {
 /*     */         
-/* 253 */         UUID uuid = tag.getUUID(id);
+/* 253 */         UUID uuid = tag.read(id, net.minecraft.core.UUIDUtil.CODEC).orElse(null);
 /* 254 */         if (!ids.contains(uuid))
 /* 255 */           ids.add(uuid); 
 /*     */       } 

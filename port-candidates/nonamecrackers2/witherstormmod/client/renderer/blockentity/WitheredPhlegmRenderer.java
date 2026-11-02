@@ -44,8 +44,8 @@
 /* 44 */         float dist = 1.0F;
 /* 45 */         stack.scale(scale, scale, scale);
 /* 46 */         stack.translate(random.nextDouble() * dist - dist / 2.0D, random.nextDouble() * dist - dist / 2.0D, random.nextDouble() * dist - dist / 2.0D);
-/* 47 */         stack.mulPose(Axis.XP.rotationDegrees(random.nextFloat() * 360.0F));
-/* 48 */         stack.mulPose(Axis.YP.rotationDegrees(random.nextFloat() * 360.0F));
+/* 47 */         stack.rotate(Axis.XP.rotationDegrees(random.nextFloat() * 360.0F));
+/* 48 */         stack.rotate(Axis.YP.rotationDegrees(random.nextFloat() * 360.0F));
 /* 49 */         this.itemRenderer.renderStatic(item, ItemDisplayContext.FIXED, packedLight, overlayTexture, stack, buffer, entity.getLevel(), (int)seed);
 /* 50 */         stack.popPose();
 /*    */       } 

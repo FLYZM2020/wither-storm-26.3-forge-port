@@ -43,14 +43,14 @@
 /*     */         
 /*  44 */         float tickCount = player.tickCount + event.getPartialTick();
 /*     */         
-/*  46 */         stack.mulPose(Axis.YP.rotationDegrees(tickCount));
+/*  46 */         stack.rotate(Axis.YP.rotationDegrees(tickCount));
 /*  47 */         stack.translate(0.6D, (player.getBbHeight() + 0.2F), 0.0D);
 /*     */         
 /*  49 */         stack.pushPose();
 /*  50 */         float scale = (Mth.sin(tickCount * 0.1F) + 10.0F) * 0.025F;
 /*     */         
-/*  52 */         stack.mulPose(Axis.XP.rotationDegrees(tickCount));
-/*  53 */         stack.mulPose(Axis.ZN.rotationDegrees(tickCount * 4.0F));
+/*  52 */         stack.rotate(Axis.XP.rotationDegrees(tickCount));
+/*  53 */         stack.rotate(Axis.ZN.rotationDegrees(tickCount * 4.0F));
 /*  54 */         stack.scale(scale, scale, scale);
 /*  55 */         stack.translate(-0.5D, -0.5D, -0.5D);
 /*     */         
@@ -70,14 +70,14 @@
 /*     */         
 /*  71 */         float tickCount = player.tickCount + event.getPartialTick();
 /*     */         
-/*  73 */         devStack.mulPose(Axis.YP.rotationDegrees(tickCount));
+/*  73 */         devStack.rotate(Axis.YP.rotationDegrees(tickCount));
 /*  74 */         devStack.translate(-0.6D, (player.getBbHeight() + 0.2F), 0.0D);
 /*     */         
 /*  76 */         devStack.pushPose();
 /*  77 */         float scale = (Mth.sin(tickCount * 0.1F) + 10.0F) * 0.025F;
 /*     */         
-/*  79 */         devStack.mulPose(Axis.XP.rotationDegrees(tickCount));
-/*  80 */         devStack.mulPose(Axis.ZN.rotationDegrees(tickCount * 4.0F));
+/*  79 */         devStack.rotate(Axis.XP.rotationDegrees(tickCount));
+/*  80 */         devStack.rotate(Axis.ZN.rotationDegrees(tickCount * 4.0F));
 /*  81 */         devStack.scale(scale, scale, scale);
 /*  82 */         devStack.translate(-0.5D, -0.5D, -0.5D);
 /*     */         
@@ -98,14 +98,14 @@
 /*     */         
 /*  99 */         float tickCount = player.tickCount + event.getPartialTick();
 /*     */         
-/* 101 */         kofiStack.mulPose(Axis.YP.rotationDegrees(-tickCount));
+/* 101 */         kofiStack.rotate(Axis.YP.rotationDegrees(-tickCount));
 /* 102 */         kofiStack.translate(-0.6D, (player.getBbHeight() + 0.2F), 1.0D);
 /*     */         
 /* 104 */         kofiStack.pushPose();
 /* 105 */         float scale = 0.2727F;
 /*     */         
-/* 107 */         kofiStack.mulPose(Axis.XP.rotationDegrees(-tickCount * 6.0F));
-/* 108 */         kofiStack.mulPose(Axis.ZN.rotationDegrees(-tickCount * 6.0F));
+/* 107 */         kofiStack.rotate(Axis.XP.rotationDegrees(-tickCount * 6.0F));
+/* 108 */         kofiStack.rotate(Axis.ZN.rotationDegrees(-tickCount * 6.0F));
 /* 109 */         kofiStack.scale(scale, scale, scale);
 /* 110 */         kofiStack.translate(-0.5D, -0.5D, -0.5D);
 /* 111 */         int overlay = OverlayTexture.NO_OVERLAY;

@@ -74,7 +74,7 @@ public interface WitherSickened {
    default void sickenedTick() {
       Mob cast = this.witherstormmod$cast();
       nonamecrackers2.witherstormmod.common.entity.WitherSickened.Data data = this.getData();
-      if (!cast.level().isClientSide && cast.isAlive() && this.isConverting()) {
+      if (!cast.level().isClientSide() && cast.isAlive() && this.isConverting()) {
          int i = this.getConversionProgress();
          data.conversionTime -= i;
          if (data.getConversionTime() <= 0 && ForgeEventFactory.canLivingConvert(cast, cast.getType(), timer -> data.conversionTime = timer)) {
@@ -148,7 +148,7 @@ public interface WitherSickened {
                stack.shrink(1);
             }
 
-            if (!cast.level().isClientSide) {
+            if (!cast.level().isClientSide()) {
                this.startConverting(player.getUUID(), cast.getRandom().nextInt(2401) + 3600);
             }
 
@@ -193,20 +193,20 @@ public interface WitherSickened {
 
       compound.putInt("ConversionTime", this.isConverting() ? data.getConversionTime() : -1);
       if (data.getConversionStarter() != null) {
-         compound.putUUID("ConversionPlayer", data.getConversionStarter());
+         compound.store("ConversionPlayer", net.minecraft.core.UUIDUtil.CODEC, data.getConversionStarter());
       }
    }
 
    default void sickenedRead(CompoundTag compound) {
       nonamecrackers2.witherstormmod.common.entity.WitherSickened.Data data = this.getData();
       if (compound.contains("OriginalType")) {
-         Identifier location = Identifier.tryParse(compound.getString("OriginalType"));
+         Identifier location = Identifier.tryParse(compound.getStringOr("OriginalType", ""));
          EntityType<?> type = (EntityType<?>)ForgeRegistries.ENTITY_TYPES.getValue(location);
          data.setOriginal(type, compound.contains("OriginalData") ? compound.getCompound("OriginalData") : null);
       }
 
       if (compound.contains("ConversionTime") && compound.getInt("ConversionTime") > -1) {
-         this.startConverting(compound.hasUUID("ConversionPlayer") ? compound.getUUID("ConversionPlayer") : null, compound.getInt("ConversionTime"));
+         this.startConverting(compound.contains("ConversionPlayer") ? compound.read("ConversionPlayer", net.minecraft.core.UUIDUtil.CODEC).orElse(null) : null, compound.getIntOr("ConversionTime", 0));
       }
    }
 

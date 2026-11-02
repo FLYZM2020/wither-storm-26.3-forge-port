@@ -125,7 +125,7 @@ public class PlayDeadManager {
 
    public void explode() {
       this.setState(nonamecrackers2.witherstormmod.common.entity.ai.witherstorm.PlayDeadManager.State.FALLING);
-      if (!this.entity.level().isClientSide) {
+      if (!this.entity.level().isClientSide()) {
          for (Player player : this.entity.level().getNearbyPlayers(TargetingConditions.forNonCombat(), null, this.entity.getSearchBox().inflate(100.0))) {
             WitherStormModCriteriaTriggers.PLAY_DEAD_TRIGGER.trigger((ServerPlayer)player, this.entity);
          }
@@ -134,7 +134,7 @@ public class PlayDeadManager {
 
    public void revive() {
       this.setState(nonamecrackers2.witherstormmod.common.entity.ai.witherstorm.PlayDeadManager.State.REVIVING);
-      if (!this.entity.level().isClientSide) {
+      if (!this.entity.level().isClientSide()) {
          for (Player player : this.entity.level().getNearbyPlayers(TargetingConditions.forNonCombat(), null, this.entity.getSearchBox().inflate(100.0))) {
             WitherStormModCriteriaTriggers.REVIVAL_TRIGGER.trigger((ServerPlayer)player, this.entity);
          }
@@ -142,7 +142,7 @@ public class PlayDeadManager {
    }
 
    public void sendChanges(PacketTarget target, boolean updateTick) {
-      if (!this.entity.level().isClientSide) {
+      if (!this.entity.level().isClientSide()) {
          UpdatePlayDeadManagerMessage message = new UpdatePlayDeadManagerMessage(this.entity.getId(), this, updateTick);
          WitherStormModPacketHandlers.MAIN.send(target, message);
          this.getState().sendAdditionalPackets(this.entity.level(), this.entity, this);
@@ -192,7 +192,7 @@ public class PlayDeadManager {
       for (int x = -3; x <= 3; x++) {
          for (int z = -3; z <= 3; z++) {
             ChunkPos chunkPos = new ChunkPos(pos);
-            ChunkAccess chunk = this.entity.level().getChunk(chunkPos.x + x, chunkPos.z + z, ChunkStatus.FULL, false);
+            ChunkAccess chunk = this.entity.level().getChunk(chunkPos.x() + x, chunkPos.z() + z, ChunkStatus.FULL, false);
             if (!(chunk instanceof LevelChunk)) {
                return false;
             }
@@ -208,7 +208,7 @@ public class PlayDeadManager {
    }
 
    public void placePodium() {
-      if (!this.entity.level().isClientSide) {
+      if (!this.entity.level().isClientSide()) {
          float yBodyRot = (this.entity.yBodyRot - 90.0F) * (float) (Math.PI / 180.0);
          float x = Mth.cos(yBodyRot) * 5.0F;
          float z = Mth.sin(yBodyRot) * 5.0F;
@@ -230,7 +230,7 @@ public class PlayDeadManager {
    }
 
    public void removePodium() {
-      if (!this.entity.level().isClientSide) {
+      if (!this.entity.level().isClientSide()) {
          BlockPos pos = this.getPodiumPos();
          if (pos != null && this.isPodiumPlaced() && this.isPodiumAreaLoaded(pos)) {
             ServerLevel world = (ServerLevel)this.entity.level();
@@ -326,7 +326,7 @@ public class PlayDeadManager {
          @Override
          public void tick(Level world, WitherStormEntity entity, nonamecrackers2.witherstormmod.common.entity.ai.witherstorm.PlayDeadManager manager) {
             super.tick(world, entity, manager);
-            if (!world.isClientSide) {
+            if (!world.isClientSide()) {
                if (manager.getTicks() % 8 == 0 && !(entity instanceof WitherStormSegmentEntity)) {
                   for (int i = 0; i < 3; i++) {
                      entity.dropSmallMassCluster(1);
@@ -364,7 +364,7 @@ public class PlayDeadManager {
          @Override
          public void init(Level world, WitherStormEntity entity, nonamecrackers2.witherstormmod.common.entity.ai.witherstorm.PlayDeadManager manager) {
             super.init(world, entity, manager);
-            if (!world.isClientSide) {
+            if (!world.isClientSide()) {
                for (WitherStormHead head : entity.getHeadManager().getHeads()) {
                   head.doRoar(entity.getRandom().nextBoolean());
                }
@@ -390,7 +390,7 @@ public class PlayDeadManager {
             nonamecrackers2.witherstormmod.common.entity.ai.witherstorm.PlayDeadManager.State next
          ) {
             super.finish(world, entity, manager, next);
-            if (!world.isClientSide && entity.shouldPlaySoundLoop) {
+            if (!world.isClientSide() && entity.shouldPlaySoundLoop) {
                RemoveAdditionalLoopingSoundMessage message = new RemoveAdditionalLoopingSoundMessage(entity);
                WitherStormModPacketHandlers.MAIN.send(PacketDistributor.DIMENSION.with(() -> world.dimension()), message);
             }
@@ -438,7 +438,7 @@ public class PlayDeadManager {
             }
 
             entity.setShineAlpha(0.0F);
-            if (!world.isClientSide) {
+            if (!world.isClientSide()) {
                CommandBlockEntity commandBlock = manager.getCommandBlock();
                if (commandBlock != null && (!commandBlock.isAlive() || commandBlock.distanceTo(entity) > 64.0)) {
                   manager.timeSinceCommandBlockMissing++;
@@ -467,7 +467,7 @@ public class PlayDeadManager {
                head.lerpHeadTo(40.0F, entity.yBodyRot, 16.0F);
             }
 
-            if (!world.isClientSide && entity.getSegmentsManager().isPresent()) {
+            if (!world.isClientSide() && entity.getSegmentsManager().isPresent()) {
                SegmentsManager segmentsManager = (SegmentsManager)entity.getSegmentsManager().get();
                if (entity.getPhase() == 5) {
                   entity.setPhase(6);
@@ -495,7 +495,7 @@ public class PlayDeadManager {
          @Override
          public void tick(Level world, WitherStormEntity entity, nonamecrackers2.witherstormmod.common.entity.ai.witherstorm.PlayDeadManager manager) {
             super.tick(world, entity, manager);
-            if (!world.isClientSide && manager.getTicks() > 20) {
+            if (!world.isClientSide() && manager.getTicks() > 20) {
                entity.shake(60.0F, 4.0F);
                BlockPos pos = manager.getPodiumPos();
                if (pos != null) {
@@ -512,7 +512,7 @@ public class PlayDeadManager {
          public void init(Level world, WitherStormEntity entity, nonamecrackers2.witherstormmod.common.entity.ai.witherstorm.PlayDeadManager manager) {
             manager.setRecentlyRevived(true);
             super.init(world, entity, manager);
-            if (!world.isClientSide && entity.shouldPlayGlobalSounds) {
+            if (!world.isClientSide() && entity.shouldPlayGlobalSounds) {
                entity.playSoundToEveryone((SoundEvent)WitherStormModSoundEvents.WITHER_STORM_REACTIVATES.get(), 10.0F, 1.0F);
             }
          }
@@ -561,7 +561,7 @@ public class PlayDeadManager {
             manager.setRecentlyRevived(false);
          }
 
-         if (!world.isClientSide) {
+         if (!world.isClientSide()) {
             if (this.disablesAi()) {
                entity.getTrackedEntities().clearAndMakeAllFall();
                if (entity.shouldPlaySoundLoop) {

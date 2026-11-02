@@ -59,7 +59,7 @@
 /*     */ 
 /*     */   
 /*     */   public void wasExploded(Level world, BlockPos pos, Explosion explosion) {
-/*  62 */     if (!world.isClientSide) {
+/*  62 */     if (!world.isClientSide()) {
 /*     */       
 /*  64 */       BlockEntity tile = world.getBlockEntity(pos);
 /*  65 */       IFormidibomb formidibomb = null;
@@ -74,7 +74,7 @@
 /*     */ 
 /*     */   
 /*     */   public void onCaughtFire(BlockState state, Level world, BlockPos pos, Direction face, LivingEntity igniter) {
-/*  77 */     if (!world.isClientSide) {
+/*  77 */     if (!world.isClientSide()) {
 /*     */       
 /*  79 */       BlockEntity tile = world.getBlockEntity(pos);
 /*  80 */       IFormidibomb formidibomb = null;

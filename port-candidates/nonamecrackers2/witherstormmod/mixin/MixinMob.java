@@ -48,7 +48,7 @@
 /*    */   
 /*    */   @Inject(method = {"isSunBurnTick"}, at = {@At("HEAD")}, cancellable = true)
 /*    */   private void isSunBurnTickHead(CallbackInfoReturnable<Boolean> ci) {
-/* 51 */     if (!(level()).isClientSide) {
+/* 51 */     if (!(level()).isClientSide()) {
 /*    */       
 /* 53 */       double distance = 200.0D;
 /* 54 */       for (WitherStormEntity storm : level().getEntitiesOfClass(WitherStormEntity.class, getBoundingBox().inflate(distance, level().getHeight(), distance))) {

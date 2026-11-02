@@ -4,9 +4,9 @@
 /*    */ import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 /*    */ import net.minecraft.advancements.critereon.ContextAwarePredicate;
 /*    */ import net.minecraft.advancements.critereon.DeserializationContext;
-/*    */ import net.minecraft.advancements.critereon.MinMaxBounds;
+/*    */ import net.minecraft.advancements.predicates.MinMaxBounds;
 /*    */ import net.minecraft.advancements.critereon.SerializationContext;
-/*    */ import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
+/*    */ import net.minecraft.advancements.triggers.SimpleCriterionTrigger;
 /*    */ import net.minecraft.resources.Identifier;
 /*    */ import net.minecraft.server.level.ServerPlayer;
 /*    */ 

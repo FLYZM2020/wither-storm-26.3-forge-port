@@ -11,11 +11,11 @@
 /*     */ import net.minecraft.world.entity.animal.Animal;
 /*     */ import net.minecraft.world.entity.animal.bee.Bee;
 /*     */ import net.minecraft.world.entity.animal.wolf.Wolf;
-/*     */ import net.minecraft.world.entity.animal.horse.Llama;
+/*     */ import net.minecraft.world.entity.animal.equine.Llama;
 /*     */ import net.minecraft.world.entity.monster.skeleton.AbstractSkeleton;
 /*     */ import net.minecraft.world.entity.monster.Blaze;
 /*     */ import net.minecraft.world.entity.monster.Creeper;
-/*     */ import net.minecraft.world.entity.monster.Evoker;
+/*     */ import net.minecraft.world.entity.monster.illager.Evoker;
 /*     */ import net.minecraft.world.entity.monster.Phantom;
 /*     */ import net.minecraft.world.entity.monster.illager.Pillager;
 /*     */ import net.minecraft.world.entity.monster.Ravager;
@@ -27,7 +27,7 @@
 /*     */ import net.minecraft.world.entity.monster.Witch;
 /*     */ import net.minecraft.world.entity.monster.skeleton.WitherSkeleton;
 /*     */ import net.minecraft.world.entity.monster.zombie.Zombie;
-/*     */ import net.minecraft.world.entity.monster.ZombifiedPiglin;
+/*     */ import net.minecraft.world.entity.monster.zombie.ZombifiedPiglin;
 /*     */ import net.minecraft.world.entity.monster.hoglin.Hoglin;
 /*     */ import net.minecraft.world.entity.monster.piglin.AbstractPiglin;
 /*     */ import net.minecraft.world.level.Level;
@@ -92,7 +92,7 @@
 /*     */   @SubscribeEvent
 /*     */   public static void onEntityJoinWorld(EntityJoinLevelEvent event) {
 /*  94 */     Level world = event.getLevel();
-/*  95 */     if (world.isClientSide || !((Boolean)WitherStormModConfig.COMMON.injectCustomAiBehavior.get()).booleanValue()) {
+/*  95 */     if (world.isClientSide() || !((Boolean)WitherStormModConfig.COMMON.injectCustomAiBehavior.get()).booleanValue()) {
 /*     */       return;
 /*     */     }
 /*  98 */     Entity entity = event.getEntity();

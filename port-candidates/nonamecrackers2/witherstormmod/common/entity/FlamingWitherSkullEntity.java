@@ -101,7 +101,7 @@
 /*     */   
 /*     */   protected void onHitEntity(@NotNull EntityHitResult ray) {
 /* 103 */     super.onHitEntity(ray);
-/* 104 */     if (!(level()).isClientSide) {
+/* 104 */     if (!(level()).isClientSide()) {
 /*     */       boolean flag;
 /* 106 */       Entity victim = ray.getEntity();
 /*     */       
@@ -151,7 +151,7 @@
 /*     */   
 /*     */   protected void onHit(@NotNull HitResult ray) {
 /* 153 */     super.onHit(ray);
-/* 154 */     if (!(level()).isClientSide && ray.getType() != HitResult.Type.ENTITY) {
+/* 154 */     if (!(level()).isClientSide() && ray.getType() != HitResult.Type.ENTITY) {
 /* 155 */       explodeAndDiscard();
 /*     */     }
 /*     */   }

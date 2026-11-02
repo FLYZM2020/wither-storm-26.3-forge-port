@@ -34,7 +34,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnPlacements.Type;
+import com.mojang.datafixers.types.Type;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.NaturalSpawner;
@@ -96,10 +96,10 @@ public class WitherStormBowelsManager {
    }
 
    public void read(CompoundTag compound) {
-      ListTag list = compound.getList("Instances", 10);
+      ListTag list = compound.getListOrEmpty("Instances");
 
       for (int i = 0; i < list.size(); i++) {
-         CompoundTag instanceCompound = list.getCompound(i);
+         CompoundTag instanceCompound = list.getCompoundOrEmpty(i);
          this.instances.add(nonamecrackers2.witherstormmod.common.capability.WitherStormBowelsManager.BowelsInstance.read(instanceCompound));
       }
    }
@@ -190,7 +190,7 @@ public class WitherStormBowelsManager {
                   ChunkPos potential = placement.getPotentialStructureChunk(this.world.getSeed(), finalX, finalZ);
                   StructureCheckResult result = manager.checkStructurePresence(potential, (Structure)holder.value(), false);
                   if (result != StructureCheckResult.START_NOT_PRESENT) {
-                     ChunkAccess chunk = this.world.getChunk(potential.x, potential.z, ChunkStatus.STRUCTURE_STARTS);
+                     ChunkAccess chunk = this.world.getChunk(potential.x(), potential.z(), ChunkStatus.STRUCTURE_STARTS);
                      StructureStart start = manager.getStartForStructure(SectionPos.bottomOf(chunk), (Structure)holder.value(), chunk);
                      if (start != null && start.isValid()) {
                         BlockPos locatePos = placement.getLocatePos(start.getChunkPos());
@@ -686,9 +686,9 @@ public class WitherStormBowelsManager {
       public CompoundTag write() {
          CompoundTag compound = new CompoundTag();
          compound.put("Pos", NbtUtils.writeBlockPos(this.getPos()));
-         compound.putUUID("Storm", this.witherStorm);
+         compound.store("Storm", net.minecraft.core.UUIDUtil.CODEC, this.witherStorm);
          if (this.commandBlock != null) {
-            compound.putUUID("CommandBlock", this.commandBlock);
+            compound.store("CommandBlock", net.minecraft.core.UUIDUtil.CODEC, this.commandBlock);
          }
 
          compound.putBoolean("HasPreparedArena", this.hasPreparedArena);
@@ -698,18 +698,18 @@ public class WitherStormBowelsManager {
 
       public static nonamecrackers2.witherstormmod.common.capability.WitherStormBowelsManager.BowelsInstance read(CompoundTag compound) {
          BlockPos pos = NbtUtils.readBlockPos(compound.getCompound("Pos"));
-         UUID storm = compound.getUUID("Storm");
+         UUID storm = compound.read("Storm", net.minecraft.core.UUIDUtil.CODEC).orElse(null);
          UUID commandBlock = null;
          if (compound.contains("CommandBlock")) {
-            commandBlock = compound.getUUID("CommandBlock");
+            commandBlock = compound.read("CommandBlock", net.minecraft.core.UUIDUtil.CODEC).orElse(null);
          }
 
          nonamecrackers2.witherstormmod.common.capability.WitherStormBowelsManager.BowelsInstance instance = new nonamecrackers2.witherstormmod.common.capability.WitherStormBowelsManager.BowelsInstance(
             pos, storm
          );
          instance.commandBlock = commandBlock;
-         instance.hasPreparedArena = compound.getBoolean("HasPreparedArena");
-         instance.isCompleted = compound.getBoolean("Completed");
+         instance.hasPreparedArena = compound.getBooleanOr("HasPreparedArena", false);
+         instance.isCompleted = compound.getBooleanOr("Completed", false);
          return instance;
       }
 

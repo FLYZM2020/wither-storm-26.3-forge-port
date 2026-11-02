@@ -99,8 +99,8 @@
 /*     */   
 /*     */   public void readAdditionalSaveData(CompoundTag tag) {
 /* 101 */     super.readAdditionalSaveData(tag);
-/* 102 */     if (tag.contains("CreatedBySymbiont", 1))
-/* 103 */       setCreatedBySymbiont(tag.getBoolean("CreatedBySymbiont")); 
+/* 102 */     if (tag.contains("CreatedBySymbiont"))
+/* 103 */       setCreatedBySymbiont(tag.getBooleanOr("CreatedBySymbiont", false)); 
 /*     */   }
 /*     */ }
 

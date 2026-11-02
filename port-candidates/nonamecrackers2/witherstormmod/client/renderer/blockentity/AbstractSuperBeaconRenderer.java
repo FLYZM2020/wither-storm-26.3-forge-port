@@ -63,17 +63,17 @@
 /*     */   
 /*     */   public static void renderOrb(PoseStack stack, VertexConsumer consumer, float scale, float[] uvs, int packedLight) {
 /*  65 */     stack.pushPose();
-/*  66 */     stack.mulPose(Axis.XP.rotationDegrees(45.0F));
+/*  66 */     stack.rotate(Axis.XP.rotationDegrees(45.0F));
 /*  67 */     drawBox(consumer, stack, OverlayTexture.NO_OVERLAY, packedLight, 1.0F, uvs[0], uvs[1], uvs[2], uvs[3], scale / 2.0F);
 /*  68 */     stack.popPose();
 /*     */     
 /*  70 */     stack.pushPose();
-/*  71 */     stack.mulPose(Axis.YP.rotationDegrees(45.0F));
+/*  71 */     stack.rotate(Axis.YP.rotationDegrees(45.0F));
 /*  72 */     drawBox(consumer, stack, OverlayTexture.NO_OVERLAY, packedLight, 1.0F, uvs[0], uvs[1], uvs[2], uvs[3], scale / 2.0F);
 /*  73 */     stack.popPose();
 /*     */     
 /*  75 */     stack.pushPose();
-/*  76 */     stack.mulPose(Axis.ZP.rotationDegrees(45.0F));
+/*  76 */     stack.rotate(Axis.ZP.rotationDegrees(45.0F));
 /*  77 */     drawBox(consumer, stack, OverlayTexture.NO_OVERLAY, packedLight, 1.0F, uvs[0], uvs[1], uvs[2], uvs[3], scale / 2.0F);
 /*  78 */     stack.popPose();
 /*     */   }
@@ -100,8 +100,8 @@
 /* 100 */     double dZ = start.z - end.z;
 /* 101 */     float yaw = (float)Math.atan2(dZ, dX) - 1.5707964F;
 /* 102 */     float pitch = (float)Math.atan2(Math.sqrt(dZ * dZ + dX * dX), dY) + 3.1415927F;
-/* 103 */     stack.mulPose(Axis.YN.rotation(yaw));
-/* 104 */     stack.mulPose(Axis.XP.rotation(pitch));
+/* 103 */     stack.rotate(Axis.YN.rotation(yaw));
+/* 104 */     stack.rotate(Axis.XP.rotation(pitch));
 /* 105 */     Matrix4f pose = stack.last().pose();
 /* 106 */     consumer.vertex(pose, -pulse, 0.0F, 0.0F).color(r, g, b, a).uv(0.0F, 0.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(15728880).normal(0.0F, 1.0F, 0.0F).endVertex();
 /* 107 */     consumer.vertex(pose, pulse, 0.0F, 0.0F).color(r, g, b, a).uv(1.0F, 0.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(15728880).normal(0.0F, 1.0F, 0.0F).endVertex();

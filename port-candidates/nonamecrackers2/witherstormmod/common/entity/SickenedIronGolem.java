@@ -124,7 +124,7 @@
 /* 124 */     playSound(SoundEvents.IRON_GOLEM_REPAIR, 1.0F, f1);
 /* 125 */     if (!(player.getAbilities()).instabuild)
 /* 126 */       itemstack.shrink(1); 
-/* 127 */     return InteractionResult.sidedSuccess((level()).isClientSide);
+/* 127 */     return InteractionResult.sidedSuccess((level()).isClientSide());
 /*     */   }
 /*     */ 
 /*     */ 

@@ -188,7 +188,7 @@
 /* 188 */       for (int z = -radius; z <= radius; z++) {
 /*     */         
 /* 190 */         ChunkPos chunkPos = new ChunkPos(center);
-/* 191 */         ChunkAccess chunk = level.getChunk(chunkPos.x + x, chunkPos.z + z, ChunkStatus.FULL, false);
+/* 191 */         ChunkAccess chunk = level.getChunk(chunkPos.x() + x, chunkPos.z() + z, ChunkStatus.FULL, false);
 /*     */         
 /* 193 */         if (!(chunk instanceof LevelChunk)) {
 /* 194 */           return false;
@@ -455,7 +455,7 @@
 /*     */     
 /* 456 */     for (ChunkPos chunkpos : list) {
 /*     */       
-/* 458 */       blockpos$mutableblockpos.set(SectionPos.sectionToBlockCoord(chunkpos.x, 8), 32, SectionPos.sectionToBlockCoord(chunkpos.z, 8));
+/* 458 */       blockpos$mutableblockpos.set(SectionPos.sectionToBlockCoord(chunkpos.x(), 8), 32, SectionPos.sectionToBlockCoord(chunkpos.z(), 8));
 /* 459 */       double d1 = blockpos$mutableblockpos.distSqr((Vec3i)pos);
 /* 460 */       boolean flag = (pair == null || d1 < d0);
 /* 461 */       if (flag) {
@@ -508,7 +508,7 @@
 /* 508 */       StructureCheckResult structurecheckresult = manager.checkStructurePresence(pos, (Structure)holder.value(), addReference);
 /* 509 */       if (structurecheckresult != StructureCheckResult.START_NOT_PRESENT) {
 /*     */         
-/* 511 */         ChunkAccess chunkaccess = level.getChunk(pos.x, pos.z, ChunkStatus.STRUCTURE_STARTS);
+/* 511 */         ChunkAccess chunkaccess = level.getChunk(pos.x(), pos.z(), ChunkStatus.STRUCTURE_STARTS);
 /* 512 */         StructureStart structurestart = manager.getStartForStructure(SectionPos.bottomOf(chunkaccess), (Structure)holder.value(), (StructureAccess)chunkaccess);
 /* 513 */         if (structurestart != null && structurestart.isValid() && (!addReference || tryAddReference(manager, structurestart)))
 /*     */         {

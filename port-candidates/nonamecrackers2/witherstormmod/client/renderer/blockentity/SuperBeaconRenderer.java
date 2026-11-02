@@ -65,8 +65,8 @@
 /*  65 */       Vec2 shake = entity.getShake(partialTicks);
 /*  66 */       stack.translate((shake.x * speed), 3.0D, (shake.y * speed));
 /*  67 */       stack.translate(0.5D, 0.5D, 0.5D);
-/*  68 */       stack.mulPose(Axis.ZP.rotationDegrees(tickCount * speed));
-/*  69 */       stack.mulPose(Axis.XN.rotationDegrees(tickCount * speed));
+/*  68 */       stack.rotate(Axis.ZP.rotationDegrees(tickCount * speed));
+/*  69 */       stack.rotate(Axis.XN.rotationDegrees(tickCount * speed));
 /*  70 */       stack.translate(-0.5D, -0.5D, -0.5D);
 /*  71 */       mc.getBlockRenderer().renderSingleBlock(Blocks.COMMAND_BLOCK.defaultBlockState(), stack, buffer, 15728880, OverlayTexture.NO_OVERLAY, ModelData.EMPTY, null);
 /*  72 */       stack.popPose();
@@ -117,7 +117,7 @@
 /* 117 */       if (entity.isDoingResummonAnimation())
 /* 118 */         stack.translate(shake.x, 0.0F, shake.y); 
 /* 119 */       stack.translate(0.0D, (Mth.sin((tickCount + (i * total)) * 0.2F) * 0.05F), 0.0D);
-/* 120 */       stack.mulPose(Axis.YN.rotationDegrees(tickCount + (i * 100)));
+/* 120 */       stack.rotate(Axis.YN.rotationDegrees(tickCount + (i * 100)));
 /* 121 */       this.itemRenderer.renderStatic(entity.getItem(i), ItemDisplayContext.FIXED, packedLight, overlayTexture, stack, buffer, entity.getLevel(), (int)entity.getBlockPos().asLong());
 /* 122 */       stack.popPose();
 /*     */     } 
@@ -168,7 +168,7 @@
 /*     */   
 /*     */   private static void drawLineSegment(PoseStack stack, VertexConsumer consumer, float zOffset, float distance, int r, int g, int b, float angle, float xOffset) {
 /* 170 */     stack.pushPose();
-/* 171 */     stack.mulPose(Axis.YP.rotationDegrees(angle));
+/* 171 */     stack.rotate(Axis.YP.rotationDegrees(angle));
 /* 172 */     stack.translate(xOffset, 0.0D, 0.0D);
 /* 173 */     Matrix4f pose = stack.last().pose();
 /* 174 */     Matrix3f normal = stack.last().normal();
@@ -207,8 +207,8 @@
 /*     */   
 /*     */   protected void transformCrystal(SuperBeaconBlockEntity entity, float partialTicks, PoseStack stack) {
 /* 209 */     float speed = Mth.lerp(entity.getActivateAnimation(partialTicks), 0.1F, 1.0F);
-/* 210 */     stack.mulPose(Axis.XP.rotationDegrees(Mth.wrapDegrees(entity.getTicks() + partialTicks) * 5.0F * speed));
-/* 211 */     stack.mulPose(Axis.ZN.rotationDegrees(Mth.wrapDegrees(entity.getTicks() + partialTicks) * 12.0F * speed));
+/* 210 */     stack.rotate(Axis.XP.rotationDegrees(Mth.wrapDegrees(entity.getTicks() + partialTicks) * 5.0F * speed));
+/* 211 */     stack.rotate(Axis.ZN.rotationDegrees(Mth.wrapDegrees(entity.getTicks() + partialTicks) * 12.0F * speed));
 /*     */   }
 /*     */ }
 

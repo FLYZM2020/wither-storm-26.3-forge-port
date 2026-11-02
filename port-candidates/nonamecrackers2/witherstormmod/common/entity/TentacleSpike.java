@@ -66,10 +66,10 @@
 /*     */ 
 /*     */   
 /*     */   protected void readAdditionalSaveData(CompoundTag tag) {
-/*  69 */     this.warmupDelayTicks = tag.getInt("WarmupDelay");
-/*  70 */     if (tag.hasUUID("Owner"))
-/*  71 */       this.ownerUUID = tag.getUUID("Owner"); 
-/*  72 */     this.damageModifier = tag.getFloat("DamageModifier");
+/*  69 */     this.warmupDelayTicks = tag.getIntOr("WarmupDelay", 0);
+/*  70 */     if (tag.contains("Owner"))
+/*  71 */       this.ownerUUID = tag.read("Owner", net.minecraft.core.UUIDUtil.CODEC).orElse(null); 
+/*  72 */     this.damageModifier = tag.getFloatOr("DamageModifier", 0.0F);
 /*     */   }
 /*     */ 
 /*     */ 
@@ -77,7 +77,7 @@
 /*     */   protected void addAdditionalSaveData(CompoundTag tag) {
 /*  78 */     tag.putInt("WarmupDelay", this.warmupDelayTicks);
 /*  79 */     if (this.ownerUUID != null)
-/*  80 */       tag.putUUID("Owner", this.ownerUUID); 
+/*  80 */       tag.store("Owner", net.minecraft.core.UUIDUtil.CODEC, this.ownerUUID); 
 /*  81 */     tag.putFloat("DamageModifier", this.damageModifier);
 /*     */   }
 /*     */ 
@@ -86,7 +86,7 @@
 /*     */   public void tick() {
 /*  87 */     super.tick();
 /*     */     
-/*  89 */     if ((level()).isClientSide) {
+/*  89 */     if ((level()).isClientSide()) {
 /*     */       
 /*  91 */       if (this.clientSideAttackStarted) {
 /*     */         

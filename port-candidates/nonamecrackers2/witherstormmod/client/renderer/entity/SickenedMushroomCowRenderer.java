@@ -1,5 +1,5 @@
 /*    */ package nonamecrackers2.witherstormmod.client.renderer.entity;
-/*    */ import net.minecraft.client.model.CowModel;
+/*    */ import net.minecraft.client.model.animal.cow.CowModel;
 /*    */ import net.minecraft.client.model.EntityModel;
 /*    */ import net.minecraft.client.renderer.rendertype.RenderType;
 /*    */ import net.minecraft.client.renderer.entity.EntityRendererProvider;

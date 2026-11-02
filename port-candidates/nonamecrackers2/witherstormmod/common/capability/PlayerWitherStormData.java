@@ -74,23 +74,23 @@
 /*  74 */     compound.putInt("InvulnerableTime", this.invulnerableTime);
 /*  75 */     compound.putBoolean("HasActivatedSuperBeacon", this.hasActivatedSuperBeacon);
 /*  76 */     if (this.killedByStorm != null)
-/*  77 */       compound.putUUID("KilledByStorm", this.killedByStorm); 
+/*  77 */       compound.store("KilledByStorm", net.minecraft.core.UUIDUtil.CODEC, this.killedByStorm); 
 /*  78 */     return compound;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public void read(CompoundTag compound) {
-/*  84 */     ListTag list = compound.getList("Data", 10);
+/*  84 */     ListTag list = compound.getListOrEmpty("Data");
 /*  85 */     for (int i = 0; i < list.size(); i++) {
 /*     */       
-/*  87 */       CompoundTag snapshot = list.getCompound(i);
+/*  87 */       CompoundTag snapshot = list.getCompoundOrEmpty(i);
 /*  88 */       this.data.add(Snapshot.read(snapshot));
 /*     */     } 
-/*  90 */     this.invulnerableTime = compound.getInt("InvulnerableTime");
-/*  91 */     this.hasActivatedSuperBeacon = compound.getBoolean("HasActivatedSuperBeacon");
-/*  92 */     if (compound.hasUUID("KilledByStorm")) {
-/*  93 */       this.killedByStorm = compound.getUUID("KilledByStorm");
+/*  90 */     this.invulnerableTime = compound.getIntOr("InvulnerableTime", 0);
+/*  91 */     this.hasActivatedSuperBeacon = compound.getBooleanOr("HasActivatedSuperBeacon", false);
+/*  92 */     if (compound.contains("KilledByStorm")) {
+/*  93 */       this.killedByStorm = compound.read("KilledByStorm", net.minecraft.core.UUIDUtil.CODEC).orElse(null);
 /*     */     }
 /*     */   }
 /*     */ 
@@ -227,7 +227,7 @@
 /*     */     public CompoundTag write() {
 /* 228 */       CompoundTag data = new CompoundTag();
 /* 229 */       if (this.lastStorm != null)
-/* 230 */         data.putUUID("Summoner", this.lastStorm); 
+/* 230 */         data.store("Summoner", net.minecraft.core.UUIDUtil.CODEC, this.lastStorm); 
 /* 231 */       data.putInt("SummonerPhase", this.lastPhase);
 /* 232 */       data.putInt("SummoningCooldown", this.symbiontSummonCooldown);
 /* 233 */       return data;
@@ -237,9 +237,9 @@
 /*     */     public static Snapshot read(CompoundTag compound) {
 /* 238 */       UUID lastStorm = null;
 /* 239 */       if (compound.contains("Summoner"))
-/* 240 */         lastStorm = compound.getUUID("Summoner"); 
-/* 241 */       int lastPhase = compound.getInt("SummonerPhase");
-/* 242 */       int summoningCooldown = compound.getInt("SummoningCooldown");
+/* 240 */         lastStorm = compound.read("Summoner", net.minecraft.core.UUIDUtil.CODEC).orElse(null); 
+/* 241 */       int lastPhase = compound.getIntOr("SummonerPhase", 0);
+/* 242 */       int summoningCooldown = compound.getIntOr("SummoningCooldown", 0);
 /* 243 */       return new Snapshot(lastStorm, lastPhase, summoningCooldown);
 /*     */     }
 /*     */ 

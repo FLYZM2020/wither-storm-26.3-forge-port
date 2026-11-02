@@ -39,7 +39,7 @@ public class WitherStormEvents {
    public static void onLivingDeath(LivingDeathEvent event) {
       LivingEntity entity = event.getEntity();
       LivingEntity attacker = entity.getKillCredit();
-      if (!entity.level().isClientSide) {
+      if (!entity.level().isClientSide()) {
          boolean flag = false;
          if (attacker instanceof WitherStormEntity storm) {
             if (ForgeEventFactory.getMobGriefingEvent(entity.level(), entity)) {
@@ -104,7 +104,7 @@ public class WitherStormEvents {
    @SubscribeEvent
    public static void onExplosionDetonate(Detonate event) {
       Level world = event.getLevel();
-      if (!world.isClientSide) {
+      if (!world.isClientSide()) {
          Entity source = event.getExplosion().getExploder();
          if (source != null && !(source instanceof WitherStormEntity)) {
             for (Entity entity : world.getNearbyEntities(WitherStormEntity.class, TargetingConditions.DEFAULT, null, source.getBoundingBox().inflate(100.0))) {

@@ -23,10 +23,10 @@
 /*    */ 
 /*    */   
 /*    */   public void wasExploded(Level world, BlockPos pos, Explosion explosion) {
-/* 26 */     if (!world.isClientSide) {
+/* 26 */     if (!world.isClientSide()) {
 /*    */       
 /* 28 */       SuperTNTEntity entity = new SuperTNTEntity(world, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, explosion.getIndirectSourceEntity());
-/* 29 */       entity.setFuse(world.random.nextInt(entity.getFuse() / 4) + entity.getFuse() / 8);
+/* 29 */       entity.setFuse(world.getRandom().nextInt(entity.getFuse() / 4) + entity.getFuse() / 8);
 /* 30 */       world.addFreshEntity((Entity)entity);
 /*    */     } 
 /*    */   }
@@ -34,7 +34,7 @@
 /*    */ 
 /*    */   
 /*    */   public void onCaughtFire(BlockState state, Level world, BlockPos pos, Direction face, LivingEntity igniter) {
-/* 37 */     if (!world.isClientSide) {
+/* 37 */     if (!world.isClientSide()) {
 /*    */       
 /* 39 */       SuperTNTEntity entity = new SuperTNTEntity(world, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, igniter);
 /* 40 */       world.addFreshEntity((Entity)entity);

@@ -32,7 +32,7 @@
 /* 32 */     ItemStack item = player.getItemInHand(hand);
 /* 33 */     if (item.canPerformAction(ToolActions.SHEARS_CARVE)) {
 /*    */       
-/* 35 */       if (!level.isClientSide) {
+/* 35 */       if (!level.isClientSide()) {
 /*    */         
 /* 37 */         Direction hitSide = hitResult.getDirection();
 /* 38 */         Direction direction = (hitSide.getAxis() == Direction.Axis.Y) ? player.getDirection().getOpposite() : hitSide;
@@ -44,7 +44,7 @@
 /* 44 */         level.gameEvent((Entity)player, GameEvent.SHEAR, pos);
 /* 45 */         player.awardStat(Stats.ITEM_USED.get(Items.SHEARS));
 /*    */       } 
-/* 47 */       return InteractionResult.sidedSuccess(level.isClientSide);
+/* 47 */       return InteractionResult.sidedSuccess(level.isClientSide());
 /*    */     } 
 /*    */ 
 /*    */     

@@ -16,7 +16,7 @@
 /*    */ {
 /*    */   @SubscribeEvent
 /*    */   public static void onPlaySound(PlayLevelSoundEvent event) {
-/* 19 */     if ((event.getLevel()).isClientSide && ((Boolean)WitherStormModConfig.SERVER.occludeSoundsUnderground.get()).booleanValue()) {
+/* 19 */     if ((event.getLevel()).isClientSide() && ((Boolean)WitherStormModConfig.SERVER.occludeSoundsUnderground.get()).booleanValue()) {
 /*    */       
 /* 21 */       Holder<SoundEvent> sound = event.getSound();
 /* 22 */       LocalPlayer player = (Minecraft.getInstance()).player;

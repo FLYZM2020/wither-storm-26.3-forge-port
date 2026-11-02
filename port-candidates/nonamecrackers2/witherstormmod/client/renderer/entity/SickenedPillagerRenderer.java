@@ -1,5 +1,5 @@
 /*    */ package nonamecrackers2.witherstormmod.client.renderer.entity;
-/*    */ import net.minecraft.client.model.IllagerModel;
+/*    */ import net.minecraft.client.model.monster.illager.IllagerModel;
 /*    */ import net.minecraft.client.renderer.rendertype.RenderType;
 /*    */ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 /*    */ import net.minecraft.client.renderer.entity.IllagerRenderer;

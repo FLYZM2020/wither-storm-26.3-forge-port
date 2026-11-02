@@ -137,7 +137,7 @@
 /*     */   
 /*     */   public void read(CompoundTag tag) {
 /* 139 */     if (tag.contains("LastKnownPositions")) {
-/* 140 */       this.lastKnownPositions = WitherStormModNBTUtil.readChunkPosList(tag.getCompound("LastKnownPositions"));
+/* 140 */       this.lastKnownPositions = WitherStormModNBTUtil.readChunkPosList(tag.getCompoundOrEmpty("LastKnownPositions"));
 /*     */     }
 /*     */   }
 /*     */   

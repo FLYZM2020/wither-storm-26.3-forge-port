@@ -20,7 +20,7 @@ import net.minecraft.ReportedException;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.FogRenderer;
+import net.minecraft.client.renderer.fog.FogRenderer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.FogRenderer.FogMode;
@@ -68,7 +68,7 @@ public class WitherStormDistantRenderer {
    public void tick() {
       ClientLevel world = this.minecraft.level;
       if (world != null) {
-         world.getProfiler().push("distantWitherStorms");
+         net.minecraft.util.profiling.Profiler.get().push("distantWitherStorms");
          this.stormsToRender.forEach((id, entity) -> {
             WitherStormEntity storm = entity;
             if (!storm.isRemoved() && !storm.isPassenger()) {
@@ -76,19 +76,19 @@ public class WitherStormDistantRenderer {
             }
          });
          this.removeAllPendingEntityRemovals();
-         world.getProfiler().pop();
+         net.minecraft.util.profiling.Profiler.get().pop();
       }
    }
 
    public void tickEntity(WitherStormEntity entity) {
       entity.setOldPosAndRot();
       entity.tickCount++;
-      this.minecraft.level.getProfiler().push(() -> ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString());
+      net.minecraft.util.profiling.Profiler.get().push(() -> ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString());
       if (entity.canUpdate() && entity.level().getEntity(entity.getId()) == null) {
          entity.tick();
       }
 
-      this.minecraft.level.getProfiler().pop();
+      net.minecraft.util.profiling.Profiler.get().pop();
    }
 
    public void guardEntityTick(Consumer<WitherStormEntity> consumer, WitherStormEntity entity) {
@@ -132,7 +132,7 @@ public class WitherStormDistantRenderer {
             FogRenderer.setupFog(camera, FogMode.FOG_TERRAIN, Math.max(f - 16.0F, 32.0F), flag, partialTicks);
          }
 
-         this.minecraft.level.getProfiler().popPush("distant_wither_storms");
+         net.minecraft.util.profiling.Profiler.get().popPush("distant_wither_storms");
          ObjectIterator var20 = this.stormsToRender.int2ObjectEntrySet().iterator();
 
          while (var20.hasNext()) {

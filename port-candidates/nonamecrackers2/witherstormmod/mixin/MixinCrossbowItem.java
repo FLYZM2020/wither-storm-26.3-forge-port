@@ -50,7 +50,7 @@
 /*    */   
 /*    */   @Inject(method = {"shootProjectile"}, at = {@At("HEAD")}, cancellable = true)
 /*    */   private static void shootProjectile(Level world, LivingEntity entity, InteractionHand hand, ItemStack stack, ItemStack projectile, float shotPitch, boolean instabuild, float power, float f, float offset, CallbackInfo callback) {
-/* 53 */     if (!world.isClientSide && ((Boolean)WitherStormModConfig.SERVER.crossbowsSupportEnderPearls.get()).booleanValue())
+/* 53 */     if (!world.isClientSide() && ((Boolean)WitherStormModConfig.SERVER.crossbowsSupportEnderPearls.get()).booleanValue())
 /*    */     {
 /* 55 */       if (projectile.getItem() == Items.ENDER_PEARL) {
 /*    */         

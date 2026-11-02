@@ -42,9 +42,9 @@
 /*     */   public void load(CompoundTag compound) {
 /*  43 */     super.load(compound);
 /*  44 */     if (compound.contains("Fuse"))
-/*  45 */       setLifeFuse(compound.getInt("Fuse")); 
+/*  45 */       setLifeFuse(compound.getIntOr("Fuse", 0)); 
 /*  46 */     if (compound.contains("StartFuse")) {
-/*  47 */       setStartFuse(compound.getInt("StartFuse"));
+/*  47 */       setStartFuse(compound.getIntOr("StartFuse", 0));
 /*     */     }
 /*     */   }
 /*     */   

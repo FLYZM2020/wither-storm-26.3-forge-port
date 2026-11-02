@@ -35,11 +35,11 @@
 /* 35 */         if (entity != null && !entity.isRemoved()) {
 /*    */           
 /* 37 */           if (!this.level.getForcedChunks().contains(chunk.toLong())) {
-/* 38 */             this.level.setChunkForced(chunk.x, chunk.z, true);
+/* 38 */             this.level.setChunkForced(chunk.x(), chunk.z(), true);
 /*    */           }
 /*    */           continue;
 /*    */         } 
-/* 42 */         this.level.setChunkForced(chunk.x, chunk.z, false);
+/* 42 */         this.level.setChunkForced(chunk.x(), chunk.z(), false);
 /* 43 */         loadingEntities.remove();
 /*    */       } 
 /*    */     } 
@@ -58,7 +58,7 @@
 /*    */ 
 /*    */   
 /*    */   public void read(CompoundTag tag) {
-/* 61 */     ListTag list = tag.getList("LoadedEntities", 10);
+/* 61 */     ListTag list = tag.getListOrEmpty("LoadedEntities");
 /* 62 */     List<BlockPos> loadingEntities = Lists.newArrayList();
 /* 63 */     for (int i = 0; i < list.size(); i++)
 /* 64 */       loadingEntities.add(NbtUtils.readBlockPos(list.getCompound(i))); 

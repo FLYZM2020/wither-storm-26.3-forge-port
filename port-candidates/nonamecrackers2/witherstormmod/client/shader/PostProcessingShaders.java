@@ -38,7 +38,7 @@
 /*     */ 
 /*     */   
 /*     */   public void renderShaders(float partialTicks) {
-/*  41 */     this.minecraft.getProfiler().push("chromatic_aberration_effect");
+/*  41 */     net.minecraft.util.profiling.Profiler.get().push("chromatic_aberration_effect");
 /*  42 */     if (shouldRenderChromaticAberration()) {
 /*     */       
 /*  44 */       if (this.prevWidth != this.minecraft.getWindow().getWidth() || this.prevHeight != this.minecraft.getWindow().getHeight()) {
@@ -57,7 +57,7 @@
 /*     */             } 
 /*     */           });
 /*     */     } 
-/*  60 */     this.minecraft.getProfiler().pop();
+/*  60 */     net.minecraft.util.profiling.Profiler.get().pop();
 /*     */     
 /*  62 */     this.prevWidth = this.minecraft.getWindow().getWidth();
 /*  63 */     this.prevHeight = this.minecraft.getWindow().getHeight();

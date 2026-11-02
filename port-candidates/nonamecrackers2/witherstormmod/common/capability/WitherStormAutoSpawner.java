@@ -1,6 +1,6 @@
 /*    */ package nonamecrackers2.witherstormmod.common.capability;
 /*    */ import com.mojang.datafixers.util.Pair;
-/*    */ import net.minecraft.advancements.CriteriaTriggers;
+/*    */ import net.minecraft.advancements.triggers.CriteriaTriggers;
 /*    */ import net.minecraft.core.BlockPos;
 /*    */ import net.minecraft.core.Vec3i;
 /*    */ import net.minecraft.nbt.CompoundTag;
@@ -80,8 +80,8 @@
 /*    */ 
 /*    */   
 /*    */   public void read(CompoundTag tag) {
-/* 83 */     this.tickCount = tag.getInt("TickCount");
-/* 84 */     this.hasSpawnedWitherStorm = tag.getBoolean("HasSpawnedWitherStorm");
+/* 83 */     this.tickCount = tag.getIntOr("TickCount", 0);
+/* 84 */     this.hasSpawnedWitherStorm = tag.getBooleanOr("HasSpawnedWitherStorm", false);
 /*    */   }
 /*    */ 
 /*    */   

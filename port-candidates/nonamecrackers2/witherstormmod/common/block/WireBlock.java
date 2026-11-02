@@ -245,7 +245,7 @@
 /*     */ 
 /*     */   
 /*     */   public void onPlace(BlockState state, Level world, BlockPos pos, BlockState state1, boolean flag) {
-/* 248 */     if (!state1.is(state.getBlock()) && !world.isClientSide) {
+/* 248 */     if (!state1.is(state.getBlock()) && !world.isClientSide()) {
 /*     */       
 /* 250 */       for (Direction direction : Direction.Plane.VERTICAL) {
 /* 251 */         world.updateNeighborsAt(pos.relative(direction), this);
@@ -261,7 +261,7 @@
 /* 261 */     if (!flag && !state.is(state1.getBlock())) {
 /*     */       
 /* 263 */       super.onRemove(state, world, pos, state1, flag);
-/* 264 */       if (!world.isClientSide) {
+/* 264 */       if (!world.isClientSide()) {
 /*     */         
 /* 266 */         for (Direction direction : Direction.values()) {
 /* 267 */           world.updateNeighborsAt(pos.relative(direction), this);
@@ -289,7 +289,7 @@
 /*     */ 
 /*     */   
 /*     */   public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos pos1, boolean flag) {
-/* 292 */     if (!world.isClientSide)
+/* 292 */     if (!world.isClientSide())
 /*     */     {
 /* 294 */       if (!state.canSurvive((LevelReader)world, pos)) {
 /*     */         

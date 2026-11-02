@@ -29,7 +29,7 @@
 /*    */ {
 /*    */   @Inject(method = {"onHit"}, at = {@At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;awardStat(Lnet/minecraft/resources/ResourceLocation;)V")})
 /*    */   public void onHitInvoke(Level level, BlockState state, BlockHitResult hitResult, @Nullable Player player, boolean flag, CallbackInfoReturnable<Boolean> ci) {
-/* 32 */     if (!level.isClientSide) {
+/* 32 */     if (!level.isClientSide()) {
 /*    */       
 /* 34 */       AABB box = player.getBoundingBox().inflate(300.0D);
 /* 35 */       List<WitherStormEntity> storms = level.getEntitiesOfClass(WitherStormEntity.class, box);

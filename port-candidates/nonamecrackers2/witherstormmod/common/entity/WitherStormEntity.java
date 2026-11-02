@@ -75,8 +75,8 @@ import net.minecraft.world.entity.ai.goal.GoalSelector;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.ambient.AmbientCreature;
-import net.minecraft.world.entity.animal.AbstractSchoolingFish;
-import net.minecraft.world.entity.animal.Squid;
+import net.minecraft.world.entity.animal.fish.AbstractSchoolingFish;
+import net.minecraft.world.entity.animal.squid.Squid;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.decoration.ArmorStand;
@@ -380,7 +380,7 @@ public class WitherStormEntity extends Monster implements PowerableMob, EntitySy
       this.fallingSection = new FallingSection(this, 50.0F, 70.0F, 0.0, 60.0, 30.0, 4);
       this.sections[2] = new CollisionActionSection(
             this, 16.0F, 16.0F, -3.0, 34.0, -24.0, storm -> storm.isBeingTornApart() && storm.getPhase() >= 7, entity -> {
-               if (!this.level().isClientSide && (CAN_TRAVEL_TO_BOWELS.test(entity) || entity instanceof ThrownEnderpearl) && !this.alreadyATarget(entity, true)) {
+               if (!this.level().isClientSide() && (CAN_TRAVEL_TO_BOWELS.test(entity) || entity instanceof ThrownEnderpearl) && !this.alreadyATarget(entity, true)) {
                   if (entity instanceof ThrownEnderpearl pearl) {
                      Entity owner = pearl.getOwner();
                      if (owner instanceof ServerPlayer player) {
@@ -573,7 +573,7 @@ public class WitherStormEntity extends Monster implements PowerableMob, EntitySy
       }
 
       Vec3 vector3d = this.getDeltaMovement().multiply(1.0, 0.6, 1.0);
-      if (!this.level().isClientSide && !this.shouldDoNothing()) {
+      if (!this.level().isClientSide() && !this.shouldDoNothing()) {
          this.targetManager.ifPresent(UltimateTargetManager::tick);
          this.summoningManager.ifPresent(SymbiontSummoningManager::tick);
          if (!this.isDeadOrPlayingDead()) {
@@ -617,7 +617,7 @@ public class WitherStormEntity extends Monster implements PowerableMob, EntitySy
                   0.0,
                   0.0
                );
-            if (flag && this.level().random.nextInt(4) == 0) {
+            if (flag && this.level().getRandom().nextInt(4) == 0) {
                this.level()
                   .addParticle(
                      ParticleTypes.ENTITY_EFFECT,
@@ -831,19 +831,19 @@ public class WitherStormEntity extends Monster implements PowerableMob, EntitySy
    private void tickExtraHeadGoals() {
       int i = this.level().m_7654_().m_129921_() + this.getId();
       if (i % 2 != 0 && this.tickCount > 1) {
-         this.level().getProfiler().push("targetSelectorHeads");
+         net.minecraft.util.profiling.Profiler.get().push("targetSelectorHeads");
          this.headTargetSelectors.forEach(sel -> sel.tickRunningGoals(false));
-         this.level().getProfiler().pop();
-         this.level().getProfiler().push("goalSelectorHeads");
+         net.minecraft.util.profiling.Profiler.get().pop();
+         net.minecraft.util.profiling.Profiler.get().push("goalSelectorHeads");
          this.headGoalSelectors.forEach(sel -> sel.tickRunningGoals(false));
-         this.level().getProfiler().pop();
+         net.minecraft.util.profiling.Profiler.get().pop();
       } else {
-         this.level().getProfiler().push("targetSelectorHeads");
+         net.minecraft.util.profiling.Profiler.get().push("targetSelectorHeads");
          this.headTargetSelectors.forEach(GoalSelector::tick);
-         this.level().getProfiler().pop();
-         this.level().getProfiler().push("goalSelectorHeads");
+         net.minecraft.util.profiling.Profiler.get().pop();
+         net.minecraft.util.profiling.Profiler.get().push("goalSelectorHeads");
          this.headGoalSelectors.forEach(GoalSelector::tick);
-         this.level().getProfiler().pop();
+         net.minecraft.util.profiling.Profiler.get().pop();
       }
    }
 
@@ -1185,7 +1185,7 @@ public class WitherStormEntity extends Monster implements PowerableMob, EntitySy
          }
       }
 
-      if (!this.level().isClientSide) {
+      if (!this.level().isClientSide()) {
          if (this.getPhase() > 5 && this.getDeathTime() < 240 && ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
             this.dropDeathClusters();
          }
@@ -1421,7 +1421,7 @@ public class WitherStormEntity extends Monster implements PowerableMob, EntitySy
 
    public void tick() {
       super.tick();
-      if (!this.level().isClientSide && this.evolutionProfiler.isProfiling()) {
+      if (!this.level().isClientSide() && this.evolutionProfiler.isProfiling()) {
          this.evolutionProfiler.tick(this);
       }
 
@@ -1431,7 +1431,7 @@ public class WitherStormEntity extends Monster implements PowerableMob, EntitySy
       }
 
       this.lastConsumedEntities = this.getConsumedEntities();
-      if (!this.level().isClientSide) {
+      if (!this.level().isClientSide()) {
          this.trackedEntities.tick((ServerLevel)this.level());
          this.ignoredTargets.tick();
          this.bowelsInstance.ifPresent(BowelsInstanceManager::tick);
@@ -1519,7 +1519,7 @@ public class WitherStormEntity extends Monster implements PowerableMob, EntitySy
          }
       }
 
-      if (!this.level().isClientSide && this.shouldPlaySoundLoops()) {
+      if (!this.level().isClientSide() && this.shouldPlaySoundLoops()) {
          StormSoundPositionMessage message = new StormSoundPositionMessage(
             this.getId(), this.getX(), this.getEyeY(), this.getZ(), (byte)this.getPhase()
          );
@@ -1549,7 +1549,7 @@ public class WitherStormEntity extends Monster implements PowerableMob, EntitySy
          }
       }
 
-      if (this.level().isClientSide && (Boolean)WitherStormModConfig.CLIENT.tractorBeamParticles.get() && !this.isOnDistantRenderer()) {
+      if (this.level().isClientSide() && (Boolean)WitherStormModConfig.CLIENT.tractorBeamParticles.get() && !this.isOnDistantRenderer()) {
          for (int i = 0; i < this.getTotalHeads(); i++) {
             if (this.tractorBeamActive(i) && !this.isDeadOrPlayingDead() && this.getXBodyRot() == 0.0F) {
                Vec3 headPos = this.getHeadPos(i);
@@ -1741,7 +1741,7 @@ public class WitherStormEntity extends Monster implements PowerableMob, EntitySy
 
    public void onRemovedFromWorld() {
       super.onRemovedFromWorld();
-      if (!this.level().isClientSide) {
+      if (!this.level().isClientSide()) {
          WitherStormSyncHelper.removeWitherStorm(this);
       }
 
@@ -1754,7 +1754,7 @@ public class WitherStormEntity extends Monster implements PowerableMob, EntitySy
 
    public void die(@NotNull DamageSource source) {
       super.die(source);
-      if (!this.level().isClientSide) {
+      if (!this.level().isClientSide()) {
          this.spawnConsumedPets(Vec3.atBottomCenterOf(this.level().getHeightmapPos(Types.MOTION_BLOCKING_NO_LEAVES, this.blockPosition())));
          if (this.getPhase() > 3) {
             if (this.shouldPlaySoundLoop) {
@@ -1940,7 +1940,7 @@ public class WitherStormEntity extends Monster implements PowerableMob, EntitySy
          UUID id = entry.getKey();
          CompoundTag entity = entry.getValue();
          CompoundTag entityTag = new CompoundTag();
-         entityTag.putUUID("id", id);
+         entityTag.store("id", net.minecraft.core.UUIDUtil.CODEC, id);
          entityTag.put("Entity", entity);
          consumedPets.add(entityTag);
       }
@@ -1961,71 +1961,71 @@ public class WitherStormEntity extends Monster implements PowerableMob, EntitySy
    }
 
    public void readAdditionalSaveData(CompoundTag compound) {
-      CompoundTag headsTag = compound.getCompound("Heads");
+      CompoundTag headsTag = compound.getCompoundOrEmpty("Heads");
 
       for (WitherStormHead head : this.headManager.getHeads()) {
-         head.read(headsTag.getCompound(String.valueOf(head.getIndex())));
+         head.read(headsTag.getCompoundOrEmpty(String.valueOf(head.getIndex())));
       }
 
-      CompoundTag playDeadManagerNBT = compound.getCompound("PlayDeadManager");
+      CompoundTag playDeadManagerNBT = compound.getCompoundOrEmpty("PlayDeadManager");
       PlayDeadManager playDeadManager = this.getPlayDeadManager();
-      playDeadManager.setPodiumPlaced(playDeadManagerNBT.getBoolean("PodiumPlaced"));
+      playDeadManager.setPodiumPlaced(playDeadManagerNBT.getBooleanOr("PodiumPlaced", false));
       if (playDeadManagerNBT.contains("PodiumPos")) {
          playDeadManager.setPodiumPos(NbtUtils.readBlockPos(playDeadManagerNBT.getCompound("PodiumPos")));
       }
 
-      playDeadManager.setTickAmountAndO(playDeadManagerNBT.getInt("StateTicks"));
-      int state = playDeadManagerNBT.getInt("State");
+      playDeadManager.setTickAmountAndO(playDeadManagerNBT.getIntOr("StateTicks", 0));
+      int state = playDeadManagerNBT.getIntOr("State", 0);
       if (state >= 0 && state < State.values().length) {
          playDeadManager.setState(State.values()[state]);
       }
 
-      playDeadManager.setTicksSinceRevival(playDeadManagerNBT.getInt("RevivalTime"));
-      playDeadManager.setRecentlyRevived(playDeadManagerNBT.getBoolean("RecentlyRevived"));
-      playDeadManager.setTicksSinceCommandBlockMissing(playDeadManagerNBT.getInt("CommandBlockMissingTicks"));
+      playDeadManager.setTicksSinceRevival(playDeadManagerNBT.getIntOr("RevivalTime", 0));
+      playDeadManager.setRecentlyRevived(playDeadManagerNBT.getBooleanOr("RecentlyRevived", false));
+      playDeadManager.setTicksSinceCommandBlockMissing(playDeadManagerNBT.getIntOr("CommandBlockMissingTicks", 0));
       if (compound.contains("ConsumedEntities")) {
-         this.setPhase(compound.getInt("Phase"), compound.getInt("ConsumedEntities"));
+         this.setPhase(compound.getIntOr("Phase", 0), compound.getIntOr("ConsumedEntities", 0));
       } else {
-         this.setPhase(compound.getInt("Phase"));
+         this.setPhase(compound.getIntOr("Phase", 0));
       }
 
       super.readAdditionalSaveData(compound);
-      this.setInvulnerableTicks(compound.getInt("Invul"));
-      this.setStartingInvulnerableTicks(compound.getInt("StartingInvul"));
+      this.setInvulnerableTicks(compound.getIntOr("Invul", 0));
+      this.setStartingInvulnerableTicks(compound.getIntOr("StartingInvul", 0));
       if (this.hasCustomName()) {
          this.bossEvent.ifPresent(bossEvent -> bossEvent.setName(this.getDisplayName()));
       }
 
-      this.setOtherHeadsDisabled(compound.getBoolean("OtherHeadsDisabled"));
+      this.setOtherHeadsDisabled(compound.getBooleanOr("OtherHeadsDisabled", false));
       this.targetManager.ifPresent(manager -> manager.read(compound));
-      this.setYBodyRot(compound.getFloat("YBodyRot"));
-      this.setXBodyRot(compound.getFloat("XBodyRot"));
-      this.setMirrored(compound.getBoolean("Mirrored"));
+      this.setYBodyRot(compound.getFloatOr("YBodyRot", 0.0F));
+      this.setXBodyRot(compound.getFloatOr("XBodyRot", 0.0F));
+      this.setMirrored(compound.getBooleanOr("Mirrored", false));
       this.getBossInfo().ifPresent(info -> info.setVisible(!this.isPlayingDead()));
-      this.summoningManager.ifPresent(manager -> manager.setSummoningDelay(compound.getInt("SymbiontSummoningCooldown")));
+      this.summoningManager.ifPresent(manager -> manager.setSummoningDelay(compound.getIntOr("SymbiontSummoningCooldown", 0)));
       this.entityData.set(SHOULD_SHOW_HOLE, compound.getBoolean("ShouldShowHole"));
-      this.resummoned = compound.getBoolean("Resummoned");
-      CompoundTag tag = compound.getCompound("EvolutionProfiler");
+      this.resummoned = compound.getBooleanOr("Resummoned", false);
+      CompoundTag tag = compound.getCompoundOrEmpty("EvolutionProfiler");
       this.evolutionProfiler.read(tag);
       this.consumedPets.clear();
-      ListTag consumedPets = compound.getList("ConsumedPets", 10);
+      ListTag consumedPets = compound.getListOrEmpty("ConsumedPets");
 
       for (int i = 0; i < consumedPets.size(); i++) {
-         CompoundTag entityTag = consumedPets.getCompound(i);
-         this.consumedPets.put(entityTag.getUUID("id"), entityTag.getCompound("Entity"));
+         CompoundTag entityTag = consumedPets.getCompoundOrEmpty(i);
+         this.consumedPets.put(entityTag.read("id", net.minecraft.core.UUIDUtil.CODEC).orElse(null), entityTag.getCompoundOrEmpty("Entity"));
       }
 
-      this.getTrackedEntities().read(compound.getCompound("TrackedEntities"));
-      this.getIgnoredTargets().read(compound.getCompound("IgnoredEntities"));
+      this.getTrackedEntities().read(compound.getCompoundOrEmpty("TrackedEntities"));
+      this.getIgnoredTargets().read(compound.getCompoundOrEmpty("IgnoredEntities"));
       this.playingJukeboxes.clear();
-      ListTag playingJukeboxes = compound.getList("PlayingJukeboxes", 10);
+      ListTag playingJukeboxes = compound.getListOrEmpty("PlayingJukeboxes");
 
       for (int i = 0; i < playingJukeboxes.size(); i++) {
-         CompoundTag entry = playingJukeboxes.getCompound(i);
+         CompoundTag entry = playingJukeboxes.getCompoundOrEmpty(i);
          this.playingJukeboxes.add(NbtUtils.readBlockPos(entry.getCompound("Pos")));
       }
 
-      this.isLocked = compound.getBoolean("IsConsumptionLocked");
+      this.isLocked = compound.getBooleanOr("IsConsumptionLocked", false);
    }
 
    public void setCustomName(Component component) {
@@ -2138,7 +2138,7 @@ public class WitherStormEntity extends Monster implements PowerableMob, EntitySy
          }
 
          this.updateSections();
-         if (!this.level().isClientSide) {
+         if (!this.level().isClientSide()) {
             if (this.shouldPlaySoundLoops()) {
                CreateLoopingSoundMessage message = new CreateLoopingSoundMessage(this);
                WitherStormModPacketHandlers.MAIN.send(PacketDistributor.DIMENSION.with(() -> this.level().dimension()), message);
@@ -2151,7 +2151,7 @@ public class WitherStormEntity extends Monster implements PowerableMob, EntitySy
          this.headManager.update(phase);
          AttributeInstance health = this.getAttribute(Attributes.MAX_HEALTH);
          AttributeInstance armor = this.getAttribute(Attributes.ARMOR);
-         if (!this.level().isClientSide) {
+         if (!this.level().isClientSide()) {
             if (phase < 4) {
                health.removePermanentModifier(HEALTH_MODIFIER_UUID);
                armor.removePermanentModifier(ARMOR_MODIFIER_UUID);
@@ -2471,14 +2471,14 @@ public class WitherStormEntity extends Monster implements PowerableMob, EntitySy
 
    public void onAddedToWorld() {
       super.onAddedToWorld();
-      if (!this.level().isClientSide) {
+      if (!this.level().isClientSide()) {
          WitherStormSyncHelper.sendWitherStormToClient(this);
          this.bowelsInstance.ifPresent(BowelsInstanceManager::loadInstance);
       }
    }
 
    public void findSegments() {
-      if (!this.level().isClientSide) {
+      if (!this.level().isClientSide()) {
          this.getSegmentsManager().ifPresent(manager -> {
             ServerLevel world = (ServerLevel)this.level();
             manager.findSegments(world);
@@ -2807,7 +2807,7 @@ public class WitherStormEntity extends Monster implements PowerableMob, EntitySy
    }
 
    public void shake(float duration, float power) {
-      if (!this.level().isClientSide) {
+      if (!this.level().isClientSide()) {
          ShakeScreenMessage message = new ShakeScreenMessage(duration, power);
          WitherStormModPacketHandlers.MAIN.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), message);
       }
@@ -3398,7 +3398,7 @@ public class WitherStormEntity extends Monster implements PowerableMob, EntitySy
       if (this.noPhysics) {
          this.setPos(this.getX() + delta.x, this.getY() + delta.y, this.getZ() + delta.z);
       } else {
-         this.level().getProfiler().push("move");
+         net.minecraft.util.profiling.Profiler.get().push("move");
          if (this.stuckSpeedMultiplier.lengthSqr() > 1.0E-7) {
             delta = delta.multiply(this.stuckSpeedMultiplier);
             this.stuckSpeedMultiplier = Vec3.ZERO;
@@ -3419,8 +3419,8 @@ public class WitherStormEntity extends Monster implements PowerableMob, EntitySy
             this.setPos(this.getX() + vec3.x, this.getY() + vec3.y, this.getZ() + vec3.z);
          }
 
-         this.level().getProfiler().pop();
-         this.level().getProfiler().push("rest");
+         net.minecraft.util.profiling.Profiler.get().pop();
+         net.minecraft.util.profiling.Profiler.get().push("rest");
          boolean noXMovement = !Mth.equal(delta.x, vec3.x);
          boolean noZMovement = !Mth.equal(delta.z, vec3.z);
          this.horizontalCollision = noXMovement || noZMovement;
@@ -3445,7 +3445,7 @@ public class WitherStormEntity extends Monster implements PowerableMob, EntitySy
             }
          }
 
-         this.level().getProfiler().pop();
+         net.minecraft.util.profiling.Profiler.get().pop();
       }
    }
 

@@ -57,7 +57,7 @@
 /*     */   public void tick() {
 /*  58 */     super.tick();
 /*     */     
-/*  60 */     if (!this.level.isClientSide) {
+/*  60 */     if (!this.level.isClientSide()) {
 /*     */       
 /*  62 */       BlockPos searchStart = this.worldPosition.below();
 /*  63 */       int radius = 1;
@@ -115,7 +115,7 @@
 /* 115 */       this.beaconLevel = beacon.beaconLevel;
 /* 116 */       this.showWorkingArea = beacon.showWorkingArea();
 /*     */       
-/* 118 */       if (!this.level.isClientSide && this.color != null && beacon.getResummonTicks() == getResummonThreshold()) {
+/* 118 */       if (!this.level.isClientSide() && this.color != null && beacon.getResummonTicks() == getResummonThreshold()) {
 /*     */         
 /* 120 */         playSound((SoundEvent)WitherStormModSoundEvents.WITHERED_BEACON_ACTIVATE.get(), 1.0F, 1.0F);
 /* 121 */         playSound((SoundEvent)WitherStormModSoundEvents.TREMBLE.get(), 10.0F, 1.0F);
@@ -215,7 +215,7 @@
 /*     */   
 /*     */   public void load(CompoundTag tag) {
 /* 217 */     super.load(tag);
-/* 218 */     int colorIndex = tag.getInt("Color");
+/* 218 */     int colorIndex = tag.getIntOr("Color", 0);
 /* 219 */     if (colorIndex >= 0 && colorIndex < (AbstractSuperBeaconBlockEntity.Color.values()).length) {
 /* 220 */       this.color = AbstractSuperBeaconBlockEntity.Color.values()[colorIndex];
 /* 221 */     } else if (colorIndex == -1) {

@@ -54,12 +54,12 @@
 /*     */       
 /*  55 */       for (int i = 0; i < (f + f * f) / 2.0F * 10.0F; i++) {
 /*     */         
-/*  57 */         stack.mulPose(Axis.XP.rotationDegrees(random.nextFloat() * 360.0F));
-/*  58 */         stack.mulPose(Axis.YP.rotationDegrees(random.nextFloat() * 360.0F));
-/*  59 */         stack.mulPose(Axis.ZP.rotationDegrees(random.nextFloat() * 360.0F));
-/*  60 */         stack.mulPose(Axis.XP.rotationDegrees(random.nextFloat() * 360.0F));
-/*  61 */         stack.mulPose(Axis.YP.rotationDegrees(random.nextFloat() * 360.0F));
-/*  62 */         stack.mulPose(Axis.ZP.rotationDegrees(random.nextFloat() * 360.0F + f * 90.0F));
+/*  57 */         stack.rotate(Axis.XP.rotationDegrees(random.nextFloat() * 360.0F));
+/*  58 */         stack.rotate(Axis.YP.rotationDegrees(random.nextFloat() * 360.0F));
+/*  59 */         stack.rotate(Axis.ZP.rotationDegrees(random.nextFloat() * 360.0F));
+/*  60 */         stack.rotate(Axis.XP.rotationDegrees(random.nextFloat() * 360.0F));
+/*  61 */         stack.rotate(Axis.YP.rotationDegrees(random.nextFloat() * 360.0F));
+/*  62 */         stack.rotate(Axis.ZP.rotationDegrees(random.nextFloat() * 360.0F + f * 90.0F));
 /*  63 */         float f3 = random.nextFloat() * (float)entity.getBoundingBox().getSize() * 0.2F + f * (float)Math.max(1.0D, ((40.0F - entity.getFuseLife() + partialTicks) / 6.0F));
 /*  64 */         float f4 = random.nextFloat() * 0.025F + f;
 /*  65 */         Matrix4f matrix4f = stack.last().pose();
@@ -81,15 +81,15 @@
 /*  81 */       stack.popPose();
 /*     */     } 
 /*     */     
-/*  84 */     stack.mulPose(Axis.YP.rotationDegrees(-90.0F));
+/*  84 */     stack.rotate(Axis.YP.rotationDegrees(-90.0F));
 /*  85 */     stack.translate(-0.5D, -0.5D, 0.5D);
-/*  86 */     stack.mulPose(Axis.YP.rotationDegrees(90.0F));
+/*  86 */     stack.rotate(Axis.YP.rotationDegrees(90.0F));
 /*  87 */     float ticks = entity.getAirTime() + partialTicks;
 /*  88 */     if (!entity.onGround()) {
 /*     */       
 /*  90 */       stack.translate(0.5D, 0.5D, 0.5D);
-/*  91 */       stack.mulPose(Axis.YP.rotationDegrees(ticks));
-/*  92 */       stack.mulPose(Axis.XP.rotationDegrees(ticks * 0.5F));
+/*  91 */       stack.rotate(Axis.YP.rotationDegrees(ticks));
+/*  92 */       stack.rotate(Axis.XP.rotationDegrees(ticks * 0.5F));
 /*  93 */       stack.translate(-0.5D, -0.5D, -0.5D);
 /*     */     } 
 /*  95 */     BlockState state = entity.getBlockState();

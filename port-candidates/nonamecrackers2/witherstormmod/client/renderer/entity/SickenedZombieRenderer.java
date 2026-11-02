@@ -1,5 +1,5 @@
 /*    */ package nonamecrackers2.witherstormmod.client.renderer.entity;
-/*    */ import net.minecraft.client.model.ZombieModel;
+/*    */ import net.minecraft.client.model.monster.zombie.ZombieModel;
 /*    */ import net.minecraft.client.renderer.rendertype.RenderType;
 /*    */ import net.minecraft.client.renderer.entity.AbstractZombieRenderer;
 /*    */ import net.minecraft.client.renderer.entity.EntityRendererProvider;

@@ -1,5 +1,5 @@
 /*    */ package nonamecrackers2.witherstormmod.client.renderer.entity;
-/*    */ import net.minecraft.client.model.SkeletonModel;
+/*    */ import net.minecraft.client.model.monster.skeleton.SkeletonModel;
 /*    */ import net.minecraft.client.renderer.rendertype.RenderType;
 /*    */ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 /*    */ import net.minecraft.client.renderer.entity.RenderLayerParent;

@@ -71,7 +71,7 @@
 /*     */   
 /*     */   public static void attachWorldCapabilities(AttachCapabilitiesEvent<Level> event) {
 /*  73 */     Level world = (Level)event.getObject();
-/*  74 */     if (world.isClientSide) {
+/*  74 */     if (world.isClientSide()) {
 /*     */       
 /*  76 */       Minecraft mc = Minecraft.getInstance();
 /*  77 */       final LazyOptional<WitherStormDistantRenderer> distantRenderer = LazyOptional.of(() -> new WitherStormDistantRenderer(mc));

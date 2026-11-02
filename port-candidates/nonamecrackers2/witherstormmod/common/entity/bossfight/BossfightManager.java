@@ -159,8 +159,8 @@ public class BossfightManager<T extends Entity> {
    }
 
    public void read(CompoundTag compound) {
-      this.setCurrentPhase(compound.getInt("CurrentPhase"));
-      this.ticksSincePhaseInit = compound.getInt("PhaseTicks");
+      this.setCurrentPhase(compound.getIntOr("CurrentPhase", 0));
+      this.ticksSincePhaseInit = compound.getIntOr("PhaseTicks", 0);
    }
 
    public static class AdvanceableBossfightPhase<T extends Entity> {

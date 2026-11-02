@@ -80,7 +80,7 @@
 /*     */   public FormidibombEntity(Level world, double x, double y, double z, @Nullable LivingEntity owner, @Nullable IFormidibomb previous, @Nullable BlockState state) {
 /*  81 */     this((EntityType<? extends FormidibombEntity>)WitherStormModEntityTypes.FORMIDIBOMB.get(), world);
 /*  82 */     setPos(x, y, z);
-/*  83 */     double d0 = world.random.nextDouble() * 6.2831854820251465D;
+/*  83 */     double d0 = world.getRandom().nextDouble() * 6.2831854820251465D;
 /*  84 */     setDeltaMovement(-Math.sin(d0) * 0.02D, 0.2D, -Math.cos(d0) * 0.02D);
 /*  85 */     initiateFuse(1200);
 /*  86 */     this.xo = x;
@@ -105,9 +105,9 @@
 /*     */   protected void readAdditionalSaveData(@NotNull CompoundTag compound) {
 /* 106 */     super.readAdditionalSaveData(compound);
 /* 107 */     if (compound.contains("StartFuse"))
-/* 108 */       setStartFuse(compound.getInt("StartFuse")); 
+/* 108 */       setStartFuse(compound.getIntOr("StartFuse", 0)); 
 /* 109 */     if (compound.contains("State")) {
-/* 110 */       setBlockState(NbtUtils.readBlockState((HolderGetter)level().holderLookup(Registries.BLOCK), compound.getCompound("State")));
+/* 110 */       setBlockState(NbtUtils.readBlockState((HolderGetter)level().holderLookup(Registries.BLOCK), compound.getCompoundOrEmpty("State")));
 /*     */     }
 /*     */   }
 /*     */ 
@@ -230,7 +230,7 @@
 /*     */ 
 /*     */   
 /*     */   protected void explode() {
-/* 233 */     explode(level(), (Entity)getOwner(), 48 + (level()).random.nextInt(9), 3, getX(), getY(), getZ());
+/* 233 */     explode(level(), (Entity)getOwner(), 48 + (level()).getRandom().nextInt(9), 3, getX(), getY(), getZ());
 /* 234 */     WitherStormModPacketHandlers.MAIN.send(PacketDistributor.NEAR.with(PacketDistributor.TargetPoint.p(getX(), getY(), getZ(), 100.0D, level().dimension())), new ShakeScreenMessage(480.0F, 24.0F));
 /*     */   }
 /*     */ 
@@ -259,36 +259,36 @@
 /*     */ 
 /*     */   
 /*     */   public static void explode(Level world, @Nullable Entity entity, int radius, int squish, double x, double y, double z) {
-/* 262 */     world.getProfiler().push("formidibomb_explosion");
+/* 262 */     net.minecraft.util.profiling.Profiler.get().push("formidibomb_explosion");
 /*     */     
 /* 264 */     ExplosionDamageCalculator explosionContext = (entity == null) ? new ExplosionDamageCalculator() : (ExplosionDamageCalculator)new EntityBasedExplosionDamageCalculator(entity);
 /* 265 */     Explosion explosion = new Explosion(world, entity, formidibomb(world.registryAccess(), entity), explosionContext, x, y, z, radius, true, Explosion.BlockInteraction.DESTROY);
 /*     */     
-/* 267 */     if (world.isClientSide) {
+/* 267 */     if (world.isClientSide()) {
 /*     */       
-/* 269 */       int poofCount = Math.max(4500, world.random.nextInt(5001));
+/* 269 */       int poofCount = Math.max(4500, world.getRandom().nextInt(5001));
 /* 270 */       for (int i = 0; i < poofCount; i++) {
 /*     */         
-/* 272 */         double speedX = world.random.nextGaussian() * 0.5D;
-/* 273 */         double speedY = world.random.nextGaussian() * 0.5D;
-/* 274 */         double speedZ = world.random.nextGaussian() * 0.5D;
-/* 275 */         double deltaX = world.random.nextGaussian() * 4.0D;
-/* 276 */         double deltaY = world.random.nextGaussian() * 4.0D;
-/* 277 */         double deltaZ = world.random.nextGaussian() * 4.0D;
+/* 272 */         double speedX = world.getRandom().nextGaussian() * 0.5D;
+/* 273 */         double speedY = world.getRandom().nextGaussian() * 0.5D;
+/* 274 */         double speedZ = world.getRandom().nextGaussian() * 0.5D;
+/* 275 */         double deltaX = world.getRandom().nextGaussian() * 4.0D;
+/* 276 */         double deltaY = world.getRandom().nextGaussian() * 4.0D;
+/* 277 */         double deltaZ = world.getRandom().nextGaussian() * 4.0D;
 /* 278 */         world.addParticle((ParticleOptions)ParticleTypes.POOF, x + deltaX, y + deltaY, z + deltaZ, speedX, speedY, speedZ);
 /*     */       } 
 /*     */       
-/* 281 */       int explosionCount = Math.max(50, world.random.nextInt(76));
+/* 281 */       int explosionCount = Math.max(50, world.getRandom().nextInt(76));
 /* 282 */       for (int j = 0; j < explosionCount; j++) {
 /*     */         
-/* 284 */         double deltaX = world.random.nextGaussian() * 12.0D;
-/* 285 */         double deltaY = world.random.nextGaussian() * 12.0D;
-/* 286 */         double deltaZ = world.random.nextGaussian() * 12.0D;
+/* 284 */         double deltaX = world.getRandom().nextGaussian() * 12.0D;
+/* 285 */         double deltaY = world.getRandom().nextGaussian() * 12.0D;
+/* 286 */         double deltaZ = world.getRandom().nextGaussian() * 12.0D;
 /* 287 */         world.addParticle((ParticleOptions)ParticleTypes.EXPLOSION_EMITTER, x + deltaX, y + deltaY, z + deltaZ, 0.0D, 0.0D, 0.0D);
 /*     */       } 
 /*     */     } 
 /*     */     
-/* 291 */     if (world.isClientSide) {
+/* 291 */     if (world.isClientSide()) {
 /*     */       
 /* 293 */       SoundEvent event = (SoundEvent)WitherStormModSoundEvents.FORMIDIBOMB_EXPLOSION.get();
 /* 294 */       if (!((Boolean)WitherStormModConfig.CLIENT.earRingingEffects.get()).booleanValue())
@@ -297,7 +297,7 @@
 /*     */     } 
 /* 298 */     world.playSound(null, x, y, z, (SoundEvent)WitherStormModSoundEvents.TREMBLE.get(), SoundSource.BLOCKS, 32.0F, 1.0F);
 /*     */     
-/* 300 */     if (!world.isClientSide) {
+/* 300 */     if (!world.isClientSide()) {
 /*     */       
 /* 302 */       FormidibombExplosionMessage message = new FormidibombExplosionMessage(entity, x, y, z, radius, squish);
 /* 303 */       Objects.requireNonNull(world); WitherStormModPacketHandlers.MAIN.send(PacketDistributor.DIMENSION.with(world::dimension), message);
@@ -327,7 +327,7 @@
 /*     */             
 /* 328 */             if (Mth.sqrt((i * i + j * j * squish + k * k)) < radius) {
 /*     */               
-/* 330 */               int random = world.random.nextInt(2);
+/* 330 */               int random = world.getRandom().nextInt(2);
 /*     */               
 /* 332 */               for (int l = -random; l <= random; l++) {
 /*     */                 
@@ -347,7 +347,7 @@
 /*     */ 
 /*     */ 
 /*     */                   
-/* 350 */                   float resistance = radius * (0.7F + world.random.nextFloat() * 0.6F);
+/* 350 */                   float resistance = radius * (0.7F + world.getRandom().nextFloat() * 0.6F);
 /* 351 */                   Optional<Float> blockResistance = explosionContext.getBlockExplosionResistance(explosion, (BlockGetter)world, pos, state, fluid);
 /* 352 */                   if (blockResistance.isPresent()) {
 /* 353 */                     resistance -= (((Float)blockResistance.get()).floatValue() + 0.3F) * (((Boolean)WitherStormModConfig.SERVER.lowerBlockResistance.get()).booleanValue() ? 0.01F : 0.3F);
@@ -355,7 +355,7 @@
 /* 355 */                   if (resistance > 0.0F && explosionContext.shouldBlockExplode(explosion, (BlockGetter)world, pos, state, resistance)) {
 /*     */                     
 /* 357 */                     state.onBlockExploded(world, pos, explosion);
-/* 358 */                     if (world.random.nextInt(3) == 0 && world.getBlockState(pos).is(Blocks.AIR) && world.getBlockState(pos.below()).isSolidRender((BlockGetter)world, pos.below())) {
+/* 358 */                     if (world.getRandom().nextInt(3) == 0 && world.getBlockState(pos).is(Blocks.AIR) && world.getBlockState(pos.below()).isSolidRender((BlockGetter)world, pos.below())) {
 /* 359 */                       world.setBlockAndUpdate(pos, BaseFireBlock.getState((BlockGetter)world, pos));
 /*     */                     }
 /*     */                   } 
@@ -402,7 +402,7 @@
 /* 402 */         Block.popResource(world, (BlockPos)pair.getSecond(), (ItemStack)pair.getFirst()); }
 /*     */     
 /*     */     } 
-/* 405 */     world.getProfiler().pop();
+/* 405 */     net.minecraft.util.profiling.Profiler.get().pop();
 /*     */   }
 /*     */ 
 /*     */ 

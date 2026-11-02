@@ -1,6 +1,6 @@
 /*    */ package nonamecrackers2.witherstormmod.client.renderer.entity;
 /*    */ import com.mojang.blaze3d.vertex.PoseStack;
-/*    */ import net.minecraft.client.model.IllagerModel;
+/*    */ import net.minecraft.client.model.monster.illager.IllagerModel;
 /*    */ import net.minecraft.client.renderer.ItemInHandRenderer;
 /*    */ import net.minecraft.client.renderer.MultiBufferSource;
 /*    */ import net.minecraft.client.renderer.rendertype.RenderType;

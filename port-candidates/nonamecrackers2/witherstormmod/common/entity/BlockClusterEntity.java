@@ -33,7 +33,7 @@
 /*     */ import net.minecraft.world.entity.Pose;
 /*     */ import net.minecraft.world.entity.item.ItemEntity;
 /*     */ import net.minecraft.world.item.ItemStack;
-/*     */ import net.minecraft.world.level.GameRules;
+/*     */ import net.minecraft.world.level.gamerules.GameRules;
 /*     */ import net.minecraft.world.level.ItemLike;
 /*     */ import net.minecraft.world.level.Level;
 /*     */ import net.minecraft.world.level.block.Block;
@@ -231,12 +231,12 @@
 /* 231 */     if (compound.contains("StartPos"))
 /* 232 */       setStartPos(NbtUtils.readBlockPos(compound.getCompound("StartPos"))); 
 /* 233 */     if (compound.contains("Blocks"))
-/* 234 */       setBlocks(WitherStormModNBTUtil.readBlockStatePosMap((HolderGetter)level().holderLookup(Registries.BLOCK), compound.getList("Blocks", 10))); 
+/* 234 */       setBlocks(WitherStormModNBTUtil.readBlockStatePosMap((HolderGetter)level().holderLookup(Registries.BLOCK), compound.getListOrEmpty("Blocks"))); 
 /* 235 */     if (compound.contains("TileData"))
-/* 236 */       setTileData(WitherStormModNBTUtil.readCompoundList(compound.getList("TileData", 10))); 
+/* 236 */       setTileData(WitherStormModNBTUtil.readCompoundList(compound.getListOrEmpty("TileData"))); 
 /* 237 */     if (compound.contains("RotationDelta")) {
 /*     */       
-/* 239 */       CompoundTag deltaCompound = compound.getCompound("RotationDelta");
+/* 239 */       CompoundTag deltaCompound = compound.getCompoundOrEmpty("RotationDelta");
 /* 240 */       setRotationDelta(WitherStormModNBTUtil.readVector2f(deltaCompound));
 /*     */     } 
 /* 242 */     if (compound.contains("Width")) {
@@ -254,27 +254,27 @@
 /*     */     } else {
 /* 255 */       this.entityData.set(Y_SIZE, Float.valueOf(compound.getFloat("YSize")));
 /* 256 */     }  refreshDimensions();
-/* 257 */     this.time = compound.getInt("Time");
-/* 258 */     this.dropItems = compound.getBoolean("DropItems");
-/* 259 */     this.resetGravityOnLoad = compound.getBoolean("ResetGravity");
+/* 257 */     this.time = compound.getIntOr("Time", 0);
+/* 258 */     this.dropItems = compound.getBooleanOr("DropItems", false);
+/* 259 */     this.resetGravityOnLoad = compound.getBooleanOr("ResetGravity", false);
 /* 260 */     if (this.resetGravityOnLoad)
 /* 261 */       setNoGravity(false); 
-/* 262 */     setForceRender(compound.getBoolean("ForceRender"));
-/* 263 */     setShakeTime(compound.getInt("ShakeTime"));
-/* 264 */     setSink(compound.getInt("GroundSink"));
-/* 265 */     setAntiStacking(compound.getBoolean("AntiStacking"));
+/* 262 */     setForceRender(compound.getBooleanOr("ForceRender", false));
+/* 263 */     setShakeTime(compound.getIntOr("ShakeTime", 0));
+/* 264 */     setSink(compound.getIntOr("GroundSink", 0));
+/* 265 */     setAntiStacking(compound.getBooleanOr("AntiStacking", false));
 /* 266 */     if (compound.contains("StaticFadePos"))
 /* 267 */       this.entityData.set(FADE_POINT, Optional.of(NbtUtils.readBlockPos(compound.getCompound("StaticFadePos")))); 
-/* 268 */     this.shouldCrumble = compound.getBoolean("ShouldCrumble");
-/* 269 */     this.shouldntCountToConsumedEntities = compound.getBoolean("ShouldntCountToConsumedEntities");
-/* 270 */     this.createdFromBeam = compound.getBoolean("CreatedFromBeam");
-/* 271 */     this.createdFromFallingBlock = compound.getBoolean("CreatedFromFallingBlock");
-/* 272 */     this.headCreatedFrom = compound.getInt("HeadCreatedFrom");
+/* 268 */     this.shouldCrumble = compound.getBooleanOr("ShouldCrumble", false);
+/* 269 */     this.shouldntCountToConsumedEntities = compound.getBooleanOr("ShouldntCountToConsumedEntities", false);
+/* 270 */     this.createdFromBeam = compound.getBooleanOr("CreatedFromBeam", false);
+/* 271 */     this.createdFromFallingBlock = compound.getBooleanOr("CreatedFromFallingBlock", false);
+/* 272 */     this.headCreatedFrom = compound.getIntOr("HeadCreatedFrom", 0);
 /*     */ 
 /*     */     
-/* 275 */     this.tractorBeamDistanceThreshold = compound.getDouble("TractorBeamDistanceThreshold");
+/* 275 */     this.tractorBeamDistanceThreshold = compound.getDoubleOr("TractorBeamDistanceThreshold", 0.0D);
 /* 276 */     if (compound.contains("HasPhysics")) {
-/* 277 */       setPhysics(compound.getBoolean("HasPhysics"));
+/* 277 */       setPhysics(compound.getBooleanOr("HasPhysics", false));
 /*     */     }
 /*     */   }
 /*     */ 
@@ -412,7 +412,7 @@
 /* 412 */       this.yClusterRot += (getRotationDelta()).y;
 /*     */     } 
 /*     */     
-/* 415 */     if (!(level()).isClientSide) {
+/* 415 */     if (!(level()).isClientSide()) {
 /*     */       
 /* 417 */       BlockPos pos = blockPosition();
 /* 418 */       if (getBlocks().isEmpty()) {
@@ -851,7 +851,7 @@
 /*     */ 
 /*     */   
 /*     */   public void baseTick() {
-/* 854 */     level().getProfiler().push("entityBaseTick");
+/* 854 */     net.minecraft.util.profiling.Profiler.get().push("entityBaseTick");
 /* 855 */     this.walkDistO = this.walkDist;
 /* 856 */     this.xRotO = getXRot();
 /* 857 */     this.yRotO = getYRot();
@@ -859,7 +859,7 @@
 /* 859 */     checkBelowWorld();
 /*     */     
 /* 861 */     this.firstTick = false;
-/* 862 */     level().getProfiler().pop();
+/* 862 */     net.minecraft.util.profiling.Profiler.get().pop();
 /*     */   }
 /*     */ }
 

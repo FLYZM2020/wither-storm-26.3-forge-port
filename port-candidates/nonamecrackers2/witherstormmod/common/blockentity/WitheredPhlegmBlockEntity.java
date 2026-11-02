@@ -152,7 +152,7 @@
 /* 152 */     this.items = NonNullList.withSize(getContainerSize(), ItemStack.EMPTY);
 /* 153 */     if (!tryLoadLootTable(tag))
 /* 154 */       ContainerHelper.loadAllItems(tag, this.items); 
-/* 155 */     this.storedExperience = tag.getInt("StoredXp");
+/* 155 */     this.storedExperience = tag.getIntOr("StoredXp", 0);
 /*     */   }
 /*     */ 
 /*     */ 

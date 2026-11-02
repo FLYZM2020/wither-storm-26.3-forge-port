@@ -46,7 +46,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.Entity.RemovalReason;
-import net.minecraft.world.entity.SpawnPlacements.Type;
+import com.mojang.datafixers.types.Type;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
@@ -219,7 +219,7 @@ public class CommandBlockEntity extends LivingEntity implements EntitySyncableDa
    }
 
    public void tick() {
-      if (!this.level().isClientSide) {
+      if (!this.level().isClientSide()) {
          this.entityData.set(PHASE_KEY, this.getBossfightManager().getCurrentPhaseIndex());
          int interval = (int)(this.getHealth() / this.getMaxHealth() * 80.0F);
          int secondaryInterval = (int)(this.getHealth() / this.getMaxHealth() * 16.0F);
@@ -247,7 +247,7 @@ public class CommandBlockEntity extends LivingEntity implements EntitySyncableDa
       this.modeAnimO = this.modeAnim;
       this.protectionYOffsetO = this.protectionYOffset;
       this.getStructures().forEach(StructureAnimationHelper::tick);
-      if (!this.level().isClientSide) {
+      if (!this.level().isClientSide()) {
          this.tentacleStructure.findTentacles((ServerLevel)this.level());
          this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
 
@@ -291,12 +291,12 @@ public class CommandBlockEntity extends LivingEntity implements EntitySyncableDa
       compound.putFloat("YBodyRot", this.yBodyRot);
       compound.put("Structures", this.writeStructures());
       if (this.getOwnerUUID() != null) {
-         compound.putUUID("OwnerUUID", this.getOwnerUUID());
+         compound.store("OwnerUUID", net.minecraft.core.UUIDUtil.CODEC, this.getOwnerUUID());
       }
 
       this.tentacleStructure.addSaveData(compound);
       if (this.podiumCluster != null && this.podiumCluster.isAlive()) {
-         compound.putUUID("PodiumCluster", this.podiumCluster.getUUID());
+         compound.store("PodiumCluster", net.minecraft.core.UUIDUtil.CODEC, this.podiumCluster.getUUID());
       }
 
       compound.put("BossfightManager", this.bossfightManager.write());
@@ -305,33 +305,33 @@ public class CommandBlockEntity extends LivingEntity implements EntitySyncableDa
    public void readAdditionalSaveData(@NotNull CompoundTag compound) {
       super.readAdditionalSaveData(compound);
       this.protectionYOffsetO = this.protectionYOffset;
-      int mode = compound.getInt("Mode");
+      int mode = compound.getIntOr("Mode", 0);
       if (mode >= 0 && mode < nonamecrackers2.witherstormmod.common.entity.CommandBlockEntity.Mode.values().length) {
          this.setMode(nonamecrackers2.witherstormmod.common.entity.CommandBlockEntity.Mode.values()[mode]);
       }
 
-      int state = compound.getInt("State");
+      int state = compound.getIntOr("State", 0);
       if (state >= 0 && state < nonamecrackers2.witherstormmod.common.entity.CommandBlockEntity.State.values().length) {
          this.setState(nonamecrackers2.witherstormmod.common.entity.CommandBlockEntity.State.values()[state]);
       }
 
-      this.stateTicks = compound.getInt("StateTicks");
-      this.modeAnim = compound.getInt("ModeAnim");
+      this.stateTicks = compound.getIntOr("StateTicks", 0);
+      this.modeAnim = compound.getIntOr("ModeAnim", 0);
       this.modeAnimO = this.modeAnim;
-      this.protectionYOffset = compound.getFloat("YOffset");
-      this.setYBodyRot(compound.getFloat("YBodyRot"));
-      this.readStructures(compound.getList("Structures", 10));
+      this.protectionYOffset = compound.getFloatOr("YOffset", 0.0F);
+      this.setYBodyRot(compound.getFloatOr("YBodyRot", 0.0F));
+      this.readStructures(compound.getListOrEmpty("Structures"));
       if (compound.contains("OwnerUUID")) {
-         this.setOwnerUUID(compound.getUUID("OwnerUUID"));
+         this.setOwnerUUID(compound.read("OwnerUUID", net.minecraft.core.UUIDUtil.CODEC).orElse(null));
       }
 
       this.tentacleStructure.readSaveData(compound);
       if (compound.contains("PodiumCluster")) {
-         this.podiumClusterUUID = compound.getUUID("PodiumCluster");
+         this.podiumClusterUUID = compound.read("PodiumCluster", net.minecraft.core.UUIDUtil.CODEC).orElse(null);
       }
 
       if (compound.contains("BossfightManager")) {
-         this.bossfightManager.read(compound.getCompound("BossfightManager"));
+         this.bossfightManager.read(compound.getCompoundOrEmpty("BossfightManager"));
       }
    }
 
@@ -422,7 +422,7 @@ public class CommandBlockEntity extends LivingEntity implements EntitySyncableDa
                   hurt = true;
                }
 
-               if (!this.level().isClientSide && hurt && !this.isDeadOrDying()) {
+               if (!this.level().isClientSide() && hurt && !this.isDeadOrDying()) {
                   this.getBossfightManager().goToNextPhase();
                   WitherStormEntity owner = this.getOwner();
                   if (owner != null && owner.isAlive()) {
@@ -452,7 +452,7 @@ public class CommandBlockEntity extends LivingEntity implements EntitySyncableDa
                   }
                }
 
-               if (this.level().isClientSide) {
+               if (this.level().isClientSide()) {
                   for (int i = 0; i < 100; i++) {
                      double x = this.random.nextFloat() - 0.5F;
                      double y = this.random.nextFloat() - 0.5F;
@@ -602,7 +602,7 @@ public class CommandBlockEntity extends LivingEntity implements EntitySyncableDa
 
    public void readStructures(ListTag list) {
       for (int i = 0; i < list.size(); i++) {
-         CompoundTag ribStructure = list.getCompound(i);
+         CompoundTag ribStructure = list.getCompoundOrEmpty(i);
          if (i < this.getRibStructure().size()) {
             this.getRibStructure().get(i).read(ribStructure);
          }
@@ -640,7 +640,7 @@ public class CommandBlockEntity extends LivingEntity implements EntitySyncableDa
                   entity.getPlayDeadManager().setCommandBlock(this);
                }
             }
-         } else if (!this.level().isClientSide) {
+         } else if (!this.level().isClientSide()) {
             MinecraftServer server = this.level().m_7654_();
 
             for (Level level : server.m_129785_()) {
@@ -690,7 +690,7 @@ public class CommandBlockEntity extends LivingEntity implements EntitySyncableDa
 
    public void onAddedToWorld() {
       super.onAddedToWorld();
-      if (!this.level().isClientSide) {
+      if (!this.level().isClientSide()) {
          this.tentacleStructure.createTentacles();
       }
    }
@@ -700,7 +700,7 @@ public class CommandBlockEntity extends LivingEntity implements EntitySyncableDa
    }
 
    public void die(@NotNull DamageSource source) {
-      if (!this.level().isClientSide
+      if (!this.level().isClientSide()
          && this.getState() == nonamecrackers2.witherstormmod.common.entity.CommandBlockEntity.State.BOSSFIGHT
          && this.getBossfightManager().getCurrentPhase() != BowelsBossFightStages.DEATH) {
          this.getBossfightManager().setCurrentFromNextInOrder(BowelsBossFightStages.DEATH);
@@ -713,7 +713,7 @@ public class CommandBlockEntity extends LivingEntity implements EntitySyncableDa
    protected void tickDeath() {
       if (this.getCurrentPhase().equals(BowelsBossFightStages.DEATH)) {
          this.specialDeathTime++;
-         if (!this.level().isClientSide) {
+         if (!this.level().isClientSide()) {
             if (this.specialDeathTime > 160) {
                this.getBossfightManager().goToNextPhase();
             } else {
@@ -727,7 +727,7 @@ public class CommandBlockEntity extends LivingEntity implements EntitySyncableDa
          }
       } else {
          super.tickDeath();
-         if (!this.level().isClientSide && this.deathTime >= 20) {
+         if (!this.level().isClientSide() && this.deathTime >= 20) {
             this.tentacleStructure.removeTentacles();
          }
       }
@@ -842,7 +842,7 @@ public class CommandBlockEntity extends LivingEntity implements EntitySyncableDa
    }
 
    public void findPodiumCluster() {
-      if (!this.level().isClientSide && this.podiumClusterUUID != null && this.podiumCluster == null) {
+      if (!this.level().isClientSide() && this.podiumClusterUUID != null && this.podiumCluster == null) {
          ServerLevel serverWorld = (ServerLevel)this.level();
          Entity entity = serverWorld.getEntity(this.podiumClusterUUID);
          if (entity instanceof BlockClusterEntity) {
@@ -1022,7 +1022,7 @@ public class CommandBlockEntity extends LivingEntity implements EntitySyncableDa
    }
 
    public BossfightPhase<nonamecrackers2.witherstormmod.common.entity.CommandBlockEntity> getCurrentPhase() {
-      return this.level().isClientSide
+      return this.level().isClientSide()
          ? this.getBossfightManager().getPhase((Integer)this.entityData.get(PHASE_KEY))
          : this.getBossfightManager().getCurrentPhase();
    }
@@ -1129,7 +1129,7 @@ public class CommandBlockEntity extends LivingEntity implements EntitySyncableDa
             nonamecrackers2.witherstormmod.common.entity.CommandBlockEntity entity, nonamecrackers2.witherstormmod.common.entity.CommandBlockEntity.State state
          ) {
             super.tick(entity, state);
-            if (!entity.level().isClientSide) {
+            if (!entity.level().isClientSide()) {
                entity.tentacleStructure.addTentacles();
                entity.tentacleStructure.updateTentacles();
             }
@@ -1140,7 +1140,7 @@ public class CommandBlockEntity extends LivingEntity implements EntitySyncableDa
          nonamecrackers2.witherstormmod.common.entity.CommandBlockEntity entity, nonamecrackers2.witherstormmod.common.entity.CommandBlockEntity.State state
       ) {
          entity.modeAnim++;
-         if (!entity.level().isClientSide && entity.tickCount % 120 == 0) {
+         if (!entity.level().isClientSide() && entity.tickCount % 120 == 0) {
             WitherStormModPacketHandlers.MAIN
                .send(
                   PacketDistributor.TRACKING_ENTITY.with(() -> entity),
@@ -1162,7 +1162,7 @@ public class CommandBlockEntity extends LivingEntity implements EntitySyncableDa
          nonamecrackers2.witherstormmod.common.entity.CommandBlockEntity entity, nonamecrackers2.witherstormmod.common.entity.CommandBlockEntity.State state
       ) {
          entity.modeAnim = 0;
-         if (!entity.level().isClientSide && entity.isAddedToWorld()) {
+         if (!entity.level().isClientSide() && entity.isAddedToWorld()) {
             if (this == TENTACLES) {
                entity.tentacleStructure.readdTentacles();
             } else {
@@ -1233,7 +1233,7 @@ public class CommandBlockEntity extends LivingEntity implements EntitySyncableDa
                entity.getMode().playingDeadTick(entity);
             }
 
-            if (!entity.level().isClientSide) {
+            if (!entity.level().isClientSide()) {
                Level world = entity.level();
                Player player = world.getNearestPlayer(entity.searchablePlayersPredicate(), entity);
                if (player != null) {
@@ -1256,7 +1256,7 @@ public class CommandBlockEntity extends LivingEntity implements EntitySyncableDa
                entity.getMode().idleTick(entity);
             }
 
-            if (!entity.level().isClientSide) {
+            if (!entity.level().isClientSide()) {
                Player player = entity.getLuringPlayer();
                if (player != null && entity.searchablePlayersPredicate().range(12.0).test(entity, player) && entity.getStateTicks() < 240) {
                   double speed = 0.025;
@@ -1292,7 +1292,7 @@ public class CommandBlockEntity extends LivingEntity implements EntitySyncableDa
             entity.level()
                .playSound(null, entity.blockPosition(), (SoundEvent)WitherStormModSoundEvents.COMMAND_BLOCK_ACTIVATES.get(), SoundSource.HOSTILE, 5.0F, 1.0F);
             entity.level().playSound(null, entity.blockPosition(), (SoundEvent)WitherStormModSoundEvents.TREMBLE.get(), SoundSource.AMBIENT, 10.0F, 1.0F);
-            if (!entity.level().isClientSide) {
+            if (!entity.level().isClientSide()) {
                ShakeScreenMessage message = new ShakeScreenMessage(40.0F, 5.0F);
                WitherStormModPacketHandlers.MAIN.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), message);
             }
@@ -1329,7 +1329,7 @@ public class CommandBlockEntity extends LivingEntity implements EntitySyncableDa
                entity.getMode().protectTick(entity);
             }
 
-            if (!entity.level().isClientSide && entity.getOwner() != null && entity.getStateTicks() > 60) {
+            if (!entity.level().isClientSide() && entity.getOwner() != null && entity.getStateTicks() > 60) {
                WitherStormEntity owner = entity.getOwner();
                if (!owner.isReviving()) {
                   owner.reviveFromPlayingDead();
@@ -1340,7 +1340,7 @@ public class CommandBlockEntity extends LivingEntity implements EntitySyncableDa
          @Override
          public void init(nonamecrackers2.witherstormmod.common.entity.CommandBlockEntity entity) {
             super.init(entity);
-            if (!entity.level().isClientSide) {
+            if (!entity.level().isClientSide()) {
                ShakeScreenMessage message = new ShakeScreenMessage(120.0F, 5.0F);
                WitherStormModPacketHandlers.MAIN.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), message);
             }
@@ -1362,7 +1362,7 @@ public class CommandBlockEntity extends LivingEntity implements EntitySyncableDa
          @Override
          public void tick(nonamecrackers2.witherstormmod.common.entity.CommandBlockEntity entity) {
             super.tick(entity);
-            if (!entity.level().isClientSide) {
+            if (!entity.level().isClientSide()) {
                entity.getBossfightManager().tick();
                if (!entity.getCurrentPhase().equals(BowelsBossFightStages.IDLE) || entity.getHealth() < entity.getMaxHealth()) {
                   entity.bossInfo.setVisible(true);
@@ -1537,7 +1537,7 @@ public class CommandBlockEntity extends LivingEntity implements EntitySyncableDa
          for (TentacleEntity tentacle : this.tentacleStructure) {
             CompoundTag tentacleCompound = new CompoundTag();
             if (tentacle != null) {
-               tentacleCompound.putUUID("UUID", tentacle.getUUID());
+               tentacleCompound.store("UUID", net.minecraft.core.UUIDUtil.CODEC, tentacle.getUUID());
             }
 
             list.add(tentacleCompound);
@@ -1547,12 +1547,12 @@ public class CommandBlockEntity extends LivingEntity implements EntitySyncableDa
       }
 
       public void readSaveData(CompoundTag compound) {
-         ListTag list = compound.getList("Tentacles", 10);
+         ListTag list = compound.getListOrEmpty("Tentacles");
 
          for (int i = 0; i < this.tentacleStructure.length; i++) {
-            CompoundTag tentacleCompound = list.getCompound(i);
+            CompoundTag tentacleCompound = list.getCompoundOrEmpty(i);
             if (tentacleCompound.contains("UUID") && this.savedTentacleStructure[i] == null) {
-               this.savedTentacleStructure[i] = tentacleCompound.getUUID("UUID");
+               this.savedTentacleStructure[i] = tentacleCompound.read("UUID", net.minecraft.core.UUIDUtil.CODEC).orElse(null);
             }
          }
       }

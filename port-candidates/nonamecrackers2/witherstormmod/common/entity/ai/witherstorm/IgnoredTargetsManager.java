@@ -115,7 +115,7 @@
 /* 115 */     for (Ignored ignored : this.entities) {
 /*     */       
 /* 117 */       CompoundTag entry = new CompoundTag();
-/* 118 */       entry.putUUID("UUID", ignored.entity);
+/* 118 */       entry.store("UUID", net.minecraft.core.UUIDUtil.CODEC, ignored.entity);
 /* 119 */       entry.putInt("Ticks", ignored.ticks);
 /* 120 */       list.add(entry);
 /*     */     } 
@@ -126,12 +126,12 @@
 /*     */   
 /*     */   public void read(CompoundTag tag) {
 /* 128 */     this.entities.clear();
-/* 129 */     ListTag list = tag.getList("Entities", 10);
+/* 129 */     ListTag list = tag.getListOrEmpty("Entities");
 /* 130 */     for (int i = 0; i < list.size(); i++) {
 /*     */       
-/* 132 */       CompoundTag entry = list.getCompound(i);
-/* 133 */       UUID id = entry.getUUID("UUID");
-/* 134 */       int ticks = entry.getInt("Ticks");
+/* 132 */       CompoundTag entry = list.getCompoundOrEmpty(i);
+/* 133 */       UUID id = entry.read("UUID", net.minecraft.core.UUIDUtil.CODEC).orElse(null);
+/* 134 */       int ticks = entry.getIntOr("Ticks", 0);
 /* 135 */       this.entities.add(new Ignored(id, ticks));
 /*     */     } 
 /*     */   }

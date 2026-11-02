@@ -37,7 +37,7 @@
 /*     */   public SuperTNTEntity(Level world, double x, double y, double z, @Nullable LivingEntity owner) {
 /*  38 */     this((EntityType<? extends SuperTNTEntity>)WitherStormModEntityTypes.SUPER_TNT.get(), world);
 /*  39 */     setPos(x, y, z);
-/*  40 */     double d0 = world.random.nextDouble() * 6.2831854820251465D;
+/*  40 */     double d0 = world.getRandom().nextDouble() * 6.2831854820251465D;
 /*  41 */     setDeltaMovement(-Math.sin(d0) * 0.02D, 0.2D, -Math.cos(d0) * 0.02D);
 /*  42 */     setFuse(320);
 /*  43 */     this.xo = x;
@@ -58,7 +58,7 @@
 /*     */   protected void readAdditionalSaveData(@NotNull CompoundTag compound) {
 /*  59 */     super.readAdditionalSaveData(compound);
 /*  60 */     if (compound.contains("StartFuse")) {
-/*  61 */       setStartFuse(compound.getInt("StartFuse"));
+/*  61 */       setStartFuse(compound.getIntOr("StartFuse", 0));
 /*     */     }
 /*     */   }
 /*     */ 

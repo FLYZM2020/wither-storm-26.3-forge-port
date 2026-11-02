@@ -30,11 +30,11 @@
 /*     */ import net.minecraft.world.entity.ai.village.ReputationEventType;
 /*     */ import net.minecraft.world.entity.monster.zombie.ZombieVillager;
 /*     */ import net.minecraft.world.entity.npc.villager.Villager;
-/*     */ import net.minecraft.world.entity.npc.VillagerData;
-/*     */ import net.minecraft.world.entity.npc.VillagerDataHolder;
-/*     */ import net.minecraft.world.entity.npc.VillagerProfession;
-/*     */ import net.minecraft.world.entity.npc.VillagerTrades;
-/*     */ import net.minecraft.world.entity.npc.VillagerType;
+/*     */ import net.minecraft.world.entity.npc.villager.VillagerData;
+/*     */ import net.minecraft.world.entity.npc.villager.VillagerDataHolder;
+/*     */ import net.minecraft.world.entity.npc.villager.VillagerProfession;
+/*     */ import net.minecraft.world.item.trading.VillagerTrades;
+/*     */ import net.minecraft.world.entity.npc.villager.VillagerType;
 /*     */ import net.minecraft.world.entity.player.Player;
 /*     */ import net.minecraft.world.item.ItemStack;
 /*     */ import net.minecraft.world.item.trading.MerchantOffers;
@@ -129,17 +129,17 @@
 /*     */   
 /*     */   public void readAdditionalSaveData(CompoundTag compound) {
 /* 131 */     super.readAdditionalSaveData(compound);
-/* 132 */     if (compound.contains("VillagerData", 10)) {
+/* 132 */     if (compound.contains("VillagerData")) {
 /*     */       
 /* 134 */       DataResult<VillagerData> result = VillagerData.CODEC.parse(new Dynamic((DynamicOps)NbtOps.INSTANCE, compound.get("VillagerData")));
 /* 135 */       Objects.requireNonNull(LOGGER); result.resultOrPartial(LOGGER::error).ifPresent(this::setVillagerData);
 /*     */     } 
-/* 137 */     if (compound.contains("Offers", 10))
-/* 138 */       this.tradeOffers = compound.getCompound("Offers"); 
-/* 139 */     if (compound.contains("Gossips", 10))
-/* 140 */       this.gossips = (Tag)compound.getList("Gossips", 10); 
-/* 141 */     if (compound.contains("Xp", 3)) {
-/* 142 */       this.villagerXp = compound.getInt("Xp");
+/* 137 */     if (compound.contains("Offers"))
+/* 138 */       this.tradeOffers = compound.getCompoundOrEmpty("Offers"); 
+/* 139 */     if (compound.contains("Gossips"))
+/* 140 */       this.gossips = (Tag)compound.getListOrEmpty("Gossips"); 
+/* 141 */     if (compound.contains("Xp")) {
+/* 142 */       this.villagerXp = compound.getIntOr("Xp", 0);
 /*     */     }
 /*     */   }
 /*     */ 

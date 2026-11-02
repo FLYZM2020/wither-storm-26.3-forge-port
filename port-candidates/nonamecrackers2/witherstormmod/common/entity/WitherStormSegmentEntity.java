@@ -154,7 +154,7 @@
 /*     */   public void addAdditionalSaveData(@NotNull CompoundTag compound) {
 /* 155 */     super.addAdditionalSaveData(compound);
 /* 156 */     if (getParentUUID() != null)
-/* 157 */       compound.putUUID("Parent", getParentUUID()); 
+/* 157 */       compound.store("Parent", net.minecraft.core.UUIDUtil.CODEC, getParentUUID()); 
 /* 158 */     compound.putInt("TimeWithParent", this.timeWithParent);
 /*     */   }
 /*     */ 
@@ -163,8 +163,8 @@
 /*     */   public void readAdditionalSaveData(CompoundTag compound) {
 /* 164 */     super.readAdditionalSaveData(compound);
 /* 165 */     if (compound.contains("Parent"))
-/* 166 */       setParentUUID(compound.getUUID("Parent")); 
-/* 167 */     this.timeWithParent = compound.getInt("TimeWithParent");
+/* 166 */       setParentUUID(compound.read("Parent", net.minecraft.core.UUIDUtil.CODEC).orElse(null)); 
+/* 167 */     this.timeWithParent = compound.getIntOr("TimeWithParent", 0);
 /*     */   }
 /*     */ 
 /*     */ 
@@ -176,7 +176,7 @@
 /* 176 */     if (parent == null && getParentUUID() != null) {
 /*     */       
 /* 178 */       List<? extends Entity> entities = level().getEntitiesOfClass(WitherStormEntity.class, getBoundingBox().inflate(1000.0D));
-/* 179 */       if (!(level()).isClientSide)
+/* 179 */       if (!(level()).isClientSide())
 /* 180 */         entities = Lists.newArrayList(((ServerLevel)level()).getAllEntities()); 
 /* 181 */       for (Entity entity : entities) {
 /*     */         
@@ -340,7 +340,7 @@
 /*     */   
 /*     */   protected void tickDeath() {
 /* 342 */     super.tickDeath();
-/* 343 */     if ((level()).isClientSide && !onGround()) {
+/* 343 */     if ((level()).isClientSide() && !onGround()) {
 /*     */       
 /* 345 */       float xOffset = (this.random.nextFloat() - 0.5F) * ((float)getBoundingBox().getXsize() + 5.0F);
 /* 346 */       float yOffset = (this.random.nextFloat() - 0.5F) * ((float)getBoundingBox().getYsize() + 5.0F);

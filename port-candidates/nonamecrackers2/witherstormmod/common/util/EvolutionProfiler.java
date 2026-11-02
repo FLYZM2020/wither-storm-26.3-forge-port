@@ -104,13 +104,13 @@
 /*     */ 
 /*     */   
 /*     */   public void read(CompoundTag tag) {
-/* 107 */     this.isProfiling = tag.getBoolean("IsProfiling");
-/* 108 */     this.ticksSinceLastPhase = tag.getInt("TicksSinceLastPhase");
-/* 109 */     ListTag list = tag.getList("TicksToEvolve", 10);
+/* 107 */     this.isProfiling = tag.getBooleanOr("IsProfiling", false);
+/* 108 */     this.ticksSinceLastPhase = tag.getIntOr("TicksSinceLastPhase", 0);
+/* 109 */     ListTag list = tag.getListOrEmpty("TicksToEvolve");
 /* 110 */     this.ticksToEvolve.clear();
 /* 111 */     for (int i = 0; i < list.size(); i++) {
 /*     */       
-/* 113 */       CompoundTag entryTag = list.getCompound(i);
+/* 113 */       CompoundTag entryTag = list.getCompoundOrEmpty(i);
 /* 114 */       this.ticksToEvolve.put(entryTag.getInt("Phase"), Integer.valueOf(entryTag.getInt("Ticks")));
 /*     */     } 
 /*     */   }

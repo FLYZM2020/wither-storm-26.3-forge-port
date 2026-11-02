@@ -70,7 +70,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.skeleton.WitherSkeleton;
-import net.minecraft.world.entity.npc.AbstractVillager;
+import net.minecraft.world.entity.npc.villager.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.entity.projectile.hurtingprojectile.AbstractHurtingProjectile;
@@ -281,7 +281,7 @@ public class WitheredSymbiontEntity extends Monster implements BossThemeEntity {
       compound.putInt("SmashAirTime", this.smashAirTime);
       compound.putInt("SpellsUsed", this.getSpellsUsed());
       if (this.summoner != null) {
-         compound.putUUID("Summoner", this.summoner);
+         compound.store("Summoner", net.minecraft.core.UUIDUtil.CODEC, this.summoner);
       }
 
       compound.putInt("AttackDelay", this.attackDelay);
@@ -312,23 +312,23 @@ public class WitheredSymbiontEntity extends Monster implements BossThemeEntity {
    public void readAdditionalSaveData(@NotNull CompoundTag compound) {
       super.readAdditionalSaveData(compound);
       if (compound.contains("IsNonBossMode")) {
-         this.setNonBossMode(compound.getBoolean("IsNonBossMode"));
+         this.setNonBossMode(compound.getBooleanOr("IsNonBossMode", false));
       }
 
       if (compound.contains("IsRushMode")) {
-         this.setRushMode(compound.getBoolean("IsRushMode"));
+         this.setRushMode(compound.getBooleanOr("IsRushMode", false));
       }
 
       if (compound.contains("Stage")) {
-         int ordinal = compound.getInt("Stage");
+         int ordinal = compound.getIntOr("Stage", 0);
          if (ordinal >= 0 && ordinal < nonamecrackers2.witherstormmod.common.entity.WitheredSymbiontEntity.BossfightStage.values().length) {
             this.setStage(nonamecrackers2.witherstormmod.common.entity.WitheredSymbiontEntity.BossfightStage.values()[ordinal]);
          }
       }
 
-      this.setStageTicks(compound.getInt("StageTicks"));
-      if (compound.contains("Spell", 8)) {
-         String rawId = compound.getString("Spell");
+      this.setStageTicks(compound.getIntOr("StageTicks", 0));
+      if (compound.contains("Spell")) {
+         String rawId = compound.getStringOr("Spell", "");
          Identifier loc = Identifier.tryParse(rawId);
          if (loc != null) {
             SpellType type = (SpellType)((IForgeRegistry)WitherStormModRegistries.SPELL_TYPES.get()).getValue(loc);
@@ -338,18 +338,18 @@ public class WitheredSymbiontEntity extends Monster implements BossThemeEntity {
          }
       }
 
-      this.spellCastingTime = compound.getInt("SpellCastingTicks");
-      this.nextSpellPickCount = compound.getInt("NextSpellPick");
-      this.setSmashing(compound.getBoolean("Smashing"));
-      this.smashAirTime = compound.getInt("SmashAirTime");
-      this.spellsUsed = compound.getInt("SpellsUsed");
+      this.spellCastingTime = compound.getIntOr("SpellCastingTicks", 0);
+      this.nextSpellPickCount = compound.getIntOr("NextSpellPick", 0);
+      this.setSmashing(compound.getBooleanOr("Smashing", false));
+      this.smashAirTime = compound.getIntOr("SmashAirTime", 0);
+      this.spellsUsed = compound.getIntOr("SpellsUsed", 0);
       if (compound.contains("Summoner")) {
-         this.summoner = compound.getUUID("Summoner");
+         this.summoner = compound.read("Summoner", net.minecraft.core.UUIDUtil.CODEC).orElse(null);
       }
 
-      this.attackDelay = compound.getInt("AttackDelay");
+      this.attackDelay = compound.getIntOr("AttackDelay", 0);
       if (compound.contains("DropItems")) {
-         ListTag dropItems = compound.getList("DropItems", 10);
+         ListTag dropItems = compound.getListOrEmpty("DropItems");
 
          for (int i = 0; i < dropItems.size(); i++) {
             this.dropItems.add(ItemStack.of(dropItems.getCompound(i)));
@@ -362,7 +362,7 @@ public class WitheredSymbiontEntity extends Monster implements BossThemeEntity {
 
       this.fightContributors.clear();
 
-      for (Tag tag : compound.getList("FightContributors", 11)) {
+      for (Tag tag : compound.getListOrEmpty("FightContributors")) {
          this.fightContributors.add(NbtUtils.loadUUID(tag));
       }
    }
@@ -408,7 +408,7 @@ public class WitheredSymbiontEntity extends Monster implements BossThemeEntity {
             for (Player player : this.level().getEntitiesOfClass(Player.class, this.getBoundingBox().inflate(radius))) {
                if (!this.entitiesToThrow.contains(player) && protectPredicate(radius).test(this, player)) {
                   this.entitiesToThrow.add(player);
-                  if (!this.level().isClientSide) {
+                  if (!this.level().isClientSide()) {
                      this.playSound((SoundEvent)WitherStormModSoundEvents.WITHERED_SYMBIONT_LAUNCH_MOB.get(), 16.0F, 1.0F);
                   }
                }
@@ -770,7 +770,7 @@ public class WitheredSymbiontEntity extends Monster implements BossThemeEntity {
    }
 
    public void castSpell() {
-      if (!this.level().isClientSide) {
+      if (!this.level().isClientSide()) {
          if (this.spellInstance != null) {
             if (this.getTarget() != null) {
                this.spellInstance.cast(this.getTarget());
@@ -1134,7 +1134,7 @@ public class WitheredSymbiontEntity extends Monster implements BossThemeEntity {
          @Override
          public void init(nonamecrackers2.witherstormmod.common.entity.WitheredSymbiontEntity entity) {
             super.init(entity);
-            if (!entity.level().isClientSide) {
+            if (!entity.level().isClientSide()) {
                entity.spellsUsed = 0;
                entity.clearBossFightGoals();
                entity.addBossFightGoal(1, entity.prepareSpellGoal);
@@ -1146,7 +1146,7 @@ public class WitheredSymbiontEntity extends Monster implements BossThemeEntity {
          @Override
          public void finish(nonamecrackers2.witherstormmod.common.entity.WitheredSymbiontEntity entity) {
             super.finish(entity);
-            if (!entity.level().isClientSide) {
+            if (!entity.level().isClientSide()) {
                entity.spellsUsed = 0;
                entity.setSpell((SpellType)WitherStormModSymbiontSpellTypes.EMPTY.get());
             }
@@ -1161,7 +1161,7 @@ public class WitheredSymbiontEntity extends Monster implements BossThemeEntity {
          @Override
          public void init(nonamecrackers2.witherstormmod.common.entity.WitheredSymbiontEntity entity) {
             super.init(entity);
-            if (!entity.level().isClientSide) {
+            if (!entity.level().isClientSide()) {
                entity.clearBossFightGoals();
                entity.addBossFightGoal(1, entity.summonMobsGoal);
             }
@@ -1171,7 +1171,7 @@ public class WitheredSymbiontEntity extends Monster implements BossThemeEntity {
          @Override
          public void init(nonamecrackers2.witherstormmod.common.entity.WitheredSymbiontEntity entity) {
             super.init(entity);
-            if (!entity.level().isClientSide) {
+            if (!entity.level().isClientSide()) {
                entity.clearBossFightGoals();
                entity.addBossFightGoal(1, entity.doNothingGoal);
                entity.playSound((SoundEvent)WitherStormModSoundEvents.WITHERED_SYMBIONT_POWER_DOWN.get(), 4.0F, 1.0F);

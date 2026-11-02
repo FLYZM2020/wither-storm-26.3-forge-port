@@ -2,7 +2,7 @@
 /*    */ 
 /*    */ import net.minecraft.resources.Identifier;
 /*    */ import net.minecraftforge.network.NetworkRegistry;
-/*    */ import net.minecraftforge.network.simple.SimpleChannel;
+/*    */ import net.minecraftforge.network.SimpleChannel;
 /*    */ import nonamecrackers2.crackerslib.common.packet.PacketUtil;
 /*    */ import nonamecrackers2.witherstormmod.common.entity.CommandBlockEntity;
 /*    */ import nonamecrackers2.witherstormmod.common.entity.TentacleEntity;

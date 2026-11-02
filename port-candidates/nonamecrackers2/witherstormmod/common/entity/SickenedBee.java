@@ -86,7 +86,7 @@
 /*  86 */     }  if (this.underWaterTicks > 200) {
 /*  87 */       hurt(damageSources().drown(), 1.0F);
 /*     */     }
-/*  89 */     if (!(level()).isClientSide) {
+/*  89 */     if (!(level()).isClientSide()) {
 /*  90 */       updatePersistentAnger((ServerLevel)level(), false);
 /*     */     }
 /*     */   }

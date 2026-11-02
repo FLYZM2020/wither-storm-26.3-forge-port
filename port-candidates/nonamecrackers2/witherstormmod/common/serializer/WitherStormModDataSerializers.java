@@ -63,7 +63,7 @@
 /*     */       
 /*     */       public List<CompoundTag> read(FriendlyByteBuf buffer) {
 /*  65 */         CompoundTag compound = buffer.readNbt();
-/*  66 */         return WitherStormModNBTUtil.readCompoundList(compound.getList("List", 10));
+/*  66 */         return WitherStormModNBTUtil.readCompoundList(compound.getListOrEmpty("List"));
 /*     */       }
 /*     */ 
 /*     */ 
