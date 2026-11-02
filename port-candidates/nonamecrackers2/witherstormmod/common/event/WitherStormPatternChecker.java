@@ -1,6 +1,6 @@
 /*    */ package nonamecrackers2.witherstormmod.common.event;
 /*    */ import java.util.function.Predicate;
-/*    */ import net.minecraft.advancements.CriteriaTriggers;
+/*    */ import net.minecraft.advancements.triggers.CriteriaTriggers;
 /*    */ import net.minecraft.core.BlockPos;
 /*    */ import net.minecraft.server.level.ServerPlayer;
 /*    */ import net.minecraft.sounds.SoundEvent;

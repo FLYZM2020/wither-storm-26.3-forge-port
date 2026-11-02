@@ -80,8 +80,8 @@
 /*    */   protected void transformCrystal(SuperSupportBeaconBlockEntity entity, float partialTicks, PoseStack stack) {
 /* 81 */     stack.translate(0.0D, 0.1D, 0.0D);
 /* 82 */     float speed = Mth.lerp(entity.getActivateAnimation(partialTicks), 0.2F, 1.0F);
-/* 83 */     stack.mulPose(Axis.XP.rotationDegrees(Mth.wrapDegrees(entity.getTicks() + partialTicks) * 4.0F * speed));
-/* 84 */     stack.mulPose(Axis.YN.rotationDegrees(Mth.wrapDegrees(entity.getTicks() + partialTicks) * 8.0F * speed));
+/* 83 */     stack.rotate(Axis.XP.rotationDegrees(Mth.wrapDegrees(entity.getTicks() + partialTicks) * 4.0F * speed));
+/* 84 */     stack.rotate(Axis.YN.rotationDegrees(Mth.wrapDegrees(entity.getTicks() + partialTicks) * 8.0F * speed));
 /*    */   }
 /*    */ }
 

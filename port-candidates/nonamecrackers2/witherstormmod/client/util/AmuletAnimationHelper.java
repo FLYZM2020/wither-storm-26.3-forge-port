@@ -43,7 +43,7 @@
 /*  43 */       VertexConsumer consumer = buffer.getBuffer(RenderType.entityTranslucent(GLARE));
 /*     */       
 /*  45 */       stack.translate(0.0D, 0.2D, 0.07D);
-/*  46 */       stack.mulPose(Axis.XP.rotationDegrees(Mth.lerp(partialTicks, holder.animO, holder.anim)));
+/*  46 */       stack.rotate(Axis.XP.rotationDegrees(Mth.lerp(partialTicks, holder.animO, holder.anim)));
 /*     */ 
 /*     */       
 /*  49 */       drawGlare(stack, hand, 1.0F, -0.53D, 0.089D, -0.53D, 0.0F, 0.24705882F, 1.0F, 0.0F, holder.tickCount + 360, partialTicks, consumer, Mth.lerp(partialTicks, holder.pulseIntensityO[0], holder.pulseIntensity[0]));
@@ -63,8 +63,8 @@
 /*     */   
 /*     */   public static void drawGlare(PoseStack stack, InteractionHand hand, float scale, double xOffset, double zOffset, double radius, float r, float g, float b, float degreeOffset, int ticks, float partialTicks, VertexConsumer consumer, float pulseIntensity) {
 /*  65 */     stack.pushPose();
-/*  66 */     stack.mulPose(Axis.XP.rotationDegrees(degreeOffset - 30.0F));
-/*  67 */     stack.mulPose(Axis.YN.rotationDegrees(90.0F));
+/*  66 */     stack.rotate(Axis.XP.rotationDegrees(degreeOffset - 30.0F));
+/*  67 */     stack.rotate(Axis.YN.rotationDegrees(90.0F));
 /*  68 */     Minecraft mc = Minecraft.getInstance();
 /*  69 */     HumanoidArm arm = (HumanoidArm)mc.options.mainHand().get();
 /*  70 */     boolean swap = (arm == HumanoidArm.RIGHT) ? ((hand == InteractionHand.MAIN_HAND)) : ((hand == InteractionHand.OFF_HAND));
@@ -91,7 +91,7 @@
 /*  91 */       float angle = (float)(Mth.atan2(pos.getX() - player.getX(), pos.getZ() - player.getZ()) * 57.29577951308232D);
 /*  92 */       float angleDiff = (Mth.wrapDegrees(-player.yHeadRot) - angle + 180.0F + 360.0F) % 360.0F - 180.0F;
 /*  93 */       float value = 1.0F - Mth.clamp(Mth.abs(angleDiff * 0.03F), 0.0F, 0.8F);
-/*  94 */       int dist = tag.getInt(id + "Dist");
+/*  94 */       int dist = tag.getIntOr(id + "Dist", 0);
 /*  95 */       if (dist >= 0) {
 /*  96 */         return value * Mth.clamp((distance - dist) * 0.05F, 0.0F, 1.0F);
 /*     */       }
@@ -115,7 +115,7 @@
 /*     */             
 /* 116 */             holder.tickCount++;
 /* 117 */             CompoundTag tag = item.getOrCreateTag();
-/* 118 */             int index = tag.getInt("SelectedIndex");
+/* 118 */             int index = tag.getIntOr("SelectedIndex", 0);
 /* 119 */             float target = getSwapDegrees(hand, index);
 /* 120 */             if (target != holder.targetO)
 /* 121 */               holder.steps = 16; 

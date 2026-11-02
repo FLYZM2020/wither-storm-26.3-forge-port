@@ -96,7 +96,7 @@
 /*     */   
 /*     */   @Inject(method = {"removeAllEffects"}, at = {@At("RETURN")})
 /*     */   public void witherstormmod$resetHasDeathProtection_removeAllEffects(CallbackInfoReturnable<Boolean> ci) {
-/*  99 */     if (!(level()).isClientSide) {
+/*  99 */     if (!(level()).isClientSide()) {
 /* 100 */       this.hasDeathProtection = false;
 /*     */     }
 /*     */   }

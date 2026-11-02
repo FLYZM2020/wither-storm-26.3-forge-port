@@ -38,9 +38,9 @@
 /*     */   
 /*     */   public void inventoryTick(ItemStack stack, Level level, Entity entity, int p_41407_, boolean p_41408_) {
 /*  40 */     CompoundTag tag = stack.getTag();
-/*  41 */     if (tag != null && tag.contains("IsCharged", 1) && !tag.getBoolean("IsCharged")) {
+/*  41 */     if (tag != null && tag.contains("IsCharged") && !tag.getBoolean("IsCharged")) {
 /*     */       
-/*  43 */       float power = tag.getFloat("Power");
+/*  43 */       float power = tag.getFloatOr("Power", 0.0F);
 /*  44 */       if (power > 0.2F) {
 /*     */         
 /*  46 */         power -= 0.2F;
@@ -60,7 +60,7 @@
 /*  60 */     if (!player.getCooldowns().isOnCooldown((Item)this)) {
 /*     */       
 /*  62 */       CompoundTag tag = stack.getTag();
-/*  63 */       if (tag == null || !tag.contains("Power", 10) || tag.getFloat("Power") < 1.0F) {
+/*  63 */       if (tag == null || !tag.contains("Power") || tag.getFloat("Power") < 1.0F) {
 /*     */         
 /*  65 */         player.startUsingItem(hand);
 /*  66 */         return InteractionResultHolder.success(stack);
@@ -111,7 +111,7 @@
 /* 111 */       chargingPower = Math.min(entity.getTicksUsingItem() / 40.0F, 1.0F);
 /*     */     } else {
 /* 113 */       chargingPower = 0.0F;
-/* 114 */     }  if (tag != null && tag.contains("Power", 5)) {
+/* 114 */     }  if (tag != null && tag.contains("Power")) {
 /* 115 */       return Math.max(tag.getFloat("Power"), chargingPower);
 /*     */     }
 /* 117 */     return chargingPower;

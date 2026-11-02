@@ -33,7 +33,7 @@
 /*     */ import net.minecraft.util.RandomSource;
 /*     */ import net.minecraft.world.entity.Entity;
 /*     */ import net.minecraft.world.entity.LivingEntity;
-/*     */ import net.minecraft.world.entity.animal.Sheep;
+/*     */ import net.minecraft.world.entity.animal.sheep.Sheep;
 /*     */ import net.minecraft.world.item.DyeColor;
 /*     */ import net.minecraft.world.level.Level;
 /*     */ import net.minecraft.world.phys.AABB;
@@ -423,11 +423,11 @@
 /* 423 */           stack.pushPose();
 /*     */           
 /* 425 */           stack.translate(0.0D, cluster.getVerticalOffset(), 0.0D);
-/* 426 */           stack.mulPose(Axis.YP.rotationDegrees(orbitalAngle));
+/* 426 */           stack.rotate(Axis.YP.rotationDegrees(orbitalAngle));
 /* 427 */           stack.translate(cluster.getRadiusFromCenter(), 0.0D, 0.0D);
 /*     */           
-/* 429 */           stack.mulPose(Axis.XP.rotationDegrees(cluster.getXRot(partialTicks)));
-/* 430 */           stack.mulPose(Axis.YP.rotationDegrees(cluster.getYRot(partialTicks)));
+/* 429 */           stack.rotate(Axis.XP.rotationDegrees(cluster.getXRot(partialTicks)));
+/* 430 */           stack.rotate(Axis.YP.rotationDegrees(cluster.getYRot(partialTicks)));
 /*     */           
 /* 432 */           boolean flag = ((cluster.isGlowing() && entity.getPhase() > 5) || cluster.isForcedGlowing());
 /*     */ 
@@ -565,8 +565,8 @@
 /*     */ 
 /*     */   
 /*     */   protected void setupRotations(T entity, PoseStack stack, float xBodyRot, float yBodyRot, float partialTicks) {
-/* 568 */     stack.mulPose(Axis.YP.rotationDegrees(180.0F - yBodyRot));
-/* 569 */     stack.mulPose(Axis.XP.rotationDegrees(xBodyRot));
+/* 568 */     stack.rotate(Axis.YP.rotationDegrees(180.0F - yBodyRot));
+/* 569 */     stack.rotate(Axis.XP.rotationDegrees(xBodyRot));
 /*     */   }
 /*     */ 
 /*     */ 
@@ -746,9 +746,9 @@
 /* 746 */       Vec3 dir = camera.getPosition().subtract(storm.getEyePosition(partialTicks)).normalize();
 /* 747 */       float pitch = (float)Math.asin(dir.y);
 /* 748 */       float yaw = (float)Math.atan2(dir.x, dir.z);
-/* 749 */       stack.mulPose(Axis.YN.rotationDegrees(180.0F));
-/* 750 */       stack.mulPose(Axis.YP.rotation(yaw));
-/* 751 */       stack.mulPose(Axis.XP.rotation(pitch));
+/* 749 */       stack.rotate(Axis.YN.rotationDegrees(180.0F));
+/* 750 */       stack.rotate(Axis.YP.rotation(yaw));
+/* 751 */       stack.rotate(Axis.XP.rotation(pitch));
 /* 752 */       float scale = storm.getShineScale();
 /* 753 */       float xStretch = scale * ((storm.getPhase() > 5) ? 1.5F : 1.0F);
 /* 754 */       stack.translate(-xStretch / 2.0F, storm.getUnmodifiedHeight() / 2.0F - scale / 2.0F, scale / 2.0F);

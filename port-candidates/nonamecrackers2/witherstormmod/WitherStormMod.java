@@ -2,7 +2,7 @@ package nonamecrackers2.witherstormmod;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoField;
-import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.registries.Registries;

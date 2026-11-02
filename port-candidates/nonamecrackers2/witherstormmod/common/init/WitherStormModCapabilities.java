@@ -49,7 +49,7 @@
 /*     */   
 /*     */   public static void attachWorldCapabilities(AttachCapabilitiesEvent<Level> event) {
 /*  51 */     Level world = (Level)event.getObject();
-/*  52 */     if (!world.isClientSide) {
+/*  52 */     if (!world.isClientSide()) {
 /*     */       
 /*  54 */       final LazyOptional<ChunkLoadingBlockEntities> chunkLoadingBlockEntities = LazyOptional.of(() -> new ChunkLoadingBlockEntities((ServerLevel)world));
 /*  55 */       event.addCapability(Identifier.fromNamespaceAndPath("witherstormmod", "chunk_loading_block_entities"), (ICapabilityProvider)new ICapabilitySerializable<CompoundTag>()

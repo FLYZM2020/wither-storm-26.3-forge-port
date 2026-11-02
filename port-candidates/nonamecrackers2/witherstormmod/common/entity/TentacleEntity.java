@@ -206,7 +206,7 @@ public class TentacleEntity extends Monster implements IMultipartHurtable<Tentac
    public void readAdditionalSaveData(CompoundTag compound) {
       super.readAdditionalSaveData(compound);
       if (compound.contains("Dormant")) {
-         this.setDormant(compound.getBoolean("Dormant"));
+         this.setDormant(compound.getBooleanOr("Dormant", false));
       }
 
       if (compound.contains("AnimOffset")) {
@@ -214,52 +214,52 @@ public class TentacleEntity extends Monster implements IMultipartHurtable<Tentac
       }
 
       if (compound.contains("XOffset")) {
-         float offset = compound.getFloat("XOffset");
+         float offset = compound.getFloatOr("XOffset", 0.0F);
          this.entityData.set(XOFFSET, offset);
          this.setXOffset(offset);
       }
 
       if (compound.contains("YOffset")) {
-         float offset = compound.getFloat("YOffset");
+         float offset = compound.getFloatOr("YOffset", 0.0F);
          this.entityData.set(YOFFSET, offset);
          this.setYOffset(offset);
       }
 
       if (compound.contains("XCurl")) {
-         float xCurl = compound.getFloat("XCurl");
+         float xCurl = compound.getFloatOr("XCurl", 0.0F);
          this.entityData.set(XCURL, xCurl);
          this.setXCurl(xCurl);
       }
 
       if (compound.contains("YCurl")) {
-         float yCurl = compound.getFloat("YCurl");
+         float yCurl = compound.getFloatOr("YCurl", 0.0F);
          this.entityData.set(YCURL, yCurl);
          this.setYCurl(yCurl);
       }
 
-      this.nextSwing = compound.getInt("NextSwing");
+      this.nextSwing = compound.getIntOr("NextSwing", 0);
       if (compound.contains("CanStrangle")) {
-         this.setCanStrangle(compound.getBoolean("CanStrangle"));
+         this.setCanStrangle(compound.getBooleanOr("CanStrangle", false));
       }
 
       if (compound.contains("CanSwing")) {
-         this.setCanSwing(compound.getBoolean("CanSwing"));
+         this.setCanSwing(compound.getBooleanOr("CanSwing", false));
       }
 
       if (compound.contains("XCurlAnim")) {
-         this.lerpCurlXTo(compound.getFloat("XCurlAnim"), 1);
+         this.lerpCurlXTo(compound.getFloatOr("XCurlAnim", 0.0F), 1);
       }
 
       if (compound.contains("YCurlAnim")) {
-         this.lerpCurlYTo(compound.getFloat("YCurlAnim"), 1);
+         this.lerpCurlYTo(compound.getFloatOr("YCurlAnim", 0.0F), 1);
       }
 
       if (compound.contains("XOffsetAnim")) {
-         this.lerpBaseXTo(compound.getFloat("XOffsetAnim"), 1);
+         this.lerpBaseXTo(compound.getFloatOr("XOffsetAnim", 0.0F), 1);
       }
 
       if (compound.contains("YOffsetAnim")) {
-         this.lerpBaseYTo(compound.getFloat("YOffsetAnim"), 1, true);
+         this.lerpBaseYTo(compound.getFloatOr("YOffsetAnim", 0.0F), 1, true);
       }
    }
 
@@ -341,7 +341,7 @@ public class TentacleEntity extends Monster implements IMultipartHurtable<Tentac
       this.tentacle.setPos(this.getX(), this.getY(), this.getZ());
       this.tentacle.setXRot(this.getXRot());
       this.tentacle.setYRot(this.getYRot());
-      if (!this.level().isClientSide && this.tickCount % 120 == 0) {
+      if (!this.level().isClientSide() && this.tickCount % 120 == 0) {
          WitherStormModPacketHandlers.MAIN
             .send(
                PacketDistributor.TRACKING_ENTITY.with(() -> this),
@@ -658,7 +658,7 @@ public class TentacleEntity extends Monster implements IMultipartHurtable<Tentac
    }
 
    public void doIndefiniteAwakeAnimation() {
-      if (!this.level().isClientSide) {
+      if (!this.level().isClientSide()) {
          this.doAwakeAnimation();
       }
 

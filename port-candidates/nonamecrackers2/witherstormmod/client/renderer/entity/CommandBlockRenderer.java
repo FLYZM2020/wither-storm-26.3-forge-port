@@ -59,7 +59,7 @@
 /*     */       
 /*  60 */       stack.pushPose();
 /*  61 */       stack.scale(-1.0F, -1.0F, 1.0F);
-/*  62 */       stack.mulPose(Axis.YN.rotationDegrees(-Mth.lerp(partialTicks, entity.yBodyRotO, entity.yBodyRot) + 90.0F));
+/*  62 */       stack.rotate(Axis.YN.rotationDegrees(-Mth.lerp(partialTicks, entity.yBodyRotO, entity.yBodyRot) + 90.0F));
 /*  63 */       VertexConsumer builder = buffer.getBuffer(this.model.renderType(getTextureLocation(entity)));
 /*  64 */       this.model.setupAnim((Entity)entity, entity.getModeAnim(partialTicks), partialTicks, 0.0F, entity.getYRot(), entity.getXRot());
 /*  65 */       this.model.renderToBuffer(stack, builder, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
@@ -150,12 +150,12 @@
 /*     */       
 /* 151 */       for (int i = 0; i < (f1 + f1 * f1) / 2.0F; i++) {
 /*     */         
-/* 153 */         stack.mulPose(Axis.XP.rotationDegrees(random.nextFloat() * 360.0F));
-/* 154 */         stack.mulPose(Axis.YP.rotationDegrees(random.nextFloat() * 360.0F));
-/* 155 */         stack.mulPose(Axis.ZP.rotationDegrees(random.nextFloat() * 360.0F));
-/* 156 */         stack.mulPose(Axis.XP.rotationDegrees(random.nextFloat() * 360.0F));
-/* 157 */         stack.mulPose(Axis.YP.rotationDegrees(random.nextFloat() * 360.0F));
-/* 158 */         stack.mulPose(Axis.ZP.rotationDegrees(random.nextFloat() * 360.0F + f1 * 90.0F));
+/* 153 */         stack.rotate(Axis.XP.rotationDegrees(random.nextFloat() * 360.0F));
+/* 154 */         stack.rotate(Axis.YP.rotationDegrees(random.nextFloat() * 360.0F));
+/* 155 */         stack.rotate(Axis.ZP.rotationDegrees(random.nextFloat() * 360.0F));
+/* 156 */         stack.rotate(Axis.XP.rotationDegrees(random.nextFloat() * 360.0F));
+/* 157 */         stack.rotate(Axis.YP.rotationDegrees(random.nextFloat() * 360.0F));
+/* 158 */         stack.rotate(Axis.ZP.rotationDegrees(random.nextFloat() * 360.0F + f1 * 90.0F));
 /* 159 */         float f3 = random.nextFloat() * 0.2F + f1;
 /* 160 */         float f4 = (random.nextFloat() + 0.2F) * 0.05F * f1;
 /* 161 */         Matrix4f matrix4f = stack.last().pose();

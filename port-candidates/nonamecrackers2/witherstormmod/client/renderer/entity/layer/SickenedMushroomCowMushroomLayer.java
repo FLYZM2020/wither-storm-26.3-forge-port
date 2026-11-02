@@ -3,7 +3,7 @@
 /*    */ import com.mojang.blaze3d.vertex.PoseStack;
 /*    */ import com.mojang.math.Axis;
 /*    */ import net.minecraft.client.Minecraft;
-/*    */ import net.minecraft.client.model.CowModel;
+/*    */ import net.minecraft.client.model.animal.cow.CowModel;
 /*    */ import net.minecraft.client.renderer.MultiBufferSource;
 /*    */ import net.minecraft.client.renderer.rendertype.RenderType;
 /*    */ import net.minecraft.client.renderer.block.BlockRenderDispatcher;
@@ -43,16 +43,16 @@
 /* 43 */         BakedModel bakedmodel = this.blockRenderer.getBlockModel(state);
 /* 44 */         stack.pushPose();
 /* 45 */         stack.translate(0.2F, -0.35F, 0.5F);
-/* 46 */         stack.mulPose(Axis.YP.rotationDegrees(-48.0F));
+/* 46 */         stack.rotate(Axis.YP.rotationDegrees(-48.0F));
 /* 47 */         stack.scale(-1.0F, -1.0F, 1.0F);
 /* 48 */         stack.translate(-0.5F, -0.5F, -0.5F);
 /* 49 */         renderMushroomBlock(stack, buffer, 15728880, flag, state, i, bakedmodel);
 /* 50 */         stack.popPose();
 /* 51 */         stack.pushPose();
 /* 52 */         stack.translate(0.2F, -0.35F, 0.5F);
-/* 53 */         stack.mulPose(Axis.YP.rotationDegrees(42.0F));
+/* 53 */         stack.rotate(Axis.YP.rotationDegrees(42.0F));
 /* 54 */         stack.translate(0.1F, 0.0F, -0.6F);
-/* 55 */         stack.mulPose(Axis.YP.rotationDegrees(-48.0F));
+/* 55 */         stack.rotate(Axis.YP.rotationDegrees(-48.0F));
 /* 56 */         stack.scale(-1.0F, -1.0F, 1.0F);
 /* 57 */         stack.translate(-0.5F, -0.5F, -0.5F);
 /* 58 */         renderMushroomBlock(stack, buffer, 15728880, flag, state, i, bakedmodel);
@@ -60,7 +60,7 @@
 /* 60 */         stack.pushPose();
 /* 61 */         ((CowModel)getParentModel()).getHead().translateAndRotate(stack);
 /* 62 */         stack.translate(0.0F, -0.7F, -0.2F);
-/* 63 */         stack.mulPose(Axis.YP.rotationDegrees(-78.0F));
+/* 63 */         stack.rotate(Axis.YP.rotationDegrees(-78.0F));
 /* 64 */         stack.scale(-1.0F, -1.0F, 1.0F);
 /* 65 */         stack.translate(-0.5F, -0.5F, -0.5F);
 /* 66 */         renderMushroomBlock(stack, buffer, 15728880, flag, state, i, bakedmodel);

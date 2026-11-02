@@ -39,9 +39,9 @@
 /*     */   public void read(CompoundTag tag) {
 /*  40 */     super.read(tag);
 /*  41 */     if (tag.contains("xRot"))
-/*  42 */       this.xRot = tag.getFloat("xRot"); 
+/*  42 */       this.xRot = tag.getFloatOr("xRot", 0.0F); 
 /*  43 */     if (tag.contains("yRot")) {
-/*  44 */       this.yRot = tag.getFloat("yRot");
+/*  44 */       this.yRot = tag.getFloatOr("yRot", 0.0F);
 /*     */     }
 /*     */   }
 /*     */ 

@@ -42,7 +42,7 @@
 /*    */ 
 /*    */   
 /*    */   public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-/* 45 */     if (level.isClientSide)
+/* 45 */     if (level.isClientSide())
 /*    */     {
 /* 47 */       return InteractionResult.SUCCESS;
 /*    */     }

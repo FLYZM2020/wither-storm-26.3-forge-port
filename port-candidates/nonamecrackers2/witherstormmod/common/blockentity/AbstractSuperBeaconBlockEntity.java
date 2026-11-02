@@ -131,7 +131,7 @@
 /*     */   public void tick() {
 /* 132 */     this.ticks++;
 /*     */     
-/* 134 */     if (!this.level.isClientSide) {
+/* 134 */     if (!this.level.isClientSide()) {
 /* 135 */       Objects.requireNonNull(this.level); WitherStormModPacketHandlers.MAIN.send(PacketDistributor.DIMENSION.with(this.level::dimension), new UpdateDistantSuperBeaconMessage(getBlockPos(), getBeamColor(), isActive(), getBeamHeight(), getThickness(), getOuterThickness()));
 /*     */     } 
 /* 137 */     tickActivationAnimation();
@@ -151,10 +151,10 @@
 /* 151 */       doPoweringUpAnimation();
 /*     */     } 
 /*     */     
-/* 154 */     if (!this.level.isClientSide && this.effect != null && isActive()) {
+/* 154 */     if (!this.level.isClientSide() && this.effect != null && isActive()) {
 /* 155 */       applyEffect((ServerLevel)this.level);
 /*     */     }
-/* 157 */     if (!this.level.isClientSide && this.effectSetCooldown > 0) {
+/* 157 */     if (!this.level.isClientSide() && this.effectSetCooldown > 0) {
 /* 158 */       this.effectSetCooldown--;
 /*     */     }
 /*     */   }
@@ -228,7 +228,7 @@
 /* 228 */     super.setRemoved();
 /* 229 */     if (isActive())
 /* 230 */       deactivate(); 
-/* 231 */     if (!this.level.isClientSide) {
+/* 231 */     if (!this.level.isClientSide()) {
 /* 232 */       Objects.requireNonNull(this.level); WitherStormModPacketHandlers.MAIN.send(PacketDistributor.DIMENSION.with(this.level::dimension), new RemoveDistantSuperBeaconMessage(getBlockPos()));
 /*     */     } 
 /*     */   }
@@ -261,16 +261,16 @@
 /*     */   
 /*     */   public void load(CompoundTag tag) {
 /* 263 */     super.load(tag);
-/* 264 */     this.activationTime = tag.getInt("ActivationTime");
-/* 265 */     this.beamHeight = tag.getInt("BeamHeight");
-/* 266 */     this.isActive = tag.getBoolean("IsActive");
-/* 267 */     if (tag.contains("CustomName", 8))
+/* 264 */     this.activationTime = tag.getIntOr("ActivationTime", 0);
+/* 265 */     this.beamHeight = tag.getIntOr("BeamHeight", 0);
+/* 266 */     this.isActive = tag.getBooleanOr("IsActive", false);
+/* 267 */     if (tag.contains("CustomName"))
 /* 268 */       this.name = (Component)Component.Serializer.fromJson(tag.getString("CustomName")); 
-/* 269 */     this.poweringUpAnimation = tag.getInt("PowerUpTime");
-/* 270 */     this.activateAnim = tag.getFloat("ActivationAnim");
+/* 269 */     this.poweringUpAnimation = tag.getIntOr("PowerUpTime", 0);
+/* 270 */     this.activateAnim = tag.getFloatOr("ActivationAnim", 0.0F);
 /* 271 */     this.effect = MobEffect.byId(tag.getInt("Primary"));
-/* 272 */     this.showWorkingArea = tag.getBoolean("ShowWorkingArea");
-/* 273 */     this.effectSetCooldown = tag.getInt("Cooldown");
+/* 272 */     this.showWorkingArea = tag.getBooleanOr("ShowWorkingArea", false);
+/* 273 */     this.effectSetCooldown = tag.getIntOr("Cooldown", 0);
 /* 274 */     this.lockKey = LockCode.fromTag(tag);
 /*     */   }
 /*     */ 

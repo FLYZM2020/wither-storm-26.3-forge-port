@@ -63,7 +63,7 @@
 /*  63 */       if (stack.is((Item)WitherStormModItems.EYE_OF_THE_STORM.get()) && stack.hasTag()) {
 /*     */         
 /*  65 */         CompoundTag tag = stack.getTag();
-/*  66 */         float ratio = tag.getFloat("EntityHealthRatio");
+/*  66 */         float ratio = tag.getFloatOr("EntityHealthRatio", 0.0F);
 /*  67 */         if (ratio > 0.0F) {
 /*  68 */           event.addModifier(Attributes.ATTACK_DAMAGE, new AttributeModifier(EyeOfTheStormItem.DAMAGE_MODIFIER_ID, "Health damage modifier", (-ratio * 5.0F), AttributeModifier.Operation.ADDITION));
 /*     */         }

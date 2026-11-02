@@ -225,7 +225,7 @@
 /*     */   
 /*     */   private boolean posLoaded(BlockPos pos) {
 /* 227 */     ChunkPos chunkPos = new ChunkPos(pos);
-/* 228 */     ChunkAccess chunk = this.owner.level().getChunk(chunkPos.x, chunkPos.z, ChunkStatus.FULL, false);
+/* 228 */     ChunkAccess chunk = this.owner.level().getChunk(chunkPos.x(), chunkPos.z(), ChunkStatus.FULL, false);
 /* 229 */     if (!(chunk instanceof LevelChunk))
 /* 230 */       return false; 
 /* 231 */     FullChunkStatus type = ((LevelChunk)chunk).getFullStatus();

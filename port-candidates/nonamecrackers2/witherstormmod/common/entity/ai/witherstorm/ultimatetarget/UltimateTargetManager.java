@@ -495,7 +495,7 @@ public class UltimateTargetManager {
       if (pos != null && this.center != null) {
          for (int x = -this.chunkBoundaryRadius; x <= this.chunkBoundaryRadius; x++) {
             for (int z = -this.chunkBoundaryRadius; z <= this.chunkBoundaryRadius; z++) {
-               ChunkPos chunk = new ChunkPos(this.center.x + x, this.center.z + z);
+               ChunkPos chunk = new ChunkPos(this.center.x() + x, this.center.z() + z);
                if (chunk.equals(new ChunkPos(pos))) {
                   return true;
                }
@@ -713,7 +713,7 @@ public class UltimateTargetManager {
       compound.putInt("TargetStationaryTicks", this.targetStationaryTicks());
       compound.putInt("TargetRunawayAttempts", this.getRunawayAttempts());
       if (this.getTargetOverride() != null) {
-         compound.putUUID("TargetOverride", this.getTargetOverride());
+         compound.store("TargetOverride", net.minecraft.core.UUIDUtil.CODEC, this.getTargetOverride());
       }
 
       if (this.getBlockTargetOverride() != null) {
@@ -742,7 +742,7 @@ public class UltimateTargetManager {
 
       compound.putInt("RandomStrollTimer", this.tillRandomStroll);
       if (this.ignoredTarget != null) {
-         compound.putUUID("IgnoredTarget", this.ignoredTarget);
+         compound.store("IgnoredTarget", net.minecraft.core.UUIDUtil.CODEC, this.ignoredTarget);
       }
 
       compound.putInt("IgnoringTargetFor", this.ignoringTargetFor);
@@ -757,51 +757,51 @@ public class UltimateTargetManager {
       }
 
       if (compound.contains("UltimateTargetChunkPos")) {
-         this.center = WitherStormModNBTUtil.readChunkPos(compound.getCompound("UltimateTargetChunkPos"));
+         this.center = WitherStormModNBTUtil.readChunkPos(compound.getCompoundOrEmpty("UltimateTargetChunkPos"));
       }
 
-      this.setTargetStationaryTicks(compound.getInt("TargetStationaryTicks"));
-      this.setRunawayAttempts(compound.getInt("TargetRunawayAttempts"));
+      this.setTargetStationaryTicks(compound.getIntOr("TargetStationaryTicks", 0));
+      this.setRunawayAttempts(compound.getIntOr("TargetRunawayAttempts", 0));
       if (compound.contains("TargetOverride")) {
-         this.setTargetOverride(compound.getUUID("TargetOverride"));
+         this.setTargetOverride(compound.read("TargetOverride", net.minecraft.core.UUIDUtil.CODEC).orElse(null));
       }
 
       if (compound.contains("BlockTargetOverride")) {
          this.setBlockTargetOverride(NbtUtils.readBlockPos(compound.getCompound("BlockTargetOverride")));
       }
 
-      CompoundTag ultimateTargetDistractions = compound.getCompound("UltimateTargetDistraction");
+      CompoundTag ultimateTargetDistractions = compound.getCompoundOrEmpty("UltimateTargetDistraction");
       if (ultimateTargetDistractions.contains("DistractedPos")) {
          this.setDistractedPos(NbtUtils.readBlockPos(ultimateTargetDistractions.getCompound("DistractedPos")));
       }
 
-      this.setCanBeDistracted(ultimateTargetDistractions.getBoolean("CanBeDistracted"));
-      this.markDistracted(ultimateTargetDistractions.getBoolean("IsDistracted"));
-      this.setTicksSinceDistracted(ultimateTargetDistractions.getInt("TicksSinceDistracted"));
-      this.setDistractedTickTime(ultimateTargetDistractions.getInt("CanBeDistractedFor"));
-      this.setDistractionWait(ultimateTargetDistractions.getInt("DistractionWait"));
-      if (ultimateTargetDistractions.contains("DistractionReason", 3)) {
-         int ordinal = ultimateTargetDistractions.getInt("DistractionReason");
+      this.setCanBeDistracted(ultimateTargetDistractions.getBooleanOr("CanBeDistracted", false));
+      this.markDistracted(ultimateTargetDistractions.getBooleanOr("IsDistracted", false));
+      this.setTicksSinceDistracted(ultimateTargetDistractions.getIntOr("TicksSinceDistracted", 0));
+      this.setDistractedTickTime(ultimateTargetDistractions.getIntOr("CanBeDistractedFor", 0));
+      this.setDistractionWait(ultimateTargetDistractions.getIntOr("DistractionWait", 0));
+      if (ultimateTargetDistractions.contains("DistractionReason")) {
+         int ordinal = ultimateTargetDistractions.getIntOr("DistractionReason", 0);
          if (ordinal >= 0
             && ordinal < nonamecrackers2.witherstormmod.common.entity.ai.witherstorm.ultimatetarget.UltimateTargetManager.DistractionReason.values().length) {
             this.distractionReason = nonamecrackers2.witherstormmod.common.entity.ai.witherstorm.ultimatetarget.UltimateTargetManager.DistractionReason.values()[ordinal];
          }
       }
 
-      this.tiredOfChasingTicks = ultimateTargetDistractions.getInt("TiredOfChasingTicks");
+      this.tiredOfChasingTicks = ultimateTargetDistractions.getIntOr("TiredOfChasingTicks", 0);
       if (compound.contains("RandomStrollPos")) {
          this.randomStrollPos = NbtUtils.readBlockPos(compound.getCompound("RandomStrollPos"));
       }
 
-      this.tillRandomStroll = compound.getInt("RandomStrollTimer");
-      if (compound.hasUUID("IgnoredTarget")) {
-         this.ignoredTarget = compound.getUUID("IgnoredTarget");
+      this.tillRandomStroll = compound.getIntOr("RandomStrollTimer", 0);
+      if (compound.contains("IgnoredTarget")) {
+         this.ignoredTarget = compound.read("IgnoredTarget", net.minecraft.core.UUIDUtil.CODEC).orElse(null);
       }
 
-      this.ignoringTargetFor = compound.getInt("IgnoringTargetFor");
-      this.cannotReachTargetFor = compound.getInt("CannotReachTargetFor");
-      this.timeTillIgnoreTarget = compound.getInt("TimeTillIgnoreTarget");
-      this.cannotSeeTargetFor = compound.getInt("CannotSeeTargetFor");
+      this.ignoringTargetFor = compound.getIntOr("IgnoringTargetFor", 0);
+      this.cannotReachTargetFor = compound.getIntOr("CannotReachTargetFor", 0);
+      this.timeTillIgnoreTarget = compound.getIntOr("TimeTillIgnoreTarget", 0);
+      this.cannotSeeTargetFor = compound.getIntOr("CannotSeeTargetFor", 0);
    }
 
    public enum DistractionReason {

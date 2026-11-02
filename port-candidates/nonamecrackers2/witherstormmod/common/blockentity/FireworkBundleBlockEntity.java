@@ -49,8 +49,8 @@
 /*     */   
 /*     */   public void load(CompoundTag tag) {
 /*  51 */     super.load(tag);
-/*  52 */     this.fuse = tag.getInt("Fuse");
-/*  53 */     this.launchDuration = tag.getInt("LaunchDuration");
+/*  52 */     this.fuse = tag.getIntOr("Fuse", 0);
+/*  53 */     this.launchDuration = tag.getIntOr("LaunchDuration", 0);
 /*     */   }
 /*     */ 
 /*     */   

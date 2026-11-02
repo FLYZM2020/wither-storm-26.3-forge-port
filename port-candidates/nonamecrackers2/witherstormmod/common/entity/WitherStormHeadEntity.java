@@ -153,24 +153,24 @@ public class WitherStormHeadEntity extends Monster implements WitherStormBase, R
 
    public void readAdditionalSaveData(CompoundTag compound) {
       this.entityData.set(IS_ROARING, compound.getBoolean("IsRoaring"));
-      this.roarTime = compound.getInt("RoarTime");
+      this.roarTime = compound.getIntOr("RoarTime", 0);
       super.readAdditionalSaveData(compound);
       if (compound.contains("IsActive")) {
          this.entityData.set(IS_ACTIVE, compound.getBoolean("IsActive"));
       }
 
       if (compound.contains("DistractedPos")) {
-         this.setDistractedPos(0, WitherStormModNBTUtil.readVector3d(compound.getCompound("DistractedPos")));
+         this.setDistractedPos(0, WitherStormModNBTUtil.readVector3d(compound.getCompoundOrEmpty("DistractedPos")));
       }
 
-      this.distractedTime = compound.getInt("DistractedTime");
+      this.distractedTime = compound.getIntOr("DistractedTime", 0);
       if (compound.contains("YBodyRot")) {
-         this.yBodyRot = compound.getFloat("YBodyRot");
+         this.yBodyRot = compound.getFloatOr("YBodyRot", 0.0F);
          this.yBodyRotO = this.yBodyRot;
       }
 
       if (compound.contains("IsHurt")) {
-         this.setHurt(compound.getBoolean("IsHurt"));
+         this.setHurt(compound.getBooleanOr("IsHurt", false));
       }
    }
 
@@ -184,7 +184,7 @@ public class WitherStormHeadEntity extends Monster implements WitherStormBase, R
       }
 
       if (!this.isDeadOrPlayingDead()) {
-         if (!this.level().isClientSide) {
+         if (!this.level().isClientSide()) {
             if (this.nextRoar > 0) {
                this.nextRoar--;
                if (this.nextRoar == 0) {
@@ -276,7 +276,7 @@ public class WitherStormHeadEntity extends Monster implements WitherStormBase, R
          }
       }
 
-      if (this.level().isClientSide && (Boolean)WitherStormModConfig.CLIENT.tractorBeamParticles.get() && this.tractorBeamActive(0)) {
+      if (this.level().isClientSide() && (Boolean)WitherStormModConfig.CLIENT.tractorBeamParticles.get() && this.tractorBeamActive(0)) {
          for (int amount = 0; amount < 5; amount++) {
             float x = this.getXRot();
             float y = this.yHeadRot;
@@ -320,7 +320,7 @@ public class WitherStormHeadEntity extends Monster implements WitherStormBase, R
 
    protected void tickDeath() {
       this.specialDeathTime++;
-      if (!this.level().isClientSide) {
+      if (!this.level().isClientSide()) {
          this.setXRot(this.getXRot() - 1.0F);
          if (this.getXRot() < -50.0F) {
             this.setXRot(-50.0F);

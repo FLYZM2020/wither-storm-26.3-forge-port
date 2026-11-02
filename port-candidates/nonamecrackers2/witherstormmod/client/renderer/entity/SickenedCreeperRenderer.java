@@ -1,7 +1,7 @@
 /*    */ package nonamecrackers2.witherstormmod.client.renderer.entity;
 /*    */ 
 /*    */ import com.mojang.blaze3d.vertex.PoseStack;
-/*    */ import net.minecraft.client.model.CreeperModel;
+/*    */ import net.minecraft.client.model.monster.creeper.CreeperModel;
 /*    */ import net.minecraft.client.model.EntityModel;
 /*    */ import net.minecraft.client.model.geom.EntityModelSet;
 /*    */ import net.minecraft.client.renderer.rendertype.RenderType;

@@ -100,12 +100,12 @@
 /*     */       
 /* 101 */       for (int i = 0; i < (f1 + f1 * f1) / 2.0F * 60.0F; i++) {
 /*     */         
-/* 103 */         stack.mulPose(Axis.XP.rotationDegrees(random.nextFloat() * 360.0F));
-/* 104 */         stack.mulPose(Axis.YP.rotationDegrees(random.nextFloat() * 360.0F));
-/* 105 */         stack.mulPose(Axis.ZP.rotationDegrees(random.nextFloat() * 360.0F));
-/* 106 */         stack.mulPose(Axis.XP.rotationDegrees(random.nextFloat() * 360.0F));
-/* 107 */         stack.mulPose(Axis.YP.rotationDegrees(random.nextFloat() * 360.0F));
-/* 108 */         stack.mulPose(Axis.ZP.rotationDegrees(random.nextFloat() * 360.0F + f1 * 90.0F));
+/* 103 */         stack.rotate(Axis.XP.rotationDegrees(random.nextFloat() * 360.0F));
+/* 104 */         stack.rotate(Axis.YP.rotationDegrees(random.nextFloat() * 360.0F));
+/* 105 */         stack.rotate(Axis.ZP.rotationDegrees(random.nextFloat() * 360.0F));
+/* 106 */         stack.rotate(Axis.XP.rotationDegrees(random.nextFloat() * 360.0F));
+/* 107 */         stack.rotate(Axis.YP.rotationDegrees(random.nextFloat() * 360.0F));
+/* 108 */         stack.rotate(Axis.ZP.rotationDegrees(random.nextFloat() * 360.0F + f1 * 90.0F));
 /* 109 */         float f3 = random.nextFloat() * entity.getUnmodifiedSize() / 1.5F * 2.5F + 5.0F + f2 * 10.0F;
 /* 110 */         float f4 = random.nextFloat() * 10.0F + 1.0F + f2 * 2.0F;
 /* 111 */         Matrix4f matrix4f = stack.last().pose();

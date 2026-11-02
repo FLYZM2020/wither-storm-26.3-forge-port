@@ -157,18 +157,18 @@
 /*     */   
 /*     */   public void renderTractorBeam(T entity, PoseStack stack, MultiBufferSource buffer, int packedLightIn, float r, float g, float b, float a, float partialTicks, double tractorBeamCutoff, float endFadeAlpha) {
 /* 159 */     stack.pushPose();
-/* 160 */     stack.mulPose(Axis.YP.rotationDegrees(-Mth.rotLerp(partialTicks, ((LivingEntity)entity).yBodyRotO, ((LivingEntity)entity).yBodyRot)));
+/* 160 */     stack.rotate(Axis.YP.rotationDegrees(-Mth.rotLerp(partialTicks, ((LivingEntity)entity).yBodyRotO, ((LivingEntity)entity).yBodyRot)));
 /* 161 */     Pose pose = entity.getPose();
 /* 162 */     if (pose != Pose.SLEEPING) {
 /*     */       
 /* 164 */       float xBodyRot = Mth.rotLerp(partialTicks, ((WitherStormBase)entity).getXBodyRotO(), ((WitherStormBase)entity).getXBodyRot());
-/* 165 */       stack.mulPose(Axis.XP.rotationDegrees(-xBodyRot));
+/* 165 */       stack.rotate(Axis.XP.rotationDegrees(-xBodyRot));
 /*     */     } 
 /* 167 */     stack.translate((this.head.x + this.tractorBeamXOffset) / 8.0F * this.scale, -((this.head.y - this.tractorBeamYOffset) / 8.0F) * this.scale, -((this.head.z - this.tractorBeamZOffset) / 8.0F) * this.scale);
 /* 168 */     stack.scale(this.scale, this.scale, this.scale);
-/* 169 */     stack.mulPose(Axis.ZP.rotation(-this.head.zRot));
-/* 170 */     stack.mulPose(Axis.YP.rotation(-this.head.yRot - (float)Math.toRadians(90.0D)));
-/* 171 */     stack.mulPose(Axis.ZP.rotation(-this.head.xRot));
+/* 169 */     stack.rotate(Axis.ZP.rotation(-this.head.zRot));
+/* 170 */     stack.rotate(Axis.YP.rotation(-this.head.yRot - (float)Math.toRadians(90.0D)));
+/* 171 */     stack.rotate(Axis.ZP.rotation(-this.head.xRot));
 /* 172 */     stack.translate(this.pivotOffsetX / 8.0F * this.scale, this.pivotOffsetY / 8.0F * this.scale, this.pivotOffsetZ / 8.0F * this.scale);
 /* 173 */     PoseStack.Pose entry = stack.last();
 /* 174 */     Matrix4f matrix4f = entry.pose();

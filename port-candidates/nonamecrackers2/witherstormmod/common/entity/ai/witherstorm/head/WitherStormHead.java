@@ -118,19 +118,19 @@
 /*     */   
 /*     */   public void read(CompoundTag tag) {
 /* 120 */     if (tag.contains("IsRoaring"))
-/* 121 */       setRoar(tag.getBoolean("IsRoaring")); 
+/* 121 */       setRoar(tag.getBooleanOr("IsRoaring", false)); 
 /* 122 */     if (tag.contains("RoaringTime"))
-/* 123 */       setRoarTicks(tag.getInt("RoaringTime")); 
+/* 123 */       setRoarTicks(tag.getIntOr("RoaringTime", 0)); 
 /* 124 */     if (tag.contains("DistractedPos"))
-/* 125 */       setDistractedPos(WitherStormModNBTUtil.readVector3d(tag.getCompound("DistractedPos"))); 
+/* 125 */       setDistractedPos(WitherStormModNBTUtil.readVector3d(tag.getCompoundOrEmpty("DistractedPos"))); 
 /* 126 */     if (tag.contains("DistractedTime"))
-/* 127 */       this.distractedTime = tag.getInt("DistractedTime"); 
+/* 127 */       this.distractedTime = tag.getIntOr("DistractedTime", 0); 
 /* 128 */     if (tag.contains("AttackCooldown"))
-/* 129 */       setHeadInjureAttemptCooldown(tag.getInt("AttackCooldown")); 
+/* 129 */       setHeadInjureAttemptCooldown(tag.getIntOr("AttackCooldown", 0)); 
 /* 130 */     if (tag.contains("InjuryTime"))
-/* 131 */       setHeadInjuryTicks(tag.getInt("InjuryTime")); 
+/* 131 */       setHeadInjuryTicks(tag.getIntOr("InjuryTime", 0)); 
 /* 132 */     if (tag.contains("Hits")) {
-/* 133 */       setHeadHitCount(tag.getInt("Hits"));
+/* 133 */       setHeadHitCount(tag.getIntOr("Hits", 0));
 /*     */     }
 /*     */   }
 /*     */ 

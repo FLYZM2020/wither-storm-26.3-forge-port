@@ -40,7 +40,7 @@ public class PhasometerItem extends SpyglassItem {
    }
 
    public void onUseTick(Level level, LivingEntity entity, ItemStack item, int count) {
-      if (!level.isClientSide) {
+      if (!level.isClientSide()) {
          Vec3 pos = entity.getEyePosition();
          Vec3 view = entity.getViewVector(1.0F);
          Vec3 end = pos.add(view.scale(10000.0));
@@ -107,7 +107,7 @@ public class PhasometerItem extends SpyglassItem {
    public void appendHoverText(ItemStack stack, Level level, List<Component> text, TooltipFlag flag) {
       CompoundTag tag = stack.getOrCreateTag();
       text.add(Component.translatable("description.phasometer.use").withStyle(ChatFormatting.DARK_GRAY));
-      if (tag.getBoolean("IsUpgraded")) {
+      if (tag.getBooleanOr("IsUpgraded", false)) {
          text.add(Component.translatable("description.phasometer.use.upgraded").withStyle(ChatFormatting.GOLD));
       }
    }
@@ -157,7 +157,7 @@ public class PhasometerItem extends SpyglassItem {
 
          @Override
          public boolean hasData(CompoundTag tag) {
-            return tag.getBoolean(this.tagName);
+            return tag.getBooleanOr(this.tagName, false);
          }
       },
       BOWELS_ACCESSIBLE("BowelsAccessible", false) {
@@ -173,7 +173,7 @@ public class PhasometerItem extends SpyglassItem {
 
          @Override
          public boolean hasData(CompoundTag tag) {
-            return tag.getBoolean(this.tagName);
+            return tag.getBooleanOr(this.tagName, false);
          }
       },
       DISTRACTED("IsDistracted", false) {
@@ -194,7 +194,7 @@ public class PhasometerItem extends SpyglassItem {
 
          @Override
          public boolean hasData(CompoundTag tag) {
-            return tag.getBoolean(this.tagName);
+            return tag.getBooleanOr(this.tagName, false);
          }
       },
       CHASING("IsChasing", false) {
@@ -215,7 +215,7 @@ public class PhasometerItem extends SpyglassItem {
 
          @Override
          public boolean hasData(CompoundTag tag) {
-            return tag.getBoolean(this.tagName);
+            return tag.getBooleanOr(this.tagName, false);
          }
       },
       ULTIMATE_TARGET("UltimateTarget", true) {

@@ -49,13 +49,13 @@
 /*     */ 
 /*     */   
 /*     */   public void read(CompoundTag compound) {
-/*  52 */     this.baseXRot = compound.getFloat("BaseXRot");
+/*  52 */     this.baseXRot = compound.getFloatOr("BaseXRot", 0.0F);
 /*  53 */     this.baseXRotO = this.baseXRot;
-/*  54 */     this.baseYRot = compound.getFloat("BaseYRot");
+/*  54 */     this.baseYRot = compound.getFloatOr("BaseYRot", 0.0F);
 /*  55 */     this.baseYRotO = this.baseYRot;
-/*  56 */     this.xRot = compound.getFloat("XRot");
+/*  56 */     this.xRot = compound.getFloatOr("XRot", 0.0F);
 /*  57 */     this.xRotO = this.xRot;
-/*  58 */     this.yRot = compound.getFloat("YRot");
+/*  58 */     this.yRot = compound.getFloatOr("YRot", 0.0F);
 /*  59 */     this.yRotO = this.yRot;
 /*     */   }
 /*     */ 

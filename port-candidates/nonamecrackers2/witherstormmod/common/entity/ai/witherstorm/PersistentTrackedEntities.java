@@ -111,7 +111,7 @@
 /* 111 */     if (!this.hasLoadedSaved) {
 /*     */       
 /* 113 */       this.savedTrackedEntities.clear();
-/* 114 */       ListTag list = tag.getList("Entities", 11);
+/* 114 */       ListTag list = tag.getListOrEmpty("Entities");
 /* 115 */       for (int i = 0; i < list.size(); i++) {
 /*     */         
 /* 117 */         UUID id = NbtUtils.loadUUID(list.get(i));

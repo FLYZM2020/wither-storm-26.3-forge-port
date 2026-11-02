@@ -1,6 +1,6 @@
 /*    */ package nonamecrackers2.witherstormmod.client.init;
 /*    */ 
-/*    */ import net.minecraft.client.RecipeBookCategories;
+/*    */ import net.minecraft.world.item.crafting.RecipeBookCategories;
 /*    */ import net.minecraft.world.item.crafting.Recipe;
 /*    */ import net.minecraft.world.item.crafting.RecipeType;
 /*    */ import net.minecraftforge.client.event.RegisterRecipeBookCategoriesEvent;

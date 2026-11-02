@@ -16,7 +16,7 @@
 /*    */   @SubscribeEvent
 /*    */   public static void onLivingDeath(LivingDeathEvent event) {
 /* 18 */     Level world = event.getEntity().level();
-/* 19 */     if (!world.isClientSide)
+/* 19 */     if (!world.isClientSide())
 /*    */     {
 /* 21 */       if (((Boolean)WitherStormModConfig.SERVER.sickenedMobConversions.get()).booleanValue()) {
 /*    */         

@@ -1,6 +1,6 @@
 /*    */ package nonamecrackers2.witherstormmod.common.init;
 /*    */ 
-/*    */ import net.minecraft.world.entity.decoration.PaintingVariant;
+/*    */ import net.minecraft.world.entity.decoration.painting.PaintingVariant;
 /*    */ import net.minecraftforge.eventbus.api.IEventBus;
 /*    */ import net.minecraftforge.registries.DeferredRegister;
 /*    */ import net.minecraftforge.registries.ForgeRegistries;

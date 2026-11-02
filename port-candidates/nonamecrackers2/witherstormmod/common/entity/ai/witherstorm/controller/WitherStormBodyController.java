@@ -36,7 +36,7 @@ public class WitherStormBodyController extends BodyRotationControl {
    }
 
    public void clientTick() {
-      if (!this.storm.level().isClientSide) {
+      if (!this.storm.level().isClientSide()) {
          if (!this.storm.isNoAi() && !this.storm.isDeadOrPlayingDead()) {
             boolean ultimateTargetInUseBySegment = this.storm.getUltimateTarget() == null
                ? false

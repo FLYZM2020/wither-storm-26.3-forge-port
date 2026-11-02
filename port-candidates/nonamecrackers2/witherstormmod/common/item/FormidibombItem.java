@@ -32,7 +32,7 @@
 /*     */ 
 /*     */   
 /*     */   public void inventoryTick(ItemStack stack, Level world, Entity entity, int p_77663_4_, boolean p_77663_5_) {
-/*  35 */     if (!world.isClientSide) {
+/*  35 */     if (!world.isClientSide()) {
 /*  36 */       tickFuse(stack, world, entity, entity.blockPosition());
 /*     */     }
 /*     */   }
@@ -45,7 +45,7 @@
 /*     */ 
 /*     */   
 /*     */   public void tickFuse(ItemStack stack, Level world, @Nullable Entity entity, BlockPos pos) {
-/*  48 */     if (!world.isClientSide) {
+/*  48 */     if (!world.isClientSide()) {
 /*     */       
 /*  50 */       if (((Boolean)WitherStormModConfig.SERVER.formidibombFuseEnabled.get()).booleanValue() && getStartFuse(stack) > 0) {
 /*  51 */         countFuse(stack, -1);
@@ -54,7 +54,7 @@
 /*     */         
 /*  55 */         if (((Boolean)WitherStormModConfig.SERVER.shouldDropFromInventory.get()).booleanValue())
 /*     */         {
-/*  57 */           if (getFuse(stack) <= getStartFuse(stack) / ((Integer)WitherStormModConfig.SERVER.dropInterval.get()).intValue() && !world.isClientSide) {
+/*  57 */           if (getFuse(stack) <= getStartFuse(stack) / ((Integer)WitherStormModConfig.SERVER.dropInterval.get()).intValue() && !world.isClientSide()) {
 /*     */             
 /*  59 */             LivingEntity living = null;
 /*  60 */             if (entity instanceof LivingEntity)
@@ -73,8 +73,8 @@
 /*  73 */         if (getFuse(stack) <= 0) {
 /*     */           
 /*  75 */           stack.shrink(1);
-/*  76 */           if (!world.isClientSide) {
-/*  77 */             FormidibombEntity.explode(world, entity, 48 + world.random.nextInt(9), 3, pos.getX(), pos.getY(), pos.getZ());
+/*  76 */           if (!world.isClientSide()) {
+/*  77 */             FormidibombEntity.explode(world, entity, 48 + world.getRandom().nextInt(9), 3, pos.getX(), pos.getY(), pos.getZ());
 /*     */           }
 /*     */         } 
 /*     */       } 

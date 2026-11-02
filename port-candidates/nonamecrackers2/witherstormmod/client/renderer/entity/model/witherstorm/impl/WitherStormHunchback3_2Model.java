@@ -95,14 +95,14 @@
 /*     */ 
 /*     */   
 /*     */   public void scaleMass(PoseStack stack) {
-/*  98 */     stack.mulPose(Axis.XP.rotationDegrees(20.0F));
+/*  98 */     stack.rotate(Axis.XP.rotationDegrees(20.0F));
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public void scaleTentacles(PoseStack stack, TentacleModel model) {
 /* 104 */     super.scaleTentacles(stack, model);
-/* 105 */     stack.mulPose(Axis.XP.rotationDegrees(20.0F));
+/* 105 */     stack.rotate(Axis.XP.rotationDegrees(20.0F));
 /*     */   }
 /*     */ }
 

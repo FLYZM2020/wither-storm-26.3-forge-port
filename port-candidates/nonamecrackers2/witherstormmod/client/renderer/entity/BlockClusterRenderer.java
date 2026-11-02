@@ -19,7 +19,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -45,8 +45,8 @@ public class BlockClusterRenderer extends EntityRenderer<BlockClusterEntity> {
          stack.translate(0.0, 0.5, 0.0);
          float x = Mth.lerp(partialTicks, entity.shakeO.x, entity.shake.x);
          float z = Mth.lerp(partialTicks, entity.shakeO.y, entity.shake.y);
-         stack.mulPose(Axis.YP.rotationDegrees(-entity.getClusterYRot(partialTicks) - x * 50.0F));
-         stack.mulPose(Axis.XP.rotationDegrees(entity.getClusterXRot(partialTicks) - z * 30.0F));
+         stack.rotate(Axis.YP.rotationDegrees(-entity.getClusterYRot(partialTicks) - x * 50.0F));
+         stack.rotate(Axis.XP.rotationDegrees(entity.getClusterXRot(partialTicks) - z * 30.0F));
          stack.translate(0.0, -0.5, 0.0);
          double xOffset = -0.5 + (Math.round(entity.getBoundingBox().getXsize()) % 2L == 0L ? -0.5 : 0.0);
          double yOffset = -0.5 + (Math.round(entity.getBoundingBox().getYsize()) % 2L == 0L ? -0.5 : 0.0);
@@ -114,7 +114,7 @@ public class BlockClusterRenderer extends EntityRenderer<BlockClusterEntity> {
                stack.translate(relativePos.getX(), relativePos.getY() + entity.getBoundingBox().getYsize() / 2.0, relativePos.getZ());
                CompoundTag data = entity.getTileDataFromOffsetPos(relativePos);
                if (data != null) {
-                  String id = data.getString("id");
+                  String id = data.getStringOr("id", "");
                   BlockEntity tile = ((BlockEntityType)ForgeRegistries.BLOCK_ENTITY_TYPES.getValue(Identifier.parse(id))).create(pos, state);
                   BlockEntityRenderer<BlockEntity> tileRenderer = minecraft.getBlockEntityRenderDispatcher().getRenderer(tile);
                   tile.setLevel(world);

@@ -42,7 +42,7 @@
 /* 42 */       } else if (animProg < 0.08F) {
 /* 43 */         vertScale *= animProg / 0.08F;
 /* 44 */       }  stack.pushPose();
-/* 45 */       stack.mulPose(Axis.YP.rotationDegrees(90.0F - fang.getYRot()));
+/* 45 */       stack.rotate(Axis.YP.rotationDegrees(90.0F - fang.getYRot()));
 /* 46 */       stack.scale(-horzScale, -vertScale, horzScale);
 /* 47 */       this.model.setupAnim(fang, animProg, 0.0F, 0.0F, fang.getYRot(), fang.getXRot());
 /* 48 */       VertexConsumer consumer = buffers.getBuffer(this.model.renderType(getTextureLocation(fang)));

@@ -40,9 +40,9 @@
 /* 40 */       stack.scale(f1, f1, f1);
 /*    */     } 
 /*    */     
-/* 43 */     stack.mulPose(Axis.YP.rotationDegrees(-90.0F));
+/* 43 */     stack.rotate(Axis.YP.rotationDegrees(-90.0F));
 /* 44 */     stack.translate(-0.5D, -0.5D, 0.5D);
-/* 45 */     stack.mulPose(Axis.YP.rotationDegrees(90.0F));
+/* 45 */     stack.rotate(Axis.YP.rotationDegrees(90.0F));
 /* 46 */     renderWhiteSolidBlock(((Block)WitherStormModBlocks.SUPER_TNT.get()).defaultBlockState(), stack, buffer, p_225623_6_, (entity.getFuse() / 5 % 2 == 0));
 /* 47 */     stack.popPose();
 /* 48 */     super.render((Entity)entity, p_225623_2_, partialTicks, stack, buffer, p_225623_6_);

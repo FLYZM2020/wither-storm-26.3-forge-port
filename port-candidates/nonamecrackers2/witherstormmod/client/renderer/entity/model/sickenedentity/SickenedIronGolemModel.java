@@ -1,7 +1,7 @@
 /*    */ package nonamecrackers2.witherstormmod.client.renderer.entity.model.sickenedentity;
 /*    */ 
 /*    */ import net.minecraft.client.model.HierarchicalModel;
-/*    */ import net.minecraft.client.model.IronGolemModel;
+/*    */ import net.minecraft.client.model.animal.golem.IronGolemModel;
 /*    */ import net.minecraft.client.model.geom.ModelPart;
 /*    */ import net.minecraft.client.model.geom.builders.LayerDefinition;
 /*    */ import net.minecraft.util.Mth;

@@ -63,7 +63,7 @@
 /*     */ 
 /*     */   
 /*     */   public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-/*  66 */     if (level.isClientSide)
+/*  66 */     if (level.isClientSide())
 /*     */     {
 /*  68 */       return InteractionResult.SUCCESS;
 /*     */     }
@@ -109,7 +109,7 @@
 /*     */ 
 /*     */   
 /*     */   public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-/* 112 */     return level.isClientSide ? null : createTickerHelper(type, (BlockEntityType)WitherStormModBlockEntityTypes.WITHERED_PHLEGM.get(), WitheredPhlegmBlockEntity::serverTick);
+/* 112 */     return level.isClientSide() ? null : createTickerHelper(type, (BlockEntityType)WitherStormModBlockEntityTypes.WITHERED_PHLEGM.get(), WitheredPhlegmBlockEntity::serverTick);
 /*     */   }
 /*     */ 
 /*     */ 

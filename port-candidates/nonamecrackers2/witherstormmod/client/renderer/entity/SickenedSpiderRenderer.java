@@ -1,6 +1,6 @@
 /*    */ package nonamecrackers2.witherstormmod.client.renderer.entity;
 /*    */ import com.mojang.blaze3d.vertex.PoseStack;
-/*    */ import net.minecraft.client.model.SpiderModel;
+/*    */ import net.minecraft.client.model.monster.spider.SpiderModel;
 /*    */ import net.minecraft.client.renderer.rendertype.RenderType;
 /*    */ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 /*    */ import net.minecraft.client.renderer.entity.RenderLayerParent;

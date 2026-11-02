@@ -3,7 +3,7 @@
 /*    */ import com.mojang.blaze3d.vertex.PoseStack;
 /*    */ import com.mojang.math.Axis;
 /*    */ import net.minecraft.client.Minecraft;
-/*    */ import net.minecraft.client.model.SnowGolemModel;
+/*    */ import net.minecraft.client.model.animal.golem.SnowGolemModel;
 /*    */ import net.minecraft.client.renderer.MultiBufferSource;
 /*    */ import net.minecraft.client.renderer.rendertype.RenderType;
 /*    */ import net.minecraft.client.renderer.block.BlockRenderDispatcher;
@@ -44,7 +44,7 @@
 /* 44 */         poseStack.pushPose();
 /* 45 */         ((SnowGolemModel)getParentModel()).getHead().translateAndRotate(poseStack);
 /* 46 */         poseStack.translate(0.0F, -0.34375F, 0.0F);
-/* 47 */         poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
+/* 47 */         poseStack.rotate(Axis.YP.rotationDegrees(180.0F));
 /* 48 */         poseStack.scale(0.625F, -0.625F, -0.625F);
 /* 49 */         ItemStack itemstack = new ItemStack((ItemLike)WitherStormModBlocks.TAINTED_CARVED_PUMPKIN.get());
 /* 50 */         if (flag) {

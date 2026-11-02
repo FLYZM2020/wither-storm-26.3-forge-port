@@ -35,7 +35,7 @@
 /*    */ 
 /*    */   
 /*    */   private static void checkForHeadHit(Level level, Player player, InteractionHand hand) {
-/* 38 */     if (level.isClientSide) {
+/* 38 */     if (level.isClientSide()) {
 /*    */       
 /* 40 */       ClientLevel clientWorld = (ClientLevel)level;
 /* 41 */       LocalPlayer localPlayer = (LocalPlayer)player;

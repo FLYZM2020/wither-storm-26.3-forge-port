@@ -85,7 +85,7 @@
 /*  85 */         stack.shrink(1);
 /*     */       }  } 
 /*  87 */     player.awardStat(Stats.ITEM_USED.get(item));
-/*  88 */     return InteractionResult.sidedSuccess(level.isClientSide);
+/*  88 */     return InteractionResult.sidedSuccess(level.isClientSide());
 /*     */   }
 /*     */ 
 /*     */ 
@@ -123,7 +123,7 @@
 /*     */ 
 /*     */   
 /*     */   public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-/* 126 */     return level.isClientSide ? null : createTickerHelper(type, (BlockEntityType)WitherStormModBlockEntityTypes.FIREWORK_BUNDLE.get(), FireworkBundleBlockEntity::serverTick);
+/* 126 */     return level.isClientSide() ? null : createTickerHelper(type, (BlockEntityType)WitherStormModBlockEntityTypes.FIREWORK_BUNDLE.get(), FireworkBundleBlockEntity::serverTick);
 /*     */   }
 /*     */ }
 

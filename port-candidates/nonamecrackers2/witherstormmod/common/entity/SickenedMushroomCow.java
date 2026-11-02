@@ -53,7 +53,7 @@
 /* 53 */       ItemStack filled = ItemUtils.createFilledResult(stack, player, stew, false);
 /* 54 */       player.setItemInHand(hand, filled);
 /* 55 */       playSound(SoundEvents.MOOSHROOM_MILK_SUSPICIOUSLY, 1.0F, 1.0F);
-/* 56 */       return InteractionResult.sidedSuccess((level()).isClientSide);
+/* 56 */       return InteractionResult.sidedSuccess((level()).isClientSide());
 /*    */     } 
 /*    */ 
 /*    */     
@@ -65,7 +65,7 @@
 /*    */   @NotNull
 /*    */   public List<ItemStack> onSheared(@Nullable Player player, @NotNull ItemStack item, Level level, BlockPos pos, int fortune) {
 /* 67 */     level().playSound((Player)null, (Entity)this, SoundEvents.MOOSHROOM_SHEAR, (player == null) ? SoundSource.BLOCKS : SoundSource.PLAYERS, 1.0F, 1.0F);
-/* 68 */     if (!(level()).isClientSide) {
+/* 68 */     if (!(level()).isClientSide()) {
 /*    */       
 /* 70 */       SickenedCow cow = (SickenedCow)((EntityType)WitherStormModEntityTypes.SICKENED_COW.get()).create(level());
 /* 71 */       if (cow != null) {

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nullable;
-import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -42,7 +42,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.Level.ExplosionInteraction;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -115,7 +115,7 @@ public class SuperBeaconBlockEntity extends AbstractSuperBeaconBlockEntity imple
       }
 
       this.findNearbySupportBeacons();
-      if (!this.level.isClientSide && !this.isDoingResummonAnimation()) {
+      if (!this.level.isClientSide() && !this.isDoingResummonAnimation()) {
          List<ResummonSuperBeaconRecipe> recipes = this.level
             .getRecipeManager()
             .getRecipesFor((RecipeType)WitherStormModRecipeTypes.SUPER_BEACON_RESUMMON.get(), this, this.level);
@@ -166,7 +166,7 @@ public class SuperBeaconBlockEntity extends AbstractSuperBeaconBlockEntity imple
             this.level.addParticle((ParticleOptions)WitherStormModParticleTypes.COMMAND_BLOCK.get(), x, y, z, delta.x, delta.y, delta.z);
          }
 
-         if (!this.level.isClientSide) {
+         if (!this.level.isClientSide()) {
             Vec3 pos = Vec3.atCenterOf(this.getBlockPos());
             if (this.getResummonTicks() == 60) {
                this.items.clear();
@@ -332,7 +332,7 @@ public class SuperBeaconBlockEntity extends AbstractSuperBeaconBlockEntity imple
          this.shake = new Vec2(x, z);
       }
 
-      if (!this.level.isClientSide && this.getResummonTicks() == this.getResummonThreshold()) {
+      if (!this.level.isClientSide() && this.getResummonTicks() == this.getResummonThreshold()) {
          this.playSound((SoundEvent)WitherStormModSoundEvents.WITHERED_BEACON_ACTIVATE.get(), 1.0F, 1.0F);
          this.playSound((SoundEvent)WitherStormModSoundEvents.TREMBLE.get(), 10.0F, 1.0F);
          Vec3 pos = Vec3.atCenterOf(this.getBlockPos());
@@ -355,23 +355,23 @@ public class SuperBeaconBlockEntity extends AbstractSuperBeaconBlockEntity imple
    public void load(CompoundTag tag) {
       super.load(tag);
       NonNullList<ItemStack> items = NonNullList.create();
-      ListTag list = tag.getList("ResummonItems", 10);
+      ListTag list = tag.getListOrEmpty("ResummonItems");
 
       for (int i = 0; i < list.size(); i++) {
-         CompoundTag item = list.getCompound(i);
+         CompoundTag item = list.getCompoundOrEmpty(i);
          items.add(ItemStack.of(item));
       }
 
       this.items = items;
-      this.resummonTicks = tag.getInt("ResummonTicks");
-      this.isDoingResummoning = tag.getBoolean("Resummoning");
+      this.resummonTicks = tag.getIntOr("ResummonTicks", 0);
+      this.isDoingResummoning = tag.getBooleanOr("Resummoning", false);
       if (tag.contains("ResummoningEntity")) {
-         String rawId = tag.getString("ResummoningEntity");
+         String rawId = tag.getStringOr("ResummoningEntity", "");
          this.resummoningEntity = (EntityType<?>)EntityType.byString(rawId).orElse(null);
       }
 
       if (tag.contains("ResummonNBT")) {
-         this.resummonNbt = tag.getCompound("ResummonNBT");
+         this.resummonNbt = tag.getCompoundOrEmpty("ResummonNBT");
       }
    }
 
@@ -508,7 +508,7 @@ public class SuperBeaconBlockEntity extends AbstractSuperBeaconBlockEntity imple
    }
 
    protected void doPoweringUpAnimation() {
-      if (!this.level.isClientSide && this.poweringUpAnimation == 40) {
+      if (!this.level.isClientSide() && this.poweringUpAnimation == 40) {
          WitherStormModPacketHandlers.MAIN.send(PacketDistributor.ALL.noArg(), new ShakeScreenMessage(120.0F, 12.0F));
          if (this.level instanceof ServerLevel level) {
             Vec3 pos = Vec3.atCenterOf(this.getBlockPos());
