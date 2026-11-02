@@ -9,3 +9,5 @@
 - `进度.md`：已完成内容及未完成项。
 
 Windows 可通过仓库页面的 **Code → Download ZIP** 下载源码；只需要开发版 JAR 时可进入 `downloads/` 下载。构建时在 `forge-port` 目录运行 `gradlew.bat build`，并准备 Java 25。
+
+- `automation/README.md`：Windows 定时接续、独立工作树与草稿 PR 的安装和恢复步骤。
