@@ -24,6 +24,7 @@ import net.minecraft.world.BossEvent.BossBarOverlay;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.LivingEntity;
@@ -60,6 +61,7 @@ import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.projectile.hurtingprojectile.WitherSkull;
 import net.minecraft.world.entity.projectile.hurtingprojectile.LargeFireball;
 import net.minecraft.world.entity.projectile.hurtingprojectile.SmallFireball;
+import net.minecraft.world.entity.projectile.hurtingprojectile.DragonFireball;
 import net.minecraft.world.entity.projectile.hurtingprojectile.AbstractHurtingProjectile;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.EvokerFangs;
@@ -83,6 +85,7 @@ import org.jspecify.annotations.Nullable;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 
 /** Early symbiont with melee and simplified versions of three spells. */
 public final class WitheredSymbiontEntity extends WitherSkeleton {
@@ -141,6 +144,18 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
     @Override public boolean canBeLeashed() { return false; }
     @Override protected int decreaseAirSupply(int supply) { return supply; }
     public void setStormOwner(WitherStormEntity owner) { stormOwner = owner.getUUID(); }
+
+    /** Adapt freshly created symbiont dragon-fireball clouds; saved clouds retain their state. */
+    public static void onEntityJoin(EntityJoinLevelEvent event, boolean cancelled) {
+        if (cancelled || event.loadedFromDisk() || event.getLevel().isClientSide()
+                || !(event.getEntity() instanceof AreaEffectCloud cloud)
+                || !(cloud.getOwner() instanceof WitheredSymbiontEntity)) return;
+        cloud.setPotionContents(PotionContents.EMPTY.withEffectAdded(new MobEffectInstance(MobEffects.WITHER, 60, 2)));
+        cloud.setCustomParticle(ParticleTypes.SMOKE);
+        cloud.setRadius(2.5F);
+        cloud.setDuration(120);
+        cloud.setRadiusPerTick((10.0F - 2.5F) / 120.0F);
+    }
 
     @Override public void die(DamageSource source) {
         boolean wasDead = dead;
@@ -527,13 +542,16 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
 
     private void startFireballs(ServerLevel level) {
         clearSpellFireballs();
-        boolean small = random.nextInt(5) == 0;
-        int count = small ? 16 : 8;
+        int variant = random.nextInt(7);
+        int count = variant == 0 ? 16 : variant == 1 ? 6 : 8;
         fireballInterval = 160 / count;
         fireballTicks = 160;
         for (int i = 0; i < count; i++) {
-            AbstractHurtingProjectile ball = small ? new SmallFireball(level, this, Vec3.ZERO)
-                    : new LargeFireball(level, this, Vec3.ZERO, 1);
+            AbstractHurtingProjectile ball = switch (variant) {
+                case 0 -> new SmallFireball(level, this, Vec3.ZERO);
+                case 1 -> new DragonFireball(level, this, Vec3.ZERO);
+                default -> new LargeFireball(level, this, Vec3.ZERO, 1);
+            };
             double angle = Math.PI * 2.0 * i / count;
             ball.setPos(getX() + 7.0 * Math.cos(angle), getEyeY() + 4.0, getZ() + 7.0 * Math.sin(angle));
             ball.setNoGravity(true);

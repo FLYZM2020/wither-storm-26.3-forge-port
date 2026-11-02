@@ -8,6 +8,7 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -77,6 +78,7 @@ public final class WitherStormMod {
         EntityAttributeCreationEvent.BUS.addListener(WitherStormMod::registerAttributes);
         RegisterCommandsEvent.BUS.addListener(StormCommands::register);
         LivingEvent.LivingTickEvent.BUS.addListener(WitherSicknessTracker::onLivingTick);
+        EntityJoinLevelEvent.BUS.addListener(WitheredSymbiontEntity::onEntityJoin);
         LivingEvent.LivingTickEvent.BUS.addListener(PlayerSymbiontData::onLivingTick);
         MobSpawnEvent.AllowDespawn.BUS.addListener(WitherSicknessTracker::onAllowDespawn);
         PlayerEvent.Clone.BUS.addListener(WitherSicknessTracker::onPlayerClone);
