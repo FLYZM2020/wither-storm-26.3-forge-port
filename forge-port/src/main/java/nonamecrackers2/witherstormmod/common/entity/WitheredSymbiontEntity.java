@@ -62,6 +62,7 @@ import net.minecraft.world.entity.projectile.hurtingprojectile.AbstractHurtingPr
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.EvokerFangs;
 import net.minecraft.world.entity.projectile.ShulkerBullet;
+import net.minecraft.world.entity.projectile.throwableitemprojectile.Snowball;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
@@ -96,6 +97,9 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
     private int fireballInterval;
     private int shulkerTicks;
     private int bombingTicks;
+    private int throwingTicks;
+    private record PendingThrow(Vec3 position, int releaseTick, boolean arrow) { }
+    private final List<PendingThrow> pendingThrows = new ArrayList<>();
     private int smashStomps;
     private int smashCooldown;
     private int smashAirTicks;
@@ -173,7 +177,7 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
     @Override protected void registerGoals() {
         goalSelector.addGoal(0, new Goal() {
             { setFlags(EnumSet.of(Flag.MOVE)); }
-            @Override public boolean canUse() { return skullTicks > 0 || pullTicks > 0 || fangsTicks > 0 || arrowTicks > 0 || pulseTicks > 0 || smashTicks > 0 || fireballTicks > 0 || shulkerTicks > 0 || bombingTicks > 0; }
+            @Override public boolean canUse() { return skullTicks > 0 || pullTicks > 0 || fangsTicks > 0 || arrowTicks > 0 || pulseTicks > 0 || smashTicks > 0 || fireballTicks > 0 || shulkerTicks > 0 || bombingTicks > 0 || throwingTicks > 0; }
             @Override public boolean canContinueToUse() { return canUse(); }
             @Override public void start() { getNavigation().stop(); }
             @Override public void tick() { getNavigation().stop(); }
@@ -220,7 +224,7 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
                 tickPulse(server);
             }
             entityData.set(PULLING, isAlive() && pullTicks > 0);
-            entityData.set(CASTING, isAlive() && (pullTicks > 0 || skullTicks > 0 || fangsTicks > 0 || arrowTicks > 0 || pulseTicks > 0 || smashTicks > 0 || fireballTicks > 0 || shulkerTicks > 0 || bombingTicks > 0));
+            entityData.set(CASTING, isAlive() && (pullTicks > 0 || skullTicks > 0 || fangsTicks > 0 || arrowTicks > 0 || pulseTicks > 0 || smashTicks > 0 || fireballTicks > 0 || shulkerTicks > 0 || bombingTicks > 0 || throwingTicks > 0));
             if (isCasting() && level() instanceof ServerLevel server) showCastingParticles(server);
         }
     }
@@ -239,10 +243,19 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
     /** A small first step toward the original pulse spell; terrain effects are unported. */
     private void tickPulse(ServerLevel level) {
         if (getTarget() == null || !getTarget().isAlive()) {
+            if (throwingTicks > 0) { throwingTicks = 0; pendingThrows.clear(); pulseCooldown = 100; }
             if (bombingTicks > 0) { bombingTicks = 0; pulseCooldown = 100; }
             if (shulkerTicks > 0) { shulkerTicks = 0; pulseCooldown = 100; }
             if (fireballTicks > 0) { fireballTicks = 0; clearSpellFireballs(); pulseCooldown = 100; }
             if (pulseCharge > 0 || skullTicks > 0 || pullTicks > 0 || fangsTicks > 0 || arrowTicks > 0 || pulseTicks > 0 || smashTicks > 0) { pulseCharge = 0; skullTicks = 0; pullTicks = 0; fangsTicks = 0; arrowTicks = 0; pulseTicks = 0; smashTicks = 0; clearSpellArrows(); pulseCooldown = 100; }
+            return;
+        }
+        if (throwingTicks > 0) {
+            tickThrowing(level, getTarget());
+            if (--throwingTicks == 0) {
+                pendingThrows.clear();
+                pulseCooldown = 360 + random.nextInt(120);
+            }
             return;
         }
         if (bombingTicks > 0) {
@@ -371,6 +384,12 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
                 level.sendParticles(ParticleTypes.PORTAL, getX(), getY() + 1.2, getZ(), 12, 0.6, 0.8, 0.6, 0.1);
             if (pulseCharge == 0) {
                 playSound(WitherStormModSounds.SYMBIONT_CAST.get(), 4.0F, 1.0F);
+                if (pendingSpell == 9) {
+                    previousSpell = 9;
+                    throwingTicks = 240;
+                    pendingThrows.clear();
+                    return;
+                }
                 if (pendingSpell == 8) {
                     previousSpell = 8;
                     bombingTicks = 60;
@@ -419,11 +438,48 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
                 pulseTicks = 160;
             }
         } else if (--pulseCooldown <= 0) {
-            pendingSpell = random.nextInt(previousSpell < 0 ? 9 : 8);
+            pendingSpell = random.nextInt(previousSpell < 0 ? 10 : 9);
             if (previousSpell >= 0 && pendingSpell >= previousSpell) pendingSpell++;
             preparingSkulls = pendingSpell == 1;
             pulseCharge = 40 + random.nextInt(20);
             playSound(WitherStormModSounds.SYMBIONT_PREPARE.get(), 4.0F, 1.0F);
+        }
+    }
+
+    /** The original uses more projectile types; pending markers do not persist across unloads. */
+    private void tickThrowing(ServerLevel level, LivingEntity target) {
+        int difficulty = Math.max(1, level.getDifficulty().getId());
+        int interval = Math.max(2, 24 / difficulty);
+        if (throwingTicks > 40 && tickCount % interval == 0) {
+            Vec3 position = position().add(random.nextGaussian() * 5.0, getEyeHeight() + 2.0 + random.nextDouble() * 10.0,
+                    random.nextGaussian() * 5.0);
+            if (level.hasChunkAt(BlockPos.containing(position)))
+                pendingThrows.add(new PendingThrow(position, tickCount + 40, random.nextBoolean()));
+        }
+        var iterator = pendingThrows.iterator();
+        while (iterator.hasNext()) {
+            PendingThrow pending = iterator.next();
+            Vec3 pos = pending.position();
+            if (!level.hasChunkAt(BlockPos.containing(pos))) { iterator.remove(); continue; }
+            if (tickCount < pending.releaseTick()) {
+                if (tickCount % 5 == 0) level.sendParticles(WitherStormMod.COMMAND_PARTICLE.get(), pos.x, pos.y, pos.z, 1, 0.1, 0.1, 0.1, 0.0);
+                continue;
+            }
+            LivingEntity selected = randomPlayerTarget(level, target);
+            Projectile projectile;
+            if (pending.arrow()) {
+                Arrow arrow = new Arrow(level, this, new ItemStack(Items.ARROW), null);
+                arrow.pickup = AbstractArrow.Pickup.DISALLOWED;
+                projectile = arrow;
+            } else {
+                projectile = new Snowball(level, this, new ItemStack(Items.SNOWBALL));
+            }
+            projectile.setPos(pos);
+            Vec3 delta = selected.getBoundingBox().getCenter().subtract(pos);
+            double horizontal = Math.sqrt(delta.horizontalDistanceSqr());
+            projectile.shoot(delta.x, delta.y + horizontal * 0.2, delta.z, (float) (1.6 + horizontal * 0.02), 14 - difficulty * 4);
+            if (level.addFreshEntity(projectile)) projectile.playSound(SoundEvents.ARROW_SHOOT, 4.0F, 1.0F);
+            iterator.remove();
         }
     }
 
@@ -619,6 +675,7 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
         output.putBoolean("FireballCasting", fireballTicks > 0);
         output.putBoolean("ShulkerCasting", shulkerTicks > 0);
         output.putBoolean("BombingCasting", bombingTicks > 0);
+        output.putBoolean("ThrowingCasting", throwingTicks > 0);
         output.putInt("SmashStomps", smashStomps);
         output.putInt("SmashCooldown", smashCooldown);
         output.putInt("SmashAirTicks", smashAirTicks);
@@ -632,11 +689,12 @@ public final class WitheredSymbiontEntity extends WitherSkeleton {
         pulseCharge = Math.clamp(input.getIntOr("PulseCharge", 0), 0, 59);
         skullTicks = Math.clamp(input.getIntOr("SkullTicks", 0), 0, 220);
         preparingSkulls = input.getBooleanOr("PreparingSkulls", false);
-        previousSpell = Math.clamp(input.getIntOr("PreviousSpell", -1), -1, 8);
-        pendingSpell = Math.clamp(input.getIntOr("PendingSpell", preparingSkulls ? 1 : 0), 0, 8);
+        previousSpell = Math.clamp(input.getIntOr("PreviousSpell", -1), -1, 9);
+        pendingSpell = Math.clamp(input.getIntOr("PendingSpell", preparingSkulls ? 1 : 0), 0, 9);
         if (input.getBooleanOr("FireballCasting", false)) pulseCooldown = 100;
         if (input.getBooleanOr("ShulkerCasting", false)) pulseCooldown = 100;
         if (input.getBooleanOr("BombingCasting", false)) pulseCooldown = 100;
+        if (input.getBooleanOr("ThrowingCasting", false)) pulseCooldown = 100;
         pullTicks = Math.clamp(input.getIntOr("PullTicks", 0), 0, 240);
         fangsTicks = Math.clamp(input.getIntOr("FangsTicks", 0), 0, 20);
         arrowTicks = Math.clamp(input.getIntOr("ArrowTicks", 0), 0, 120);
